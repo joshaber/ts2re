@@ -89,24 +89,21 @@ function printVariable(variable: Variable): string {
 }
 
 function printParameter(p: Parameter, includeName: boolean): string {
-  if (includeName) {
-    return p.optional ? `?${p.name}::${p.type}` : (p.name.length ? `${p.name}::${p.type}` : p.type)
-  } else {
-    return p.optional ? `?${p.name}::${p.type}` : `${p.type}`
+  let prefix = ''
+  if ((includeName || p.optional) && p.name.length) {
+    prefix = `${p.optional ? '?' : ''}${p.name}::`
   }
+
+  return `${prefix}${p.type}`
 }
 
 function printMethod(m: Method): string {
-  if (m.ctor) {
+  if (m.ctor || m.maker) {
+    const bsAttribute = m.ctor ? 'new' : 'obj'
     const params = m.parameters.length
       ? m.parameters.map(p => printParameter(p, true)).join(" => ")
       : "unit"
-    return `external ${m.name} : ${params} => ${ModuleTypeName} = "" [@@bs.new];`
-  } else if (m.maker) {
-    const params = m.parameters.length
-      ? m.parameters.map(p => printParameter(p, true)).join(" => ")
-      : "unit"
-    return `external ${m.name} : ${params} => ${ModuleTypeName} = "" [@@bs.obj];`
+    return `external ${m.name} : ${params} => ${ModuleTypeName} = "" [@@bs.${bsAttribute}];`
   } else if (!m.static) {
     const params = m.parameters.length
       ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
@@ -376,14 +373,25 @@ function visitInterface(node, opts) {
     }
   });
 
+  // Classes already have constructors, but interfaces and type aliases should
+  // have a convenience make function.
   if (opts.kind !== 'class') {
     const params = ifc.properties.map(p => ({
       name: p.name,
       optional: p.optional,
-      static: p.static,
       type: p.type,
       rest: false,
     }))
+
+    if ((params as any).find(p => p.optional)) {
+      const sentinelParam: Parameter = {
+        name: '',
+        type: 'unit',
+        optional: false,
+        rest: false,
+      }
+      params.push(sentinelParam)
+    }
 
     const makeMeth: Method = {
       name: 'make',
@@ -451,20 +459,6 @@ function getMethod(node, opts: any = {}): Method {
     ctor: opts.ctor || false,
     maker: false,
   };
-
-  const firstParam = node.parameters[0], secondParam = node.parameters[1];
-  if (secondParam && secondParam.type && secondParam.type.kind == TS.SyntaxKind.StringLiteral) {
-    // The only case I've seen following this pattern is
-    // createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: "a"): SVGAElement
-    meth.parameters = meth.parameters.slice(2);
-    // meth.emit = `$0.${meth.name}('${firstParam.type.text}', ${secondParam.type.text}'${meth.parameters.length?',$1...':''})`;
-    meth.name += '_' + secondParam.type.text;
-  }
-  else if (firstParam && firstParam.type && firstParam.type.kind == TS.SyntaxKind.StringLiteral) {
-    meth.parameters = meth.parameters.slice(1);
-    // meth.emit = `$0.${meth.name}('${firstParam.type.text}'${meth.parameters.length?',$1...':''})`;
-    meth.name += '_' + firstParam.type.text;
-  }
 
   const containsOptionalParam = !!meth.parameters.find(p => p.optional)
   if (containsOptionalParam) {
