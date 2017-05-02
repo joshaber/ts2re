@@ -69,14 +69,16 @@ const MappedTypes = {
 const ModuleTypeName = "t";
 const Indentation = "  ";
 
-const filePath = Path.join(__dirname, "..", "electron.d.ts");
+const root = Path.join(__dirname, "..");
+
+const filePath = Path.join(root, "electron.d.ts");
 const prog = TS.createProgram([ filePath ], TS.getDefaultCompilerOptions());
 
 const file = prog.getSourceFile(filePath);
 const out = parseFile(file);
 
 const printed = printModule(out, null, 0);
-FS.writeFileSync(Path.join(__dirname, '..', 'electron.re'), printed);
+FS.writeFileSync(Path.join(root, `${out.name}.re`), printed);
 
 function pp(str: string, depth: number): string {
   let prefix = ''
