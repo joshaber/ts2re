@@ -69,9 +69,11 @@ const MappedTypes = {
 const ModuleTypeName = "t";
 const Indentation = "  ";
 
+const TestInputFile = "electron.d.ts"
+
 const root = Path.join(__dirname, "..");
 
-const filePath = Path.join(root, "electron.d.ts");
+const filePath = Path.join(root, TestInputFile);
 const prog = TS.createProgram([ filePath ], TS.getDefaultCompilerOptions());
 
 const file = prog.getSourceFile(filePath);
