@@ -195,7 +195,7 @@ let module Electron = {
   let module Dock = {
     type t;
 
-    external bounce : t => ?type::U2<'a, 'a> => unit => float = "" [@@bs.send];
+    external bounce : t => ?type::'a => unit => float = "" [@@bs.send];
     external cancelBounce : t => float => unit = "" [@@bs.send];
     external downloadFinished : t => string => unit = "" [@@bs.send];
     external setBadge : t => string => unit = "" [@@bs.send];
@@ -204,7 +204,7 @@ let module Electron = {
     external show : t => unit = "" [@@bs.send];
     external isVisible : t => bool = "" [@@bs.send];
     external setMenu : t => Menu.t => unit = "" [@@bs.send];
-    external setIcon : t => U2<NativeImage.t, string> => unit = "" [@@bs.send];
+    external setIcon : t => 'a => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -253,9 +253,9 @@ let module Electron = {
   let module JumpListCategory = {
     type t;
 
-    external make : ?type::U4<'a, 'a, 'a, 'a> => ?name::string => ?items::array JumpListItem.t => unit => t = "" [@@bs.obj];
-    external setType : t => option U4<'a, 'a, 'a, 'a> => unit = "type" [@@bs.set];
-    external getType : t => option U4<'a, 'a, 'a, 'a> = "type" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external make : ?type::'a => ?name::string => ?items::array JumpListItem.t => unit => t = "" [@@bs.obj];
+    external setType : t => option 'a => unit = "type" [@@bs.set];
+    external getType : t => option 'a = "type" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setName : t => option string => unit = "name" [@@bs.set];
     external getName : t => option string = "name" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -268,9 +268,9 @@ let module Electron = {
   let module JumpListItem = {
     type t;
 
-    external make : type::U3<'a, 'a, 'a> => ?path::string => ?program::string => ?args::string => ?title::string => ?description::string => ?iconPath::string => ?iconIndex::float => unit => t = "" [@@bs.obj];
-    external setType : t => U3<'a, 'a, 'a> => unit = "type" [@@bs.set];
-    external getType : t => U3<'a, 'a, 'a> = "type" [@@bs.get];
+    external make : type::'a => ?path::string => ?program::string => ?args::string => ?title::string => ?description::string => ?iconPath::string => ?iconIndex::float => unit => t = "" [@@bs.obj];
+    external setType : t => 'a => unit = "type" [@@bs.set];
+    external getType : t => 'a = "type" [@@bs.get];
 
     external setPath : t => option string => unit = "path" [@@bs.set];
     external getPath : t => option string = "path" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -462,7 +462,7 @@ let module Electron = {
     external capturePage : t => (NativeImage.t => unit) => unit = "" [@@bs.send];
     external loadURL : t => string => ?options::LoadURLOptions.t => unit => unit = "" [@@bs.send];
     external reload : t => unit = "" [@@bs.send];
-    external setMenu : t => U2<Menu.t, 'a> => unit = "" [@@bs.send];
+    external setMenu : t => 'a => unit = "" [@@bs.send];
     external setProgressBar : t => float => ?options::'a => unit => unit = "" [@@bs.send];
     external setOverlayIcon : t => NativeImage.t => string => unit = "" [@@bs.send];
     external setHasShadow : t => bool => unit = "" [@@bs.send];
@@ -514,9 +514,9 @@ let module Electron = {
   let module ThumbarButton = {
     type t;
 
-    external make : icon::U2<NativeImage.t, string> => click::(<..> => <..>) => ?tooltip::string => ?flags::array ThumbarButtonFlags.t => unit => t = "" [@@bs.obj];
-    external setIcon : t => U2<NativeImage.t, string> => unit = "icon" [@@bs.set];
-    external getIcon : t => U2<NativeImage.t, string> = "icon" [@@bs.get];
+    external make : icon::'a => click::(<..> => <..>) => ?tooltip::string => ?flags::array ThumbarButtonFlags.t => unit => t = "" [@@bs.obj];
+    external setIcon : t => 'a => unit = "icon" [@@bs.set];
+    external getIcon : t => 'a = "icon" [@@bs.get];
 
     external setClick : t => (<..> => <..>) => unit = "click" [@@bs.set];
     external getClick : t => (<..> => <..>) = "click" [@@bs.get];
@@ -634,7 +634,7 @@ let module Electron = {
   let module BrowserWindowOptions = {
     type t;
 
-    external make : ?width::float => ?height::float => ?x::float => ?y::float => ?useContentSize::bool => ?center::bool => ?minWidth::float => ?minHeight::float => ?maxWidth::float => ?maxHeight::float => ?resizable::bool => ?movable::bool => ?minimizable::bool => ?maximizable::bool => ?closable::bool => ?focusable::bool => ?alwaysOnTop::bool => ?fullscreen::bool => ?fullscreenable::bool => ?skipTaskbar::bool => ?kiosk::bool => ?title::string => ?icon::U2<NativeImage.t, string> => ?show::bool => ?frame::bool => ?parent::BrowserWindow.t => ?modal::bool => ?acceptFirstMouse::bool => ?disableAutoHideCursor::bool => ?autoHideMenuBar::bool => ?enableLargerThanScreen::bool => ?backgroundColor::string => ?hasShadow::bool => ?darkTheme::bool => ?transparent::bool => ?type::BrowserWindowType.t => ?titleBarStyle::U3<'a, 'a, 'a> => ?thickFrame::bool => ?vibrancy::VibrancyType.t => ?webPreferences::WebPreferences.t => unit => t = "" [@@bs.obj];
+    external make : ?width::float => ?height::float => ?x::float => ?y::float => ?useContentSize::bool => ?center::bool => ?minWidth::float => ?minHeight::float => ?maxWidth::float => ?maxHeight::float => ?resizable::bool => ?movable::bool => ?minimizable::bool => ?maximizable::bool => ?closable::bool => ?focusable::bool => ?alwaysOnTop::bool => ?fullscreen::bool => ?fullscreenable::bool => ?skipTaskbar::bool => ?kiosk::bool => ?title::string => ?icon::'a => ?show::bool => ?frame::bool => ?parent::BrowserWindow.t => ?modal::bool => ?acceptFirstMouse::bool => ?disableAutoHideCursor::bool => ?autoHideMenuBar::bool => ?enableLargerThanScreen::bool => ?backgroundColor::string => ?hasShadow::bool => ?darkTheme::bool => ?transparent::bool => ?type::BrowserWindowType.t => ?titleBarStyle::'a => ?thickFrame::bool => ?vibrancy::VibrancyType.t => ?webPreferences::WebPreferences.t => unit => t = "" [@@bs.obj];
     external setWidth : t => option float => unit = "width" [@@bs.set];
     external getWidth : t => option float = "width" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -701,8 +701,8 @@ let module Electron = {
     external setTitle : t => option string => unit = "title" [@@bs.set];
     external getTitle : t => option string = "title" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setIcon : t => option U2<NativeImage.t, string> => unit = "icon" [@@bs.set];
-    external getIcon : t => option U2<NativeImage.t, string> = "icon" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setIcon : t => option 'a => unit = "icon" [@@bs.set];
+    external getIcon : t => option 'a = "icon" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setShow : t => option bool => unit = "show" [@@bs.set];
     external getShow : t => option bool = "show" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -743,8 +743,8 @@ let module Electron = {
     external setType : t => option BrowserWindowType.t => unit = "type" [@@bs.set];
     external getType : t => option BrowserWindowType.t = "type" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setTitleBarStyle : t => option U3<'a, 'a, 'a> => unit = "titleBarStyle" [@@bs.set];
-    external getTitleBarStyle : t => option U3<'a, 'a, 'a> = "titleBarStyle" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setTitleBarStyle : t => option 'a => unit = "titleBarStyle" [@@bs.set];
+    external getTitleBarStyle : t => option 'a = "titleBarStyle" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setThickFrame : t => option bool => unit = "thickFrame" [@@bs.set];
     external getThickFrame : t => option bool = "thickFrame" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -795,8 +795,8 @@ let module Electron = {
     external clear : t => ?type::ClipboardType.t => unit => unit = "" [@@bs.send];
     external availableFormats : t => ?type::ClipboardType.t => unit => array string = "" [@@bs.send];
     external has : t => string => ?type::ClipboardType.t => unit => bool = "" [@@bs.send];
-    external read : t => string => ?type::ClipboardType.t => unit => U2<string, NativeImage.t> = "" [@@bs.send];
-    external write : t => U4<'a, 'a, 'a, 'a> => ?type::ClipboardType.t => unit => unit = "" [@@bs.send];
+    external read : t => string => ?type::ClipboardType.t => unit => 'a = "" [@@bs.send];
+    external write : t => 'a => ?type::ClipboardType.t => unit => unit = "" [@@bs.send];
     external readBookmark : t => Bookmark.t = "" [@@bs.send];
     external writeBookmark : t => string => string => ?type::ClipboardType.t => unit => unit = "" [@@bs.send];
     external readFindText : t => string = "" [@@bs.send];
@@ -904,9 +904,9 @@ let module Electron = {
   let module DesktopCapturerOptions = {
     type t;
 
-    external make : ?types::array U2<'a, 'a> => ?thumbnailSize::Size.t => unit => t = "" [@@bs.obj];
-    external setTypes : t => option array U2<'a, 'a> => unit = "types" [@@bs.set];
-    external getTypes : t => option array U2<'a, 'a> = "types" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external make : ?types::array 'a => ?thumbnailSize::Size.t => unit => t = "" [@@bs.obj];
+    external setTypes : t => option array 'a => unit = "types" [@@bs.set];
+    external getTypes : t => option array 'a = "types" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setThumbnailSize : t => option Size.t => unit = "thumbnailSize" [@@bs.set];
     external getThumbnailSize : t => option Size.t = "thumbnailSize" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -944,7 +944,7 @@ let module Electron = {
   let module OpenDialogOptions = {
     type t;
 
-    external make : ?title::string => ?defaultPath::string => ?buttonLabel::string => ?filters::array 'a => ?properties::array obj => ?normalizeAccessKeys::bool => ?message::string => unit => t = "" [@@bs.obj];
+    external make : ?title::string => ?defaultPath::string => ?buttonLabel::string => ?filters::array 'a => ?properties::array 'a => ?normalizeAccessKeys::bool => ?message::string => unit => t = "" [@@bs.obj];
     external setTitle : t => option string => unit = "title" [@@bs.set];
     external getTitle : t => option string = "title" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -957,8 +957,8 @@ let module Electron = {
     external setFilters : t => option array 'a => unit = "filters" [@@bs.set];
     external getFilters : t => option array 'a = "filters" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setProperties : t => option array obj => unit = "properties" [@@bs.set];
-    external getProperties : t => option array obj = "properties" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setProperties : t => option array 'a => unit = "properties" [@@bs.set];
+    external getProperties : t => option array 'a = "properties" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setNormalizeAccessKeys : t => option bool => unit = "normalizeAccessKeys" [@@bs.set];
     external getNormalizeAccessKeys : t => option bool = "normalizeAccessKeys" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -998,9 +998,9 @@ let module Electron = {
   let module ShowMessageBoxOptions = {
     type t;
 
-    external make : ?type::obj => ?buttons::array string => ?defaultId::float => ?title::string => ?message::string => ?detail::string => ?icon::NativeImage.t => ?cancelId::float => ?noLink::bool => unit => t = "" [@@bs.obj];
-    external setType : t => option obj => unit = "type" [@@bs.set];
-    external getType : t => option obj = "type" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external make : ?type::'a => ?buttons::array string => ?defaultId::float => ?title::string => ?message::string => ?detail::string => ?icon::NativeImage.t => ?cancelId::float => ?noLink::bool => unit => t = "" [@@bs.obj];
+    external setType : t => option 'a => unit = "type" [@@bs.set];
+    external getType : t => option 'a = "type" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setButtons : t => option array string => unit = "buttons" [@@bs.set];
     external getButtons : t => option array string = "buttons" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -1031,8 +1031,8 @@ let module Electron = {
   let module DownloadItem = {
     type t;
 
-    external on : t => 'a => (Event.t => U2<'a, 'a> => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (Event.t => U3<'a, 'a, 'a> => unit) => t = "" [@@bs.send];
+    external on : t => 'a => (Event.t => 'a => unit) => t = "" [@@bs.send];
+    external on : t => 'a => (Event.t => 'a => unit) => t = "" [@@bs.send];
     external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
     external setSavePath : t => string => unit = "" [@@bs.send];
     external getSavePath : t => string = "" [@@bs.send];
@@ -1048,7 +1048,7 @@ let module Electron = {
     external getTotalBytes : t => float = "" [@@bs.send];
     external getReceivedBytes : t => float = "" [@@bs.send];
     external getContentDisposition : t => string = "" [@@bs.send];
-    external getState : t => U4<'a, 'a, 'a, 'a> = "" [@@bs.send];
+    external getState : t => 'a = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -1130,17 +1130,17 @@ let module Electron = {
     external setType : t => MenuItemType.t => unit = "type" [@@bs.set];
     external getType : t => MenuItemType.t = "type" [@@bs.get];
 
-    external setRole : t => U2<MenuItemRole.t, MenuItemRoleMac.t> => unit = "role" [@@bs.set];
-    external getRole : t => U2<MenuItemRole.t, MenuItemRoleMac.t> = "role" [@@bs.get];
+    external setRole : t => 'a => unit = "role" [@@bs.set];
+    external getRole : t => 'a = "role" [@@bs.get];
 
     external setAccelerator : t => string => unit = "accelerator" [@@bs.set];
     external getAccelerator : t => string = "accelerator" [@@bs.get];
 
-    external setIcon : t => U2<NativeImage.t, string> => unit = "icon" [@@bs.set];
-    external getIcon : t => U2<NativeImage.t, string> = "icon" [@@bs.get];
+    external setIcon : t => 'a => unit = "icon" [@@bs.set];
+    external getIcon : t => 'a = "icon" [@@bs.get];
 
-    external setSubmenu : t => U2<Menu.t, array MenuItemOptions.t> => unit = "submenu" [@@bs.set];
-    external getSubmenu : t => U2<Menu.t, array MenuItemOptions.t> = "submenu" [@@bs.get];
+    external setSubmenu : t => 'a => unit = "submenu" [@@bs.set];
+    external getSubmenu : t => 'a = "submenu" [@@bs.get];
 
     external setLabel : t => string => unit = "label" [@@bs.set];
     external getLabel : t => string = "label" [@@bs.get];
@@ -1180,7 +1180,7 @@ let module Electron = {
   let module MenuItemOptions = {
     type t;
 
-    external make : ?click::(MenuItem.t => BrowserWindow.t => Event.t => unit) => ?type::MenuItemType.t => ?label::string => ?sublabel::string => ?accelerator::string => ?icon::U2<NativeImage.t, string> => ?enabled::bool => ?visible::bool => ?checked::bool => ?submenu::U2<Menu.t, array MenuItemOptions.t> => ?id::string => ?position::string => ?role::U2<MenuItemRole.t, MenuItemRoleMac.t> => unit => t = "" [@@bs.obj];
+    external make : ?click::(MenuItem.t => BrowserWindow.t => Event.t => unit) => ?type::MenuItemType.t => ?label::string => ?sublabel::string => ?accelerator::string => ?icon::'a => ?enabled::bool => ?visible::bool => ?checked::bool => ?submenu::'a => ?id::string => ?position::string => ?role::'a => unit => t = "" [@@bs.obj];
     external setClick : t => option (MenuItem.t => BrowserWindow.t => Event.t => unit) => unit = "click" [@@bs.set];
     external getClick : t => option (MenuItem.t => BrowserWindow.t => Event.t => unit) = "click" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -1196,8 +1196,8 @@ let module Electron = {
     external setAccelerator : t => option string => unit = "accelerator" [@@bs.set];
     external getAccelerator : t => option string = "accelerator" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setIcon : t => option U2<NativeImage.t, string> => unit = "icon" [@@bs.set];
-    external getIcon : t => option U2<NativeImage.t, string> = "icon" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setIcon : t => option 'a => unit = "icon" [@@bs.set];
+    external getIcon : t => option 'a = "icon" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setEnabled : t => option bool => unit = "enabled" [@@bs.set];
     external getEnabled : t => option bool = "enabled" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -1208,8 +1208,8 @@ let module Electron = {
     external setChecked : t => option bool => unit = "checked" [@@bs.set];
     external getChecked : t => option bool = "checked" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setSubmenu : t => option U2<Menu.t, array MenuItemOptions.t> => unit = "submenu" [@@bs.set];
-    external getSubmenu : t => option U2<Menu.t, array MenuItemOptions.t> = "submenu" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setSubmenu : t => option 'a => unit = "submenu" [@@bs.set];
+    external getSubmenu : t => option 'a = "submenu" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setId : t => option string => unit = "id" [@@bs.set];
     external getId : t => option string = "id" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -1217,8 +1217,8 @@ let module Electron = {
     external setPosition : t => option string => unit = "position" [@@bs.set];
     external getPosition : t => option string = "position" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setRole : t => option U2<MenuItemRole.t, MenuItemRoleMac.t> => unit = "role" [@@bs.set];
-    external getRole : t => option U2<MenuItemRole.t, MenuItemRoleMac.t> = "role" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setRole : t => option 'a => unit = "role" [@@bs.set];
+    external getRole : t => option 'a = "role" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
   };
 
@@ -1226,8 +1226,8 @@ let module Electron = {
     type t;
 
     external make : unit => t = "" [@@bs.new];
-    external setApplicationMenu : t => U2<Menu.t, 'a> => unit = "" [@@bs.send];
-    external getApplicationMenu : t => U2<Menu.t, 'a> = "" [@@bs.send];
+    external setApplicationMenu : t => 'a => unit = "" [@@bs.send];
+    external getApplicationMenu : t => 'a = "" [@@bs.send];
     external sendActionToFirstResponder : t => string => unit = "" [@@bs.send];
     external buildFromTemplate : t => array MenuItemOptions.t => Menu.t = "" [@@bs.send];
     external popup : t => ?browserWindow::BrowserWindow.t => ?x::float => ?y::float => unit => unit = "" [@@bs.send];
@@ -1260,14 +1260,14 @@ let module Electron = {
   let module Net = {
     type t;
 
-    external request : t => U2<string, RequestOptions.t> => ?callback::(IncomingMessage.t => unit) => unit => ClientRequest.t = "" [@@bs.send];
+    external request : t => 'a => ?callback::(IncomingMessage.t => unit) => unit => ClientRequest.t = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
   let module RequestOptions = {
     type t;
 
-    external make : ?method::string => ?url::string => ?session::Session.t => ?partition::string => ?protocol::U2<'a, 'a> => ?host::string => ?hostname::string => ?port::float => ?path::string => ?headers::'a => unit => t = "" [@@bs.obj];
+    external make : ?method::string => ?url::string => ?session::Session.t => ?partition::string => ?protocol::'a => ?host::string => ?hostname::string => ?port::float => ?path::string => ?headers::'a => unit => t = "" [@@bs.obj];
     external setMethod : t => option string => unit = "method" [@@bs.set];
     external getMethod : t => option string = "method" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -1280,8 +1280,8 @@ let module Electron = {
     external setPartition : t => option string => unit = "partition" [@@bs.set];
     external getPartition : t => option string = "partition" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setProtocol : t => option U2<'a, 'a> => unit = "protocol" [@@bs.set];
-    external getProtocol : t => option U2<'a, 'a> = "protocol" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setProtocol : t => option 'a => unit = "protocol" [@@bs.set];
+    external getProtocol : t => option 'a = "protocol" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setHost : t => option string => unit = "host" [@@bs.set];
     external getHost : t => option string = "host" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -1310,12 +1310,12 @@ let module Electron = {
     external on : t => 'a => (Error.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (unit => unit) => t = "" [@@bs.send];
     external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
-    external make : options::U2<string, RequestOptions.t> => ?callback::(IncomingMessage.t => unit) => unit => t = "" [@@bs.new];
+    external make : options::'a => ?callback::(IncomingMessage.t => unit) => unit => t = "" [@@bs.new];
     external setHeader : t => string => string => unit = "" [@@bs.send];
     external getHeader : t => string => string = "" [@@bs.send];
     external removeHeader : t => string => unit = "" [@@bs.send];
-    external write : t => U2<string, Buffer.t> => ?encoding::string => ?callback::(<..> => <..>) => unit => bool = "" [@@bs.send];
-    external end : t => ?chunk::U2<string, Buffer.t> => ?encoding::string => ?callback::(<..> => <..>) => unit => bool = "" [@@bs.send];
+    external write : t => 'a => ?encoding::string => ?callback::(<..> => <..>) => unit => bool = "" [@@bs.send];
+    external end : t => ?chunk::'a => ?encoding::string => ?callback::(<..> => <..>) => unit => bool = "" [@@bs.send];
     external abort : t => unit = "" [@@bs.send];
     external setChunkedEncoding : t => bool => unit = "chunkedEncoding" [@@bs.set];
     external getChunkedEncoding : t => bool = "chunkedEncoding" [@@bs.get];
@@ -1365,7 +1365,7 @@ let module Electron = {
   let module PowerSaveBlocker = {
     type t;
 
-    external start : t => U2<'a, 'a> => float = "" [@@bs.send];
+    external start : t => 'a => float = "" [@@bs.send];
     external stop : t => float => unit = "" [@@bs.send];
     external isStarted : t => float => bool = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
@@ -1488,7 +1488,7 @@ let module Electron = {
   let module Display = {
     type t;
 
-    external make : id::float => bounds::Rectangle.t => workArea::Rectangle.t => size::Size.t => workAreaSize::Size.t => scaleFactor::float => rotation::float => touchSupport::U3<'a, 'a, 'a> => t = "" [@@bs.obj];
+    external make : id::float => bounds::Rectangle.t => workArea::Rectangle.t => size::Size.t => workAreaSize::Size.t => scaleFactor::float => rotation::float => touchSupport::'a => t = "" [@@bs.obj];
     external setId : t => float => unit = "id" [@@bs.set];
     external getId : t => float = "id" [@@bs.get];
 
@@ -1510,8 +1510,8 @@ let module Electron = {
     external setRotation : t => float => unit = "rotation" [@@bs.set];
     external getRotation : t => float = "rotation" [@@bs.get];
 
-    external setTouchSupport : t => U3<'a, 'a, 'a> => unit = "touchSupport" [@@bs.set];
-    external getTouchSupport : t => U3<'a, 'a, 'a> = "touchSupport" [@@bs.get];
+    external setTouchSupport : t => 'a => unit = "touchSupport" [@@bs.set];
+    external getTouchSupport : t => 'a = "touchSupport" [@@bs.get];
 
   };
 
@@ -1552,7 +1552,7 @@ let module Electron = {
     external setDownloadPath : t => string => unit = "" [@@bs.send];
     external enableNetworkEmulation : t => NetworkEmulationOptions.t => unit = "" [@@bs.send];
     external disableNetworkEmulation : t => unit = "" [@@bs.send];
-    external setCertificateVerifyProc : t => U2<(string => Certificate.t => (bool => unit) => unit), 'a> => unit = "" [@@bs.send];
+    external setCertificateVerifyProc : t => 'a => unit = "" [@@bs.send];
     external setPermissionRequestHandler : t => (WebContents.t => Permission.t => (bool => unit) => unit) => unit = "" [@@bs.send];
     external clearHostResolverCache : t => (<..> => <..>) => unit = "" [@@bs.send];
     external allowNTLMCredentialsForDomains : t => string => unit = "" [@@bs.send];
@@ -1591,15 +1591,15 @@ let module Electron = {
   let module ClearStorageDataOptions = {
     type t;
 
-    external make : ?origin::string => ?storages::array obj => ?quotas::array U3<'a, 'a, 'a> => unit => t = "" [@@bs.obj];
+    external make : ?origin::string => ?storages::array 'a => ?quotas::array 'a => unit => t = "" [@@bs.obj];
     external setOrigin : t => option string => unit = "origin" [@@bs.set];
     external getOrigin : t => option string = "origin" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setStorages : t => option array obj => unit = "storages" [@@bs.set];
-    external getStorages : t => option array obj = "storages" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setStorages : t => option array 'a => unit = "storages" [@@bs.set];
+    external getStorages : t => option array 'a = "storages" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setQuotas : t => option array U3<'a, 'a, 'a> => unit = "quotas" [@@bs.set];
-    external getQuotas : t => option array U3<'a, 'a, 'a> = "quotas" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setQuotas : t => option array 'a => unit = "quotas" [@@bs.set];
+    external getQuotas : t => option array 'a = "quotas" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
   };
 
@@ -1771,7 +1771,7 @@ let module Electron = {
     external moveItemToTrash : t => string => bool = "" [@@bs.send];
     external beep : t => unit = "" [@@bs.send];
     external writeShortcutLink : t => string => ShortcutLinkOptions.t => bool = "" [@@bs.send];
-    external writeShortcutLink : t => string => U3<'a, 'a, 'a> => ShortcutLinkOptions.t => bool = "" [@@bs.send];
+    external writeShortcutLink : t => string => 'a => ShortcutLinkOptions.t => bool = "" [@@bs.send];
     external readShortcutLink : t => string => ShortcutLinkOptions.t = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
@@ -1824,7 +1824,7 @@ let module Electron = {
     external unsubscribeNotification : t => float => unit = "" [@@bs.send];
     external subscribeLocalNotification : t => string => (Event.t => Object.t => unit) => float = "" [@@bs.send];
     external unsubscribeLocalNotification : t => float => unit = "" [@@bs.send];
-    external getUserDefault : t => string => obj => 'a = "" [@@bs.send];
+    external getUserDefault : t => string => 'a => 'a = "" [@@bs.send];
     external isAeroGlassEnabled : t => bool = "" [@@bs.send];
     external getAccentColor : t => string = "" [@@bs.send];
     external isInvertedColorScheme : t => bool = "" [@@bs.send];
@@ -1848,13 +1848,13 @@ let module Electron = {
     external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
     external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
     external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
-    external make : image::U2<NativeImage.t, string> => t = "" [@@bs.new];
+    external make : image::'a => t = "" [@@bs.new];
     external destroy : t => unit = "" [@@bs.send];
-    external setImage : t => U2<NativeImage.t, string> => unit = "" [@@bs.send];
+    external setImage : t => 'a => unit = "" [@@bs.send];
     external setPressedImage : t => NativeImage.t => unit = "" [@@bs.send];
     external setToolTip : t => string => unit = "" [@@bs.send];
     external setTitle : t => string => unit = "" [@@bs.send];
-    external setHighlightMode : t => U3<'a, 'a, 'a> => unit = "" [@@bs.send];
+    external setHighlightMode : t => 'a => unit = "" [@@bs.send];
     external displayBalloon : t => ?options::'a => unit => unit = "" [@@bs.send];
     external popUpContextMenu : t => ?menu::Menu.t => ?position::Point.t => unit => unit = "" [@@bs.send];
     external setContextMenu : t => Menu.t => unit = "" [@@bs.send];
@@ -2004,7 +2004,7 @@ let module Electron = {
     external beginFrameSubscription : t => bool => BeginFrameSubscriptionCallback.t => unit = "" [@@bs.send];
     external beginFrameSubscription : t => BeginFrameSubscriptionCallback.t => unit = "" [@@bs.send];
     external endFrameSubscription : t => unit = "" [@@bs.send];
-    external savePage : t => string => U3<'a, 'a, 'a> => ?callback::(Error.t => unit) => unit => bool = "" [@@bs.send];
+    external savePage : t => string => 'a => ?callback::(Error.t => unit) => unit => bool = "" [@@bs.send];
     external showDefinitionForSelection : t => unit = "" [@@bs.send];
     external isOffscreen : t => bool = "" [@@bs.send];
     external startPainting : t => unit = "" [@@bs.send];
@@ -2044,7 +2044,7 @@ let module Electron = {
   let module ContextMenuParams = {
     type t;
 
-    external make : x::float => y::float => linkURL::string => linkText::string => pageURL::string => frameURL::string => srcURL::string => mediaType::obj => mediaFlags::'a => hasImageContents::bool => isEditable::bool => editFlags::'a => selectionText::string => titleText::string => misspelledWord::string => frameCharset::string => inputFieldType::U4<'a, 'a, 'a, 'a> => menuSourceType::obj => t = "" [@@bs.obj];
+    external make : x::float => y::float => linkURL::string => linkText::string => pageURL::string => frameURL::string => srcURL::string => mediaType::'a => mediaFlags::'a => hasImageContents::bool => isEditable::bool => editFlags::'a => selectionText::string => titleText::string => misspelledWord::string => frameCharset::string => inputFieldType::'a => menuSourceType::'a => t = "" [@@bs.obj];
     external setX : t => float => unit = "x" [@@bs.set];
     external getX : t => float = "x" [@@bs.get];
 
@@ -2066,8 +2066,8 @@ let module Electron = {
     external setSrcURL : t => string => unit = "srcURL" [@@bs.set];
     external getSrcURL : t => string = "srcURL" [@@bs.get];
 
-    external setMediaType : t => obj => unit = "mediaType" [@@bs.set];
-    external getMediaType : t => obj = "mediaType" [@@bs.get];
+    external setMediaType : t => 'a => unit = "mediaType" [@@bs.set];
+    external getMediaType : t => 'a = "mediaType" [@@bs.get];
 
     external setMediaFlags : t => 'a => unit = "mediaFlags" [@@bs.set];
     external getMediaFlags : t => 'a = "mediaFlags" [@@bs.get];
@@ -2093,11 +2093,11 @@ let module Electron = {
     external setFrameCharset : t => string => unit = "frameCharset" [@@bs.set];
     external getFrameCharset : t => string = "frameCharset" [@@bs.get];
 
-    external setInputFieldType : t => U4<'a, 'a, 'a, 'a> => unit = "inputFieldType" [@@bs.set];
-    external getInputFieldType : t => U4<'a, 'a, 'a, 'a> = "inputFieldType" [@@bs.get];
+    external setInputFieldType : t => 'a => unit = "inputFieldType" [@@bs.set];
+    external getInputFieldType : t => 'a = "inputFieldType" [@@bs.get];
 
-    external setMenuSourceType : t => obj => unit = "menuSourceType" [@@bs.set];
-    external getMenuSourceType : t => obj = "menuSourceType" [@@bs.get];
+    external setMenuSourceType : t => 'a => unit = "menuSourceType" [@@bs.set];
+    external getMenuSourceType : t => 'a = "menuSourceType" [@@bs.get];
 
   };
 
@@ -2143,7 +2143,7 @@ let module Electron = {
   let module LoadURLOptions = {
     type t;
 
-    external make : ?httpReferrer::string => ?userAgent::string => ?extraHeaders::string => ?postData::array U3<UploadRawData.t, UploadFileSystem.t, UploadBlob.t> => unit => t = "" [@@bs.obj];
+    external make : ?httpReferrer::string => ?userAgent::string => ?extraHeaders::string => ?postData::array 'a => unit => t = "" [@@bs.obj];
     external setHttpReferrer : t => option string => unit = "httpReferrer" [@@bs.set];
     external getHttpReferrer : t => option string = "httpReferrer" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -2153,8 +2153,8 @@ let module Electron = {
     external setExtraHeaders : t => option string => unit = "extraHeaders" [@@bs.set];
     external getExtraHeaders : t => option string = "extraHeaders" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setPostData : t => option array U3<UploadRawData.t, UploadFileSystem.t, UploadBlob.t> => unit = "postData" [@@bs.set];
-    external getPostData : t => option array U3<UploadRawData.t, UploadFileSystem.t, UploadBlob.t> = "postData" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setPostData : t => option array 'a => unit = "postData" [@@bs.set];
+    external getPostData : t => option array 'a = "postData" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
   };
 
@@ -2218,12 +2218,12 @@ let module Electron = {
   let module PrintToPDFOptions = {
     type t;
 
-    external make : ?marginsType::float => ?pageSize::obj => ?printBackground::bool => ?printSelectionOnly::bool => ?landscape::bool => unit => t = "" [@@bs.obj];
+    external make : ?marginsType::float => ?pageSize::'a => ?printBackground::bool => ?printSelectionOnly::bool => ?landscape::bool => unit => t = "" [@@bs.obj];
     external setMarginsType : t => option float => unit = "marginsType" [@@bs.set];
     external getMarginsType : t => option float = "marginsType" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setPageSize : t => option obj => unit = "pageSize" [@@bs.set];
-    external getPageSize : t => option obj = "pageSize" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setPageSize : t => option 'a => unit = "pageSize" [@@bs.set];
+    external getPageSize : t => option 'a = "pageSize" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setPrintBackground : t => option bool => unit = "printBackground" [@@bs.set];
     external getPrintBackground : t => option bool = "printBackground" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -2377,9 +2377,9 @@ let module Electron = {
   let module DeviceEmulationParameters = {
     type t;
 
-    external make : ?screenPosition::U2<'a, 'a> => ?screenSize::Size.t => ?viewPosition::Point.t => deviceScaleFactor::float => ?viewSize::Size.t => ?fitToView::bool => ?offset::Point.t => scale::float => unit => t = "" [@@bs.obj];
-    external setScreenPosition : t => option U2<'a, 'a> => unit = "screenPosition" [@@bs.set];
-    external getScreenPosition : t => option U2<'a, 'a> = "screenPosition" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external make : ?screenPosition::'a => ?screenSize::Size.t => ?viewPosition::Point.t => deviceScaleFactor::float => ?viewSize::Size.t => ?fitToView::bool => ?offset::Point.t => scale::float => unit => t = "" [@@bs.obj];
+    external setScreenPosition : t => option 'a => unit = "screenPosition" [@@bs.set];
+    external getScreenPosition : t => option 'a = "screenPosition" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setScreenSize : t => option Size.t => unit = "screenSize" [@@bs.set];
     external getScreenSize : t => option Size.t = "screenSize" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -2407,12 +2407,12 @@ let module Electron = {
   let module SendInputEvent = {
     type t;
 
-    external make : type::obj => modifiers::array obj => t = "" [@@bs.obj];
-    external setType : t => obj => unit = "type" [@@bs.set];
-    external getType : t => obj = "type" [@@bs.get];
+    external make : type::'a => modifiers::array 'a => t = "" [@@bs.obj];
+    external setType : t => 'a => unit = "type" [@@bs.set];
+    external getType : t => 'a = "type" [@@bs.get];
 
-    external setModifiers : t => array obj => unit = "modifiers" [@@bs.set];
-    external getModifiers : t => array obj = "modifiers" [@@bs.get];
+    external setModifiers : t => array 'a => unit = "modifiers" [@@bs.set];
+    external getModifiers : t => array 'a = "modifiers" [@@bs.get];
 
   };
 
@@ -2428,15 +2428,15 @@ let module Electron = {
   let module SendInputMouseEvent = {
     type t;
 
-    external make : x::float => y::float => ?button::U3<'a, 'a, 'a> => ?globalX::float => ?globalY::float => ?movementX::float => ?movementY::float => ?clickCount::float => unit => t = "" [@@bs.obj];
+    external make : x::float => y::float => ?button::'a => ?globalX::float => ?globalY::float => ?movementX::float => ?movementY::float => ?clickCount::float => unit => t = "" [@@bs.obj];
     external setX : t => float => unit = "x" [@@bs.set];
     external getX : t => float = "x" [@@bs.get];
 
     external setY : t => float => unit = "y" [@@bs.set];
     external getY : t => float = "y" [@@bs.get];
 
-    external setButton : t => option U3<'a, 'a, 'a> => unit = "button" [@@bs.set];
-    external getButton : t => option U3<'a, 'a, 'a> = "button" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setButton : t => option 'a => unit = "button" [@@bs.set];
+    external getButton : t => option 'a = "button" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setGlobalX : t => option float => unit = "globalX" [@@bs.set];
     external getGlobalX : t => option float = "globalX" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -3286,12 +3286,12 @@ let module NodeJS = {
     external setFdLimit : t => float => unit = "" [@@bs.send];
     external getProcessMemoryInfo : t => ProcessMemoryInfo.t = "" [@@bs.send];
     external getSystemMemoryInfo : t => SystemMemoryInfo.t = "" [@@bs.send];
-    external make : ?noAsar::bool => type::U2<'a, 'a> => resourcesPath::string => ?mas::bool => ?windowsStore::bool => ?defaultApp::bool => unit => t = "" [@@bs.obj];
+    external make : ?noAsar::bool => type::'a => resourcesPath::string => ?mas::bool => ?windowsStore::bool => ?defaultApp::bool => unit => t = "" [@@bs.obj];
     external setNoAsar : t => option bool => unit = "noAsar" [@@bs.set];
     external getNoAsar : t => option bool = "noAsar" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setType : t => U2<'a, 'a> => unit = "type" [@@bs.set];
-    external getType : t => U2<'a, 'a> = "type" [@@bs.get];
+    external setType : t => 'a => unit = "type" [@@bs.set];
+    external getType : t => 'a = "type" [@@bs.get];
 
     external setResourcesPath : t => string => unit = "resourcesPath" [@@bs.set];
     external getResourcesPath : t => string = "resourcesPath" [@@bs.get];

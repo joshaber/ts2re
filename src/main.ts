@@ -237,10 +237,10 @@ function getType(type): string {
         return "(* TODO StringEnum " + type.types.map(x=>x.text).join(" | ") + " *) string";
       else if (type.types.length <= 4)
         // TODO:
-        return "U" + type.types.length + printTypeArguments(type.types);
+        return "'a";
       else
         // TODO:
-        return "obj";
+        return "'a";
     case TS.SyntaxKind.TupleType:
       return type.elementTypes.map(getType).join(" * ");
     case TS.SyntaxKind.ParenthesizedType:
