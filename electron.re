@@ -532,9 +532,9 @@ let module Electron = {
   let module DevToolsExtensions = {
     type t;
 
-    external make : Item::'a => t = "" [@@bs.obj];
-    external setItem : t => 'a => unit = "Item" [@@bs.set];
-    external getItem : t => 'a = "Item" [@@bs.get];
+    external make : value::'a => t = "" [@@bs.obj];
+    external setValue : t => 'a => unit = "value" [@@bs.set];
+    external getValue : t => 'a = "value" [@@bs.get];
 
   };
 
@@ -2116,9 +2116,9 @@ let module Electron = {
   let module Headers = {
     type t;
 
-    external make : Item::string => t = "" [@@bs.obj];
-    external setItem : t => string => unit = "Item" [@@bs.set];
-    external getItem : t => string = "Item" [@@bs.get];
+    external make : value::string => t = "" [@@bs.obj];
+    external setValue : t => string => unit = "value" [@@bs.set];
+    external getValue : t => string = "value" [@@bs.get];
 
   };
 
