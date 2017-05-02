@@ -33,9 +33,9 @@ let module Electron = {
   let module Event = {
     type t;
 
-    external make : preventDefault::(<..> => <..>) => sender::NodeJS.EventEmitter.t => t = "" [@@bs.obj];
-    external setPreventDefault : t => (<..> => <..>) => unit = "preventDefault" [@@bs.set];
-    external getPreventDefault : t => (<..> => <..>) = "preventDefault" [@@bs.get];
+    external make : preventDefault::('x => 'y) => sender::NodeJS.EventEmitter.t => t = "" [@@bs.obj];
+    external setPreventDefault : t => ('x => 'y) => unit = "preventDefault" [@@bs.set];
+    external getPreventDefault : t => ('x => 'y) = "preventDefault" [@@bs.get];
 
     external setSender : t => NodeJS.EventEmitter.t => unit = "sender" [@@bs.set];
     external getSender : t => NodeJS.EventEmitter.t = "sender" [@@bs.get];
@@ -101,15 +101,15 @@ let module Electron = {
   let module App = {
     type t;
 
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => Object.t => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => float => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => Object.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => BrowserWindow.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => BrowserWindow.t => unit) => t = "" [@@bs.send];
@@ -120,7 +120,7 @@ let module Electron = {
     external on : t => 'a => (Event.t => WebContents.t => LoginRequest.t => LoginAuthInfo.t => (string => string => unit) => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => bool => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => bool => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external quit : t => unit = "" [@@bs.send];
     external exit : t => ?exitCode::float => unit => unit = "" [@@bs.send];
     external relaunch : t => ?options::'a => unit => unit = "" [@@bs.send];
@@ -341,11 +341,11 @@ let module Electron = {
     type t;
 
     external on : t => 'a => (Error.t => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => string => Date.t => string => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external setFeedURL : t => string => ?requestHeaders::Headers.t => unit => unit = "" [@@bs.send];
     external getFeedURL : t => string = "" [@@bs.send];
     external checkForUpdates : t => unit = "" [@@bs.send];
@@ -358,30 +358,30 @@ let module Electron = {
 
     external on : t => 'a => (Event.t => string => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => SwipeDirection.t => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : ?options::BrowserWindowOptions.t => unit => t = "BrowserWindow" [@@bs.new] [@@bs.module "electron"];
     external getAllWindows : t => array BrowserWindow.t = "" [@@bs.send];
     external getFocusedWindow : t => BrowserWindow.t = "" [@@bs.send];
@@ -448,7 +448,7 @@ let module Electron = {
     external setKiosk : t => bool => unit = "" [@@bs.send];
     external isKiosk : t => bool = "" [@@bs.send];
     external getNativeWindowHandle : t => Buffer.t = "" [@@bs.send];
-    external hookWindowMessage : t => float => (<..> => <..>) => unit = "" [@@bs.send];
+    external hookWindowMessage : t => float => ('x => 'y) => unit = "" [@@bs.send];
     external isWindowMessageHooked : t => float => bool = "" [@@bs.send];
     external unhookWindowMessage : t => float => unit = "" [@@bs.send];
     external unhookAllWindowMessages : t => unit = "" [@@bs.send];
@@ -514,12 +514,12 @@ let module Electron = {
   let module ThumbarButton = {
     type t;
 
-    external make : icon::'a => click::(<..> => <..>) => ?tooltip::string => ?flags::array ThumbarButtonFlags.t => unit => t = "" [@@bs.obj];
+    external make : icon::'a => click::('x => 'y) => ?tooltip::string => ?flags::array ThumbarButtonFlags.t => unit => t = "" [@@bs.obj];
     external setIcon : t => 'a => unit = "icon" [@@bs.set];
     external getIcon : t => 'a = "icon" [@@bs.get];
 
-    external setClick : t => (<..> => <..>) => unit = "click" [@@bs.set];
-    external getClick : t => (<..> => <..>) = "click" [@@bs.get];
+    external setClick : t => ('x => 'y) => unit = "click" [@@bs.set];
+    external getClick : t => ('x => 'y) = "click" [@@bs.get];
 
     external setTooltip : t => option string => unit = "tooltip" [@@bs.set];
     external getTooltip : t => option string = "tooltip" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -826,13 +826,13 @@ let module Electron = {
     type t;
 
     external getCategories : t => (array string => unit) => unit = "" [@@bs.send];
-    external startRecording : t => ContentTracingOptions.t => (<..> => <..>) => unit = "" [@@bs.send];
+    external startRecording : t => ContentTracingOptions.t => ('x => 'y) => unit = "" [@@bs.send];
     external stopRecording : t => string => (string => unit) => unit = "" [@@bs.send];
-    external startMonitoring : t => ContentTracingOptions.t => (<..> => <..>) => unit = "" [@@bs.send];
-    external stopMonitoring : t => (<..> => <..>) => unit = "" [@@bs.send];
+    external startMonitoring : t => ContentTracingOptions.t => ('x => 'y) => unit = "" [@@bs.send];
+    external stopMonitoring : t => ('x => 'y) => unit = "" [@@bs.send];
     external captureMonitoringSnapshot : t => string => (string => unit) => unit = "" [@@bs.send];
-    external getTraceBufferUsage : t => (<..> => <..>) => unit = "" [@@bs.send];
-    external setWatchEvent : t => string => string => (<..> => <..>) => unit = "" [@@bs.send];
+    external getTraceBufferUsage : t => ('x => 'y) => unit = "" [@@bs.send];
+    external setWatchEvent : t => string => string => ('x => 'y) => unit = "" [@@bs.send];
     external cancelWatchEvent : t => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
@@ -1033,7 +1033,7 @@ let module Electron = {
 
     external on : t => 'a => (Event.t => 'a => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => 'a => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external setSavePath : t => string => unit = "" [@@bs.send];
     external getSavePath : t => string = "" [@@bs.send];
     external pause : t => unit = "" [@@bs.send];
@@ -1055,7 +1055,7 @@ let module Electron = {
   let module GlobalShortcut = {
     type t;
 
-    external register : t => string => (<..> => <..>) => unit = "" [@@bs.send];
+    external register : t => string => ('x => 'y) => unit = "" [@@bs.send];
     external isRegistered : t => string => bool = "" [@@bs.send];
     external unregister : t => string => unit = "" [@@bs.send];
     external unregisterAll : t => unit = "" [@@bs.send];
@@ -1309,13 +1309,13 @@ let module Electron = {
     external on : t => 'a => (unit => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Error.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (unit => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : options::'a => ?callback::(IncomingMessage.t => unit) => unit => t = "ClientRequest" [@@bs.new] [@@bs.module "electron"];
     external setHeader : t => string => string => unit = "" [@@bs.send];
     external getHeader : t => string => string = "" [@@bs.send];
     external removeHeader : t => string => unit = "" [@@bs.send];
-    external write : t => 'a => ?encoding::string => ?callback::(<..> => <..>) => unit => bool = "" [@@bs.send];
-    external end : t => ?chunk::'a => ?encoding::string => ?callback::(<..> => <..>) => unit => bool = "" [@@bs.send];
+    external write : t => 'a => ?encoding::string => ?callback::('x => 'y) => unit => bool = "" [@@bs.send];
+    external end : t => ?chunk::'a => ?encoding::string => ?callback::('x => 'y) => unit => bool = "" [@@bs.send];
     external abort : t => unit = "" [@@bs.send];
     external setChunkedEncoding : t => bool => unit = "chunkedEncoding" [@@bs.set];
     external getChunkedEncoding : t => bool = "chunkedEncoding" [@@bs.get];
@@ -1329,7 +1329,7 @@ let module Electron = {
     external on : t => 'a => (unit => unit) => t = "" [@@bs.send];
     external on : t => 'a => (unit => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Error.t => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : statusCode::float => statusMessage::string => headers::'a => httpVersion::string => httpVersionMajor::float => httpVersionMinor::float => t = "" [@@bs.obj];
     external setStatusCode : t => float => unit = "statusCode" [@@bs.set];
     external getStatusCode : t => float = "statusCode" [@@bs.get];
@@ -1354,11 +1354,11 @@ let module Electron = {
   let module PowerMonitor = {
     type t;
 
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -1527,7 +1527,7 @@ let module Electron = {
     external on : t => 'a => (Event.t => Display.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => Display.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => Display.t => array DisplayMetrics.t => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external getCursorScreenPoint : t => Point.t = "" [@@bs.send];
     external getPrimaryDisplay : t => Display.t = "" [@@bs.send];
     external getAllDisplays : t => array Display.t = "" [@@bs.send];
@@ -1541,20 +1541,20 @@ let module Electron = {
 
     external fromPartition : t => string => ?options::FromPartitionOptions.t => unit => Session.t = "" [@@bs.send];
     external on : t => 'a => (Event.t => DownloadItem.t => WebContents.t => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external getCacheSize : t => (float => unit) => unit = "" [@@bs.send];
-    external clearCache : t => (<..> => <..>) => unit = "" [@@bs.send];
-    external clearStorageData : t => (<..> => <..>) => unit = "" [@@bs.send];
-    external clearStorageData : t => ClearStorageDataOptions.t => (<..> => <..>) => unit = "" [@@bs.send];
+    external clearCache : t => ('x => 'y) => unit = "" [@@bs.send];
+    external clearStorageData : t => ('x => 'y) => unit = "" [@@bs.send];
+    external clearStorageData : t => ClearStorageDataOptions.t => ('x => 'y) => unit = "" [@@bs.send];
     external flushStorageData : t => unit = "" [@@bs.send];
-    external setProxy : t => ProxyConfig.t => (<..> => <..>) => unit = "" [@@bs.send];
+    external setProxy : t => ProxyConfig.t => ('x => 'y) => unit = "" [@@bs.send];
     external resolveProxy : t => URL.t => (string => unit) => unit = "" [@@bs.send];
     external setDownloadPath : t => string => unit = "" [@@bs.send];
     external enableNetworkEmulation : t => NetworkEmulationOptions.t => unit = "" [@@bs.send];
     external disableNetworkEmulation : t => unit = "" [@@bs.send];
     external setCertificateVerifyProc : t => 'a => unit = "" [@@bs.send];
     external setPermissionRequestHandler : t => (WebContents.t => Permission.t => (bool => unit) => unit) => unit = "" [@@bs.send];
-    external clearHostResolverCache : t => (<..> => <..>) => unit = "" [@@bs.send];
+    external clearHostResolverCache : t => ('x => 'y) => unit = "" [@@bs.send];
     external allowNTLMCredentialsForDomains : t => string => unit = "" [@@bs.send];
     external setUserAgent : t => string => ?acceptLanguages::string => unit => unit = "" [@@bs.send];
     external getUserAgent : t => string = "" [@@bs.send];
@@ -1664,7 +1664,7 @@ let module Electron = {
     type t;
 
     external on : t => 'a => (Event.t => Cookie.t => CookieChangedCause.t => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : name::string => value::string => domain::string => hostOnly::string => path::string => secure::bool => httpOnly::bool => session::bool => ?expirationDate::float => unit => t = "" [@@bs.obj];
     external setName : t => string => unit = "name" [@@bs.set];
     external getName : t => string = "name" [@@bs.get];
@@ -1815,7 +1815,7 @@ let module Electron = {
     external on : t => 'a => (Event.t => string => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => bool => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external isDarkMode : t => bool = "" [@@bs.send];
     external isSwipeTrackingFromScrollEventsEnabled : t => bool = "" [@@bs.send];
     external postNotification : t => string => Object.t => unit = "" [@@bs.send];
@@ -1838,16 +1838,16 @@ let module Electron = {
     external on : t => 'a => (Modifiers.t => Rectangle.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Modifiers.t => Rectangle.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Modifiers.t => Rectangle.t => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => array string => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : image::'a => t = "Tray" [@@bs.new] [@@bs.module "electron"];
     external destroy : t => unit = "" [@@bs.send];
     external setImage : t => 'a => unit = "" [@@bs.send];
@@ -1904,11 +1904,11 @@ let module Electron = {
   let module WebContents = {
     type t;
 
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => float => string => string => bool => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => bool => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => bool => string => string => float => string => string => Headers.t => string => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => string => bool => float => string => string => Headers.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => unit) => t = "" [@@bs.send];
@@ -1919,23 +1919,23 @@ let module Electron = {
     external on : t => 'a => (Event.t => string => bool => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => bool => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => string => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => string => Certificate.t => (bool => unit) => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => array Certificate.t => (Certificate.t => unit) => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => LoginRequest.t => LoginAuthInfo.t => (string => string => unit) => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => FoundInPageResult.t => unit) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => CursorType.t => NativeImage.t => float => Size.t => Point.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => ContextMenuParams.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => array BluetoothDevice.t => (string => unit) => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => Rectangle.t => NativeImage.t => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external loadURL : t => string => ?options::LoadURLOptions.t => unit => unit = "" [@@bs.send];
     external downloadURL : t => string => unit = "" [@@bs.send];
     external getURL : t => string = "" [@@bs.send];
@@ -2494,7 +2494,7 @@ let module Electron = {
     external sendCommand : t => string => ?commandParams::'a => ?callback::(Error.t => 'a => unit) => unit => unit = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => unit) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => string => 'a => unit) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -3279,8 +3279,8 @@ let module NodeJS = {
   let module Process = {
     type t;
 
-    external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
-    external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
+    external on : t => 'a => ('x => 'y) => t = "" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external crash : t => unit = "" [@@bs.send];
     external hang : t => unit = "" [@@bs.send];
     external setFdLimit : t => float => unit = "" [@@bs.send];

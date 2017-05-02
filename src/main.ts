@@ -63,7 +63,7 @@ const MappedTypes = {
   RegExp: "Regex",
   String: "string",
   Number: "float",
-  'Function.t': "(<..> => <..>)",
+  'Function.t': "('x => 'y)",
 };
 
 const ModuleTypeName = "t";
