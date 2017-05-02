@@ -382,7 +382,7 @@ let module Electron = {
     external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
     external on : t => 'a => (Event.t => SwipeDirection.t => unit) => t = "" [@@bs.send];
     external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
-    external make : ?options::BrowserWindowOptions.t => unit => t = "" [@@bs.new];
+    external make : ?options::BrowserWindowOptions.t => unit => t = "BrowserWindow" [@@bs.new] [@@bs.module "electron"];
     external getAllWindows : t => array BrowserWindow.t = "" [@@bs.send];
     external getFocusedWindow : t => BrowserWindow.t = "" [@@bs.send];
     external fromWebContents : t => WebContents.t => BrowserWindow.t = "" [@@bs.send];
@@ -1123,7 +1123,7 @@ let module Electron = {
   let module MenuItem = {
     type t;
 
-    external make : options::MenuItemOptions.t => t = "" [@@bs.new];
+    external make : options::MenuItemOptions.t => t = "MenuItem" [@@bs.new] [@@bs.module "electron"];
     external setClick : t => (Event.t => BrowserWindow.t => WebContents.t => unit) => unit = "click" [@@bs.set];
     external getClick : t => (Event.t => BrowserWindow.t => WebContents.t => unit) = "click" [@@bs.get];
 
@@ -1225,7 +1225,7 @@ let module Electron = {
   let module Menu = {
     type t;
 
-    external make : unit => t = "" [@@bs.new];
+    external make : unit => t = "Menu" [@@bs.new] [@@bs.module "electron"];
     external setApplicationMenu : t => 'a => unit = "" [@@bs.send];
     external getApplicationMenu : t => 'a = "" [@@bs.send];
     external sendActionToFirstResponder : t => string => unit = "" [@@bs.send];
@@ -1310,7 +1310,7 @@ let module Electron = {
     external on : t => 'a => (Error.t => unit) => t = "" [@@bs.send];
     external on : t => 'a => (unit => unit) => t = "" [@@bs.send];
     external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
-    external make : options::'a => ?callback::(IncomingMessage.t => unit) => unit => t = "" [@@bs.new];
+    external make : options::'a => ?callback::(IncomingMessage.t => unit) => unit => t = "ClientRequest" [@@bs.new] [@@bs.module "electron"];
     external setHeader : t => string => string => unit = "" [@@bs.send];
     external getHeader : t => string => string = "" [@@bs.send];
     external removeHeader : t => string => unit = "" [@@bs.send];
@@ -1848,7 +1848,7 @@ let module Electron = {
     external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
     external on : t => 'a => (<..> => <..>) => t = "" [@@bs.send];
     external on : t => string => (<..> => <..>) => t = "" [@@bs.send];
-    external make : image::'a => t = "" [@@bs.new];
+    external make : image::'a => t = "Tray" [@@bs.new] [@@bs.module "electron"];
     external destroy : t => unit = "" [@@bs.send];
     external setImage : t => 'a => unit = "" [@@bs.send];
     external setPressedImage : t => NativeImage.t => unit = "" [@@bs.send];

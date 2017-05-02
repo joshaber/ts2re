@@ -41,6 +41,8 @@ interface Method {
   /** Constructor for a class. */
   readonly ctor: boolean
 
+  readonly moduleName: string
+
   /** Maker for an interface/object. */
   readonly maker: boolean
 }
@@ -73,7 +75,7 @@ const prog = TS.createProgram([ filePath ], TS.getDefaultCompilerOptions());
 const file = prog.getSourceFile(filePath);
 const out = parseFile(file);
 
-const printed = printModule(out, true, 0);
+const printed = printModule(out, null, 0);
 FS.writeFileSync(Path.join(__dirname, '..', 'electron.re'), printed);
 
 function pp(str: string, depth: number): string {
@@ -97,13 +99,19 @@ function printParameter(p: Parameter, includeName: boolean): string {
   return `${prefix}${p.type}`
 }
 
-function printMethod(m: Method): string {
+function printMethod(m: Method, rootModule: Module): string {
   if (m.ctor || m.maker) {
     const bsAttribute = m.ctor ? 'new' : 'obj'
     const params = m.parameters.length
       ? m.parameters.map(p => printParameter(p, true)).join(" => ")
       : "unit"
-    return `external ${m.name} : ${params} => ${ModuleTypeName} = "" [@@bs.${bsAttribute}];`
+    const suffix = m.ctor
+      ? ` [@@bs.module "${rootModule.name}"]`
+      : ''
+    const ffiName = m.ctor
+      ? m.moduleName
+      : ''
+    return `external ${m.name} : ${params} => ${ModuleTypeName} = "${ffiName}" [@@bs.${bsAttribute}]${suffix};`
   } else if (!m.static) {
     const params = m.parameters.length
       ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
@@ -125,14 +133,14 @@ function printProperty(p: Property, depth: number): string {
   return str
 }
 
-function printInterface(i: Interface, depth: number): string {
+function printInterface(i: Interface, rootModule: Module, depth: number): string {
   let str = ''
   str += pp(`let module ${i.name} = {`, depth)
   str += pp(`type ${ModuleTypeName};`, depth + 1)
   str += '\n'
 
   for (const meth of i.methods) {
-    str += pp(printMethod(meth), depth + 1)
+    str += pp(printMethod(meth, rootModule), depth + 1)
   }
 
   for (const prop of i.properties) {
@@ -143,34 +151,35 @@ function printInterface(i: Interface, depth: number): string {
   return str
 }
 
-function printModule(m: Module, root: boolean, depth: number): string {
+function printModule(m: Module, rootModule: Module | null, depth: number): string {
   let str = ''
-  if (!root) {
+  const isRoot = !rootModule
+  if (!isRoot) {
     str += pp(`let module ${m.name} = {`, depth)
     str += '\n'
   }
 
-  const childDepth = root ? depth : depth + 1
+  const childDepth = isRoot ? depth : depth + 1
 
   for (const variable of m.variables) {
     str += pp(printVariable(variable), childDepth)
   }
 
   for (const method of m.methods) {
-    str += pp(printMethod(method), childDepth)
+    str += pp(printMethod(method, rootModule), childDepth)
   }
 
   for (const i of m.interfaces) {
-    str += printInterface(i, childDepth)
+    str += printInterface(i, rootModule, childDepth)
     str += '\n'
   }
 
   for (const mx of m.modules) {
-    str += printModule(mx, false, childDepth)
+    str += printModule(mx, m, childDepth)
     str += '\n'
   }
 
-  if (!root) {
+  if (!isRoot) {
     str += pp('};', depth)
   }
 
@@ -339,7 +348,7 @@ function visitInterface(node, opts) {
       // TODO: If interface only contains one `Invoke` method
       // make it an alias of Func
       case TS.SyntaxKind.CallSignature:
-        member = getMethod(node, { name: "invoke" });
+        member = getMethod(node, { name: "invoke", moduleName: ifc.name });
         member.emit = "$0($1...)";
         ifc.methods.push(member);
         break;
@@ -347,26 +356,26 @@ function visitInterface(node, opts) {
       case TS.SyntaxKind.MethodDeclaration:
         if (node.name.kind == TS.SyntaxKind.ComputedPropertyName) {
           name = getName(node.name);
-          member = getMethod(node, { name: "["+name+"]" });
+          member = getMethod(node, { name: "["+name+"]", moduleName: ifc.name });
           member.emit = "$0["+name+"]($1...)";
         } else {
-          member = getMethod(node);
+          member = getMethod(node, { moduleName: ifc.name });
         }
 
         ifc.methods.push(member);
         break;
       case TS.SyntaxKind.ConstructSignature:
-        member = getMethod(node, { name: "Create" });
+        member = getMethod(node, { name: "Create", moduleName: ifc.name });
         member.emit = "new $0($1...)";
         ifc.methods.push(member);
         break;
       case TS.SyntaxKind.IndexSignature:
-        member = getMethod(node, { name: "Item" });
+        member = getMethod(node, { name: "Item", moduleName: ifc.name });
         member.emit = "$0[$1]{{=$2}}";
         ifc.properties.push(member);
         break;
       case TS.SyntaxKind.Constructor:
-        member = getMethod(node, { name: 'make', ctor: true });
+        member = getMethod(node, { name: 'make', ctor: true, moduleName: ifc.name });
         ifc.methods.push(member);
         // ifc.constructorParameters = node.parameters.map(getParameter);
         break;
@@ -401,6 +410,7 @@ function visitInterface(node, opts) {
       parameters: params,
       ctor: false,
       maker: true,
+      moduleName: ifc.name,
     }
 
     ifc.methods.push(makeMeth);
@@ -448,7 +458,7 @@ function hasFlag(flags, flag) {
 }
 
 function getMethod(node, opts: any = {}): Method {
-  const meth = {
+  const meth: Method = {
     name: opts.name || getName(node),
     type: getType(node.type),
     optional: node.questionToken != null,
@@ -458,9 +468,10 @@ function getMethod(node, opts: any = {}): Method {
     parameters: node.parameters.map(getParameter),
     ctor: opts.ctor || false,
     maker: false,
+    moduleName: opts.moduleName || '',
   };
 
-  const containsOptionalParam = !!meth.parameters.find(p => p.optional)
+  const containsOptionalParam = !!(meth.parameters as any).find(p => p.optional)
   if (containsOptionalParam) {
     const sentinelParam: Parameter = {
       name: '',
@@ -512,7 +523,7 @@ function visitNode(m: Module) {
         break;
 
       case TS.SyntaxKind.FunctionDeclaration:
-        m.methods.push(getMethod(node, { static: true }));
+        m.methods.push(getMethod(node, { static: true, moduleName: m.name }));
         break;
 
       case TS.SyntaxKind.ModuleDeclaration:
