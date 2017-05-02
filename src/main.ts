@@ -25,11 +25,10 @@ interface Parameter {
 
 interface Interface {
   readonly name: string
-  readonly kind: string
+  readonly kind: 'class' | 'interface'
   readonly parents: ReadonlyArray<string>
   readonly properties: Array<Property>
   readonly methods: Array<Method>
-  constructorParameters: Array<Parameter>
 }
 
 interface Method {
@@ -38,13 +37,12 @@ interface Method {
   readonly optional: boolean
   readonly static: boolean
   readonly parameters: Array<Parameter>
-  readonly emit: string | null,
-}
 
-interface TypeAlias {
-  readonly name: string
-  readonly parents: ReadonlyArray<string>
-  readonly properties: Array<Property>
+  /** Constructor for a class. */
+  readonly ctor: boolean
+
+  /** Maker for an interface/object. */
+  readonly maker: boolean
 }
 
 interface Module {
@@ -53,7 +51,6 @@ interface Module {
   readonly variables: Array<Variable>
   readonly interfaces: Array<Interface>
   readonly methods: Array<Method>
-  readonly typeAliases: Array<TypeAlias>
 }
 
 // // TODO:
@@ -68,6 +65,7 @@ const MappedTypes = {
 };
 
 const ModuleTypeName = "t";
+const Indentation = "  ";
 
 const filePath = Path.join(__dirname, "..", "electron.d.ts");
 const prog = TS.createProgram([ filePath ], TS.getDefaultCompilerOptions());
@@ -76,12 +74,12 @@ const file = prog.getSourceFile(filePath);
 const out = parseFile(file);
 
 const printed = printModule(out, true, 0);
-FS.writeFileSync(Path.join(__dirname, '..', 'electron.rei'), printed);
+FS.writeFileSync(Path.join(__dirname, '..', 'electron.re'), printed);
 
 function pp(str: string, depth: number): string {
   let prefix = ''
   for (let i = 0; i < depth; i++) {
-    prefix += '  '
+    prefix += Indentation
   }
   return `${prefix}${str}\n`
 }
@@ -90,15 +88,36 @@ function printVariable(variable: Variable): string {
   return `external ${variable.name} : ${variable.type} = "" [@@bs.val];`
 }
 
-function printParameter(p: Parameter): string {
-  return p.optional ? `?${p.name}::${p.type}` : `${p.type}`
+function printParameter(p: Parameter, includeName: boolean): string {
+  if (includeName) {
+    return p.optional ? `?${p.name}::${p.type}` : (p.name.length ? `${p.name}::${p.type}` : p.type)
+  } else {
+    return p.optional ? `?${p.name}::${p.type}` : `${p.type}`
+  }
 }
 
 function printMethod(m: Method): string {
-  const params = m.parameters.length
-    ? " => " + m.parameters.map(printParameter).join(" => ")
-    : ""
-  return `external ${m.name} : ${ModuleTypeName}${params} => ${m.type} = "" [@@bs.send];`
+  if (m.ctor) {
+    const params = m.parameters.length
+      ? m.parameters.map(p => printParameter(p, true)).join(" => ")
+      : "unit"
+    return `external ${m.name} : ${params} => ${ModuleTypeName} = "" [@@bs.new];`
+  } else if (m.maker) {
+    const params = m.parameters.length
+      ? m.parameters.map(p => printParameter(p, true)).join(" => ")
+      : "unit"
+    return `external ${m.name} : ${params} => ${ModuleTypeName} = "" [@@bs.obj];`
+  } else if (!m.static) {
+    const params = m.parameters.length
+      ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
+      : ""
+    return `external ${m.name} : ${ModuleTypeName}${params} => ${m.type} = "" [@@bs.send];`
+  } else {
+    const params = m.parameters.length
+      ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
+      : "unit"
+    return `external ${m.name} : ${params} => ${m.type} = "";`
+  }
 }
 
 function printProperty(p: Property, depth: number): string {
@@ -109,24 +128,11 @@ function printProperty(p: Property, depth: number): string {
   return str
 }
 
-function printMaker(i: Interface, depth: number): string {
-  let str = ''
-  if (i.properties.length) {
-    const p = i.properties.map(p => `${p.name}::${p.type}`).join(" => ") + " =>"
-    str += pp(`external make : ${p} unit => ${ModuleTypeName} = "" [@@bs.obj]`, depth)
-    str += '\n'
-  }
-
-  return str
-}
-
 function printInterface(i: Interface, depth: number): string {
   let str = ''
-  str += pp(`module ${i.name} = {`, depth)
+  str += pp(`let module ${i.name} = {`, depth)
   str += pp(`type ${ModuleTypeName};`, depth + 1)
   str += '\n'
-
-  str += printMaker(i, depth + 1)
 
   for (const meth of i.methods) {
     str += pp(printMethod(meth), depth + 1)
@@ -140,43 +146,36 @@ function printInterface(i: Interface, depth: number): string {
   return str
 }
 
-function printTypeAlias(alias: TypeAlias, depth: number): string {
+function printModule(m: Module, root: boolean, depth: number): string {
   let str = ''
-  str += pp(`type ${uncapitalize(alias.name)} = {`, depth)
-  str += alias.properties.map(p => pp(`${p.name}: ${p.type},`, depth + 1)).join('')
-  str += pp('};', depth)
-  return str
-}
-
-function printModule(m: Module, skipSelf: boolean, depth: number): string {
-  let str = ''
-  str += pp(`module ${m.name} = {`, depth)
-  str += '\n'
-
-  for (const alias of m.typeAliases) {
-    str += printTypeAlias(alias, depth + 1)
+  if (!root) {
+    str += pp(`let module ${m.name} = {`, depth)
     str += '\n'
   }
 
+  const childDepth = root ? depth : depth + 1
+
   for (const variable of m.variables) {
-    str += pp(printVariable(variable), depth + 1)
+    str += pp(printVariable(variable), childDepth)
   }
 
   for (const method of m.methods) {
-    str += printMethod(method)
+    str += pp(printMethod(method), childDepth)
   }
 
   for (const i of m.interfaces) {
-    str += printInterface(i, depth + 1)
+    str += printInterface(i, childDepth)
     str += '\n'
   }
 
   for (const mx of m.modules) {
-    str += printModule(mx, false, depth + 1)
+    str += printModule(mx, false, childDepth)
     str += '\n'
   }
 
-  str += pp('};', depth)
+  if (!root) {
+    str += pp('};', depth)
+  }
 
   return str
 }
@@ -325,7 +324,8 @@ function uncapitalize(str: string): string {
 
 function visitInterface(node, opts) {
   const ifc = getInterface(node, opts);
-  (node.members || []).forEach(function(node) {
+  const members = opts.kind === 'type-alias' ? node.type.members : node.members;
+  (members || []).forEach(function(node) {
     let member, name;
     switch (node.kind) {
       case TS.SyntaxKind.PropertySignature:
@@ -369,10 +369,35 @@ function visitInterface(node, opts) {
         ifc.properties.push(member);
         break;
       case TS.SyntaxKind.Constructor:
-        ifc.constructorParameters = node.parameters.map(getParameter);
+        member = getMethod(node, { name: 'make', ctor: true });
+        ifc.methods.push(member);
+        // ifc.constructorParameters = node.parameters.map(getParameter);
         break;
     }
   });
+
+  if (opts.kind !== 'class') {
+    const params = ifc.properties.map(p => ({
+      name: p.name,
+      optional: p.optional,
+      static: p.static,
+      type: p.type,
+      rest: false,
+    }))
+
+    const makeMeth: Method = {
+      name: 'make',
+      type: ModuleTypeName,
+      optional: false,
+      static: true,
+      parameters: params,
+      ctor: false,
+      maker: true,
+    }
+
+    ifc.methods.push(makeMeth);
+  }
+
   return ifc;
 }
 
@@ -383,13 +408,13 @@ function getInterface(node, opts: any = {}): Interface {
         return "'" + x.name.text
     }).join(", ") + ">";
   }
-  const ifc = {
+
+  const ifc: Interface = {
     name: opts.name || (getName(node) + printTypeParameters(node.typeParameters)),
     kind: opts.kind || "interface",
     parents: opts.kind == "alias" ? [getType(node.type)] : getParents(node),
     properties: [],
     methods: [],
-    constructorParameters: [],
   };
   if (!opts.anonymous)
     // TODO:
@@ -423,21 +448,35 @@ function getMethod(node, opts: any = {}): Method {
           || (node.name && hasFlag(node.name.parserContextFlags, TS.ModifierFlags.Static))
           || (node.modifiers && hasFlag(node.modifiers.flags, TS.ModifierFlags.Static)),
     parameters: node.parameters.map(getParameter),
-    emit: null,
+    ctor: opts.ctor || false,
+    maker: false,
   };
+
   const firstParam = node.parameters[0], secondParam = node.parameters[1];
   if (secondParam && secondParam.type && secondParam.type.kind == TS.SyntaxKind.StringLiteral) {
     // The only case I've seen following this pattern is
     // createElementNS(namespaceURI: "http://www.w3.org/2000/svg", qualifiedName: "a"): SVGAElement
     meth.parameters = meth.parameters.slice(2);
-    meth.emit = `$0.${meth.name}('${firstParam.type.text}', ${secondParam.type.text}'${meth.parameters.length?',$1...':''})`;
+    // meth.emit = `$0.${meth.name}('${firstParam.type.text}', ${secondParam.type.text}'${meth.parameters.length?',$1...':''})`;
     meth.name += '_' + secondParam.type.text;
   }
   else if (firstParam && firstParam.type && firstParam.type.kind == TS.SyntaxKind.StringLiteral) {
     meth.parameters = meth.parameters.slice(1);
-    meth.emit = `$0.${meth.name}('${firstParam.type.text}'${meth.parameters.length?',$1...':''})`;
+    // meth.emit = `$0.${meth.name}('${firstParam.type.text}'${meth.parameters.length?',$1...':''})`;
     meth.name += '_' + firstParam.type.text;
   }
+
+  const containsOptionalParam = !!meth.parameters.find(p => p.optional)
+  if (containsOptionalParam) {
+    const sentinelParam: Parameter = {
+      name: '',
+      type: 'unit',
+      optional: false,
+      rest: false,
+    }
+    meth.parameters.push(sentinelParam)
+  }
+
   return meth;
 }
 
@@ -448,44 +487,6 @@ function getParameter(param): Parameter {
     optional: param.questionToken != null,
     rest: param.dotDotDotToken != null,
   };
-}
-
-function getTypeAlias(node: any): TypeAlias {
-  const alias = {
-    name: getName(node),
-    parents: [getType(node.type)],
-    properties: [],
-  };
-  return alias;
-}
-
-function visitTypeAlias(node): TypeAlias {
-  const alias = getTypeAlias(node);
-  (node.type.members || []).forEach(function(node) {
-    let member, name;
-    switch (node.kind) {
-      case TS.SyntaxKind.PropertySignature:
-      case TS.SyntaxKind.PropertyDeclaration:
-        if (node.name.kind == TS.SyntaxKind.ComputedPropertyName) {
-          name = getName(node.name);
-          member = getProperty(node, { name: "["+name+"]" });
-          member.emit = "$0["+name+"]{{=$1}}";
-        } else {
-          member = getProperty(node);
-        }
-        alias.properties.push(member);
-        break;
-      case TS.SyntaxKind.IndexSignature:
-        member = getMethod(node, { name: "Item" });
-        member.emit = "$0[$1]{{=$2}}";
-        alias.properties.push(member);
-        break;
-    }
-  });
-
-  // TODO: vibrancyType
-
-  return alias;
 }
 
 function visitNode(m: Module) {
@@ -504,7 +505,7 @@ function visitNode(m: Module) {
         if ((node as any).type.types && (node as any).type.types[0].kind == TS.SyntaxKind.StringLiteral) {
           // m.interfaces.push(getStringEnum(node))
         } else {
-          m.typeAliases.push(visitTypeAlias(node));
+          m.interfaces.push(visitInterface(node, { kind: 'type-alias' }));
         }
         break;
 
@@ -539,7 +540,6 @@ function visitModule(node: TS.Node): Module {
   const interfaces = []
   const variables = []
   const methods = []
-  const typeAliases = []
 
   const body = (node as any).body
   switch (body.kind) {
@@ -554,14 +554,12 @@ function visitModule(node: TS.Node): Module {
         variables: [],
         interfaces: [],
         methods: [],
-        typeAliases: [],
       }
       body.statements.forEach(visitNode(m));
       modules.push(...m.modules)
       interfaces.push(...m.interfaces)
       variables.push(...m.variables)
       methods.push(...m.methods)
-      typeAliases.push(...m.typeAliases)
       break;
   }
 
@@ -571,7 +569,6 @@ function visitModule(node: TS.Node): Module {
     variables,
     interfaces,
     methods,
-    typeAliases,
   }
 }
 
