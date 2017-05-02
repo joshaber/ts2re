@@ -237,7 +237,7 @@ function getType(type): string {
       // TODO:
       return "Symbol";
     case TS.SyntaxKind.ArrayType:
-      return `array ${getType(type.elementType)}`
+      return `(array ${getType(type.elementType)})`
     case TS.SyntaxKind.FunctionType:
       const cbParams = type.parameters.map(function (x) {
         return x.dotDotDotToken ? "'a" : getType(x.type);
@@ -278,8 +278,10 @@ function getType(type): string {
         name = t;
       }
 
-      const typeParameters = findTypeParameters(type);
-      const result = name + printTypeArguments(type.typeArguments);
+      const typeParameters = findTypeParameters(type) || [];
+      const result = typeParameters.length
+        ? `(${name}${printTypeArguments(type.typeArguments)})`
+        : name
       return (typeParameters.indexOf(result) > -1 ? "'" : "") + result;
   }
 }
