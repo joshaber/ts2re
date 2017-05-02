@@ -188,7 +188,7 @@ function printModule(m: Module, rootModule: Module | null, depth: number): strin
 
 function printTypeArguments(typeArgs) {
   typeArgs = typeArgs || [];
-  return typeArgs.length == 0 ? "" : "<" + typeArgs.map(getType).join(", ") + ">";
+  return typeArgs.length == 0 ? "" : "(" + typeArgs.map(getType).join(", ") + ")";
 }
 
 function parseFile(file: TS.SourceFile): Module {
@@ -422,9 +422,9 @@ function visitInterface(node, opts) {
 function getInterface(node, opts: any = {}): Interface {
   function printTypeParameters(typeParams) {
     typeParams = typeParams || [];
-    return typeParams.length == 0 ? "" : "<" + typeParams.map(function (x) {
+    return typeParams.length == 0 ? "" : "(" + typeParams.map(function (x) {
         return "'" + x.name.text
-    }).join(", ") + ">";
+    }).join(", ") + ")";
   }
 
   const ifc: Interface = {

@@ -1960,7 +1960,7 @@ let module Electron = {
     external setUserAgent : t => string => unit = "" [@@bs.send];
     external getUserAgent : t => string = "" [@@bs.send];
     external insertCSS : t => string => unit = "" [@@bs.send];
-    external executeJavaScript : t => string => ?userGesture::bool => ?callback::('a => unit) => unit => Promise.t<'a> = "" [@@bs.send];
+    external executeJavaScript : t => string => ?userGesture::bool => ?callback::('a => unit) => unit => Promise.t('a) = "" [@@bs.send];
     external setAudioMuted : t => bool => unit = "" [@@bs.send];
     external isAudioMuted : t => bool = "" [@@bs.send];
     external setZoomFactor : t => float => unit = "" [@@bs.send];
@@ -2512,7 +2512,7 @@ let module Electron = {
     external registerURLSchemeAsBypassingCSP : t => string => unit = "" [@@bs.send];
     external registerURLSchemeAsPrivileged : t => string => ?options::RegisterURLSchemeOptions.t => unit => unit = "" [@@bs.send];
     external insertText : t => string => unit = "" [@@bs.send];
-    external executeJavaScript : t => string => ?userGesture::bool => ?callback::('a => unit) => unit => Promise.t<'a> = "" [@@bs.send];
+    external executeJavaScript : t => string => ?userGesture::bool => ?callback::('a => unit) => unit => Promise.t('a) = "" [@@bs.send];
     external getResourceUsage : t => ResourceUsages.t = "" [@@bs.send];
     external clearCache : t => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
@@ -2612,7 +2612,7 @@ let module Electron = {
     external setUserAgent : t => string => unit = "" [@@bs.send];
     external getUserAgent : t => string = "" [@@bs.send];
     external insertCSS : t => string => unit = "" [@@bs.send];
-    external executeJavaScript : t => string => ?userGesture::bool => ?callback::('a => unit) => unit => Promise.t<'a> = "" [@@bs.send];
+    external executeJavaScript : t => string => ?userGesture::bool => ?callback::('a => unit) => unit => Promise.t('a) = "" [@@bs.send];
     external openDevTools : t => unit = "" [@@bs.send];
     external closeDevTools : t => unit = "" [@@bs.send];
     external isDevToolsOpened : t => bool = "" [@@bs.send];
