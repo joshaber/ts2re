@@ -282,10 +282,8 @@ function getType(type): string {
         name = t;
       }
 
-      const typeParameters = findTypeParameters(type) || [];
-      const result = typeParameters.length
-        ? `(${name}${printTypeArguments(type.typeArguments)})`
-        : name
+      const typeParameters = findTypeParameters(type);
+      const result = name + printTypeArguments(type.typeArguments);
       return (typeParameters.indexOf(result) > -1 ? "'" : "") + result;
   }
 }
