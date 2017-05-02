@@ -91,12 +91,15 @@ function printVariable(variable: Variable): string {
 }
 
 function printParameter(p: Parameter, includeName: boolean): string {
-  let prefix = ''
-  if ((includeName || p.optional) && p.name.length) {
-    prefix = `${p.optional ? '?' : ''}${p.name}::`
-  }
+  const prefix = (p.optional || includeName) && p.name.length
+    ? `${p.name}::`
+    : ''
 
-  return `${prefix}${p.type}`
+  const suffix = p.optional
+    ? '?'
+    : ''
+
+  return `${prefix}${p.type}${suffix}`
 }
 
 function printMethod(m: Method, rootModule: Module): string {
