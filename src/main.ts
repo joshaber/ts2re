@@ -195,7 +195,7 @@ function printModule(m: Module, rootModule: Module | null, depth: number): strin
 
 function printTypeArguments(typeArgs) {
   typeArgs = typeArgs || [];
-  return typeArgs.length == 0 ? "" : "(" + typeArgs.map(getType).join(", ") + ")";
+  return typeArgs.length == 0 ? "" : " (" + typeArgs.map(getType).join(", ") + ")";
 }
 
 function parseFile(file: TS.SourceFile): Module {
@@ -283,7 +283,7 @@ function getType(type): string {
       }
 
       const typeParameters = findTypeParameters(type);
-      const result = name + printTypeArguments(type.typeArguments);
+      const result = `${name}${printTypeArguments(type.typeArguments)}`
       return (typeParameters.indexOf(result) > -1 ? "'" : "") + result;
   }
 }
