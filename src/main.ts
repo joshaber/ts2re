@@ -376,6 +376,7 @@ function visitInterface(node, opts) {
         break;
       case TS.SyntaxKind.IndexSignature:
         member = getMethod(node, { name: "value", moduleName: ifc.name });
+        // TODO:
         member.emit = "$0[$1]{{=$2}}";
         ifc.properties.push(member);
         break;
