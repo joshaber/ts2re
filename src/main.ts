@@ -2,58 +2,16 @@ import * as Path from "path";
 import * as TS from "typescript";
 import * as FS from "fs";
 
-interface Variable {
-  readonly name: string
-  readonly type: string
-  readonly static: boolean
-  readonly parameters: Array<Parameter>
-}
-
-interface Property {
-  readonly name: string
-  readonly type: string
-  readonly optional: boolean
-  readonly static: boolean
-}
-
-interface Parameter {
-  readonly name: string
-  readonly type: string
-  readonly optional: boolean
-  readonly rest: boolean
-}
-
-interface Interface {
-  readonly name: string
-  readonly kind: 'class' | 'interface'
-  readonly parents: ReadonlyArray<string>
-  readonly properties: Array<Property>
-  readonly methods: Array<Method>
-}
-
-interface Method {
-  readonly name: string
-  readonly type: string
-  readonly optional: boolean
-  readonly static: boolean
-  readonly parameters: Array<Parameter>
-
-  /** Constructor for a class. */
-  readonly ctor: boolean
-
-  readonly moduleName: string
-
-  /** Maker for an interface/object. */
-  readonly maker: boolean
-}
-
-interface Module {
-  readonly name: string
-  readonly modules: Array<Module>
-  readonly variables: Array<Variable>
-  readonly interfaces: Array<Interface>
-  readonly methods: Array<Method>
-}
+import { printModule } from './print'
+import {
+  Module,
+  ModuleTypeName,
+  Variable,
+  Parameter,
+  Method,
+  Property,
+  Interface,
+} from './global'
 
 // // TODO:
 const MappedTypes = {
@@ -65,15 +23,6 @@ const MappedTypes = {
   Number: "float",
   'Function.t': "('x => 'y)",
 };
-
-const Keywords = [
-  "open",
-  "type",
-  // TODO
-]
-
-const ModuleTypeName = "t";
-const Indentation = "  ";
 
 const TestInputFile = "electron.d.ts"
 
@@ -87,128 +36,6 @@ const out = parseFile(file);
 
 const printed = printModule(out, null, 0);
 FS.writeFileSync(Path.join(root, `${out.name}.re`), printed);
-
-function pp(str: string, depth: number): string {
-  let prefix = ''
-  for (let i = 0; i < depth; i++) {
-    prefix += Indentation
-  }
-  return `${prefix}${str}\n`
-}
-
-function printName(n: string): string {
-  return Keywords.indexOf(n) > -1
-    ? `${n}_`
-    : n
-}
-
-function printVariable(variable: Variable): string {
-  return `external ${printName(variable.name)} : ${variable.type} = "" [@@bs.val];`
-}
-
-function printParameter(p: Parameter, includeName: boolean): string {
-  const prefix = (p.optional || includeName) && p.name.length
-    ? `${printName(p.name)}::`
-    : ''
-
-  const suffix = p.optional
-    ? '?'
-    : ''
-
-  return `${prefix}${p.type}${suffix}`
-}
-
-function printMethod(m: Method, rootModule: Module): string {
-  if (m.ctor || m.maker) {
-    const bsAttribute = m.ctor ? 'new' : 'obj'
-    const params = m.parameters.length
-      ? m.parameters.map(p => printParameter(p, true)).join(" => ")
-      : "unit"
-    const suffix = m.ctor
-      ? ` [@@bs.module "${rootModule.name}"]`
-      : ''
-    const ffiName = m.ctor
-      ? m.moduleName
-      : ''
-    return `external ${printName(m.name)} : ${params} => ${ModuleTypeName} = "${ffiName}" [@@bs.${bsAttribute}]${suffix};`
-  } else if (!m.static) {
-    const params = m.parameters.length
-      ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
-      : ""
-    return `external ${printName(m.name)} : ${ModuleTypeName}${params} => ${m.type} = "" [@@bs.send];`
-  } else {
-    const params = m.parameters.length
-      ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
-      : "unit"
-    return `external ${printName(m.name)} : ${params} => ${m.type} = "";`
-  }
-}
-
-function printProperty(p: Property, depth: number): string {
-  let str = ''
-  str += pp(`external set${capitalize(p.name)} : ${ModuleTypeName} => ${p.optional ? 'option ' : ''}${p.type} => unit = "${p.name}" [@@bs.set];`, depth)
-  str += pp(`external get${capitalize(p.name)} : ${ModuleTypeName} => ${p.optional ? 'option ' : ''}${p.type} = "${p.name}" [@@bs.get]${p.optional ? ' [@@bs.return null_undefined_to_opt]' : ''};`, depth)
-  str += '\n'
-  return str
-}
-
-function printInterface(i: Interface, rootModule: Module, depth: number): string {
-  let str = ''
-  str += pp(`let module ${i.name} = {`, depth)
-  str += pp(`type ${ModuleTypeName};`, depth + 1)
-  str += '\n'
-
-  for (const meth of i.methods) {
-    str += pp(printMethod(meth, rootModule), depth + 1)
-  }
-
-  for (const prop of i.properties) {
-    str += printProperty(prop, depth + 1)
-  }
-
-  str += pp('};', depth)
-  return str
-}
-
-function printModule(m: Module, rootModule: Module | null, depth: number): string {
-  let str = ''
-  const isRoot = !rootModule
-  if (!isRoot) {
-    str += pp(`let module ${m.name} = {`, depth)
-    str += '\n'
-  }
-
-  const childDepth = isRoot ? depth : depth + 1
-
-  for (const variable of m.variables) {
-    str += pp(printVariable(variable), childDepth)
-  }
-
-  for (const method of m.methods) {
-    str += pp(printMethod(method, rootModule), childDepth)
-  }
-
-  for (const i of m.interfaces) {
-    str += printInterface(i, rootModule, childDepth)
-    str += '\n'
-  }
-
-  for (const mx of m.modules) {
-    str += printModule(mx, m, childDepth)
-    str += '\n'
-  }
-
-  if (!isRoot) {
-    str += pp('};', depth)
-  }
-
-  return str
-}
-
-function printTypeArguments(typeArgs) {
-  typeArgs = typeArgs || [];
-  return typeArgs.length == 0 ? "" : " (" + typeArgs.map(getType).join(", ") + ")";
-}
 
 function parseFile(file: TS.SourceFile): Module {
   const rootModule = {
@@ -337,14 +164,6 @@ function getProperty(node, opts: any = {}): Property {
     optional: node.questionToken != null,
     static: node.name ? hasFlag(node.name.parserContextFlags, TS.ModifierFlags.Static) : false
   };
-}
-
-function capitalize(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function uncapitalize(str: string): string {
-  return str.charAt(0).toLowerCase() + str.slice(1);
 }
 
 function visitInterface(node, opts) {
@@ -605,4 +424,9 @@ function getName(node: TS.Node) {
     // TODO: Throw exception if there's no name?
     return (node as any).name ? (node as any).name.text : (expression ? (expression as any).text : null);
   }
+}
+
+function printTypeArguments(typeArgs) {
+  typeArgs = typeArgs || [];
+  return typeArgs.length == 0 ? "" : " (" + typeArgs.map(getType).join(", ") + ")";
 }
