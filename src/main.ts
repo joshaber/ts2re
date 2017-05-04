@@ -11,7 +11,7 @@ import {
   Method,
   Property,
   Interface,
-} from './global'
+} from './types'
 
 // // TODO:
 const MappedTypes = {

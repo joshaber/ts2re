@@ -52,10 +52,3 @@ export interface Module {
 }
 
 export const ModuleTypeName = "t";
-export const Indentation = "  ";
-
-export const Keywords = [
-  "open",
-  "type",
-  // TODO
-]

@@ -1,8 +1,6 @@
 import * as TS from "typescript";
 import * as Path from 'path';
 import {
-  Indentation,
-  Keywords,
   ModuleTypeName,
   Variable,
   Parameter,
@@ -10,7 +8,15 @@ import {
   Module,
   Property,
   Interface,
-} from './global'
+} from './types'
+
+const Indentation = "  ";
+
+const Keywords = [
+  "open",
+  "type",
+  // TODO
+]
 
 function pp(str: string, depth: number): string {
   let prefix = ''
