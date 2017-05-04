@@ -66,6 +66,12 @@ const MappedTypes = {
   'Function.t': "('x => 'y)",
 };
 
+const Keywords = [
+  "open",
+  "type",
+  // TODO
+]
+
 const ModuleTypeName = "t";
 const Indentation = "  ";
 
@@ -90,13 +96,19 @@ function pp(str: string, depth: number): string {
   return `${prefix}${str}\n`
 }
 
+function printName(n: string): string {
+  return Keywords.indexOf(n) > -1
+    ? `${n}_`
+    : n
+}
+
 function printVariable(variable: Variable): string {
-  return `external ${variable.name} : ${variable.type} = "" [@@bs.val];`
+  return `external ${printName(variable.name)} : ${variable.type} = "" [@@bs.val];`
 }
 
 function printParameter(p: Parameter, includeName: boolean): string {
   const prefix = (p.optional || includeName) && p.name.length
-    ? `${p.name}::`
+    ? `${printName(p.name)}::`
     : ''
 
   const suffix = p.optional
@@ -118,17 +130,17 @@ function printMethod(m: Method, rootModule: Module): string {
     const ffiName = m.ctor
       ? m.moduleName
       : ''
-    return `external ${m.name} : ${params} => ${ModuleTypeName} = "${ffiName}" [@@bs.${bsAttribute}]${suffix};`
+    return `external ${printName(m.name)} : ${params} => ${ModuleTypeName} = "${ffiName}" [@@bs.${bsAttribute}]${suffix};`
   } else if (!m.static) {
     const params = m.parameters.length
       ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
       : ""
-    return `external ${m.name} : ${ModuleTypeName}${params} => ${m.type} = "" [@@bs.send];`
+    return `external ${printName(m.name)} : ${ModuleTypeName}${params} => ${m.type} = "" [@@bs.send];`
   } else {
     const params = m.parameters.length
       ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
       : "unit"
-    return `external ${m.name} : ${params} => ${m.type} = "";`
+    return `external ${printName(m.name)} : ${params} => ${m.type} = "";`
   }
 }
 

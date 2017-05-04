@@ -8,7 +8,7 @@ let module Document = {
 let module Window = {
   type t;
 
-  external open : t => string => frameName::string? => features::string? => unit => Electron.BrowserWindowProxy.t = "" [@@bs.send];
+  external open_ : t => string => frameName::string? => features::string? => unit => Electron.BrowserWindowProxy.t = "" [@@bs.send];
   external make : unit => t = "" [@@bs.obj];
 };
 
@@ -195,7 +195,7 @@ let module Electron = {
   let module Dock = {
     type t;
 
-    external bounce : t => type::'a? => unit => float = "" [@@bs.send];
+    external bounce : t => type_::'a? => unit => float = "" [@@bs.send];
     external cancelBounce : t => float => unit = "" [@@bs.send];
     external downloadFinished : t => string => unit = "" [@@bs.send];
     external setBadge : t => string => unit = "" [@@bs.send];
@@ -253,7 +253,7 @@ let module Electron = {
   let module JumpListCategory = {
     type t;
 
-    external make : type::'a? => name::string? => items::(array JumpListItem.t)? => unit => t = "" [@@bs.obj];
+    external make : type_::'a? => name::string? => items::(array JumpListItem.t)? => unit => t = "" [@@bs.obj];
     external setType : t => option 'a => unit = "type" [@@bs.set];
     external getType : t => option 'a = "type" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -268,7 +268,7 @@ let module Electron = {
   let module JumpListItem = {
     type t;
 
-    external make : type::'a => path::string? => program::string? => args::string? => title::string? => description::string? => iconPath::string? => iconIndex::float? => unit => t = "" [@@bs.obj];
+    external make : type_::'a => path::string? => program::string? => args::string? => title::string? => description::string? => iconPath::string? => iconIndex::float? => unit => t = "" [@@bs.obj];
     external setType : t => 'a => unit = "type" [@@bs.set];
     external getType : t => 'a = "type" [@@bs.get];
 
@@ -634,7 +634,7 @@ let module Electron = {
   let module BrowserWindowOptions = {
     type t;
 
-    external make : width::float? => height::float? => x::float? => y::float? => useContentSize::bool? => center::bool? => minWidth::float? => minHeight::float? => maxWidth::float? => maxHeight::float? => resizable::bool? => movable::bool? => minimizable::bool? => maximizable::bool? => closable::bool? => focusable::bool? => alwaysOnTop::bool? => fullscreen::bool? => fullscreenable::bool? => skipTaskbar::bool? => kiosk::bool? => title::string? => icon::'a? => show::bool? => frame::bool? => parent::BrowserWindow.t? => modal::bool? => acceptFirstMouse::bool? => disableAutoHideCursor::bool? => autoHideMenuBar::bool? => enableLargerThanScreen::bool? => backgroundColor::string? => hasShadow::bool? => darkTheme::bool? => transparent::bool? => type::BrowserWindowType.t? => titleBarStyle::'a? => thickFrame::bool? => vibrancy::VibrancyType.t? => webPreferences::WebPreferences.t? => unit => t = "" [@@bs.obj];
+    external make : width::float? => height::float? => x::float? => y::float? => useContentSize::bool? => center::bool? => minWidth::float? => minHeight::float? => maxWidth::float? => maxHeight::float? => resizable::bool? => movable::bool? => minimizable::bool? => maximizable::bool? => closable::bool? => focusable::bool? => alwaysOnTop::bool? => fullscreen::bool? => fullscreenable::bool? => skipTaskbar::bool? => kiosk::bool? => title::string? => icon::'a? => show::bool? => frame::bool? => parent::BrowserWindow.t? => modal::bool? => acceptFirstMouse::bool? => disableAutoHideCursor::bool? => autoHideMenuBar::bool? => enableLargerThanScreen::bool? => backgroundColor::string? => hasShadow::bool? => darkTheme::bool? => transparent::bool? => type_::BrowserWindowType.t? => titleBarStyle::'a? => thickFrame::bool? => vibrancy::VibrancyType.t? => webPreferences::WebPreferences.t? => unit => t = "" [@@bs.obj];
     external setWidth : t => option float => unit = "width" [@@bs.set];
     external getWidth : t => option float = "width" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -784,21 +784,21 @@ let module Electron = {
   let module Clipboard = {
     type t;
 
-    external readText : t => type::ClipboardType.t? => unit => string = "" [@@bs.send];
-    external writeText : t => string => type::ClipboardType.t? => unit => unit = "" [@@bs.send];
-    external readHTML : t => type::ClipboardType.t? => unit => string = "" [@@bs.send];
-    external writeHTML : t => string => type::ClipboardType.t? => unit => unit = "" [@@bs.send];
-    external readImage : t => type::ClipboardType.t? => unit => NativeImage.t = "" [@@bs.send];
-    external writeImage : t => NativeImage.t => type::ClipboardType.t? => unit => unit = "" [@@bs.send];
-    external readRTF : t => type::ClipboardType.t? => unit => string = "" [@@bs.send];
-    external writeRTF : t => string => type::ClipboardType.t? => unit => unit = "" [@@bs.send];
-    external clear : t => type::ClipboardType.t? => unit => unit = "" [@@bs.send];
-    external availableFormats : t => type::ClipboardType.t? => unit => (array string) = "" [@@bs.send];
-    external has : t => string => type::ClipboardType.t? => unit => bool = "" [@@bs.send];
-    external read : t => string => type::ClipboardType.t? => unit => 'a = "" [@@bs.send];
-    external write : t => 'a => type::ClipboardType.t? => unit => unit = "" [@@bs.send];
+    external readText : t => type_::ClipboardType.t? => unit => string = "" [@@bs.send];
+    external writeText : t => string => type_::ClipboardType.t? => unit => unit = "" [@@bs.send];
+    external readHTML : t => type_::ClipboardType.t? => unit => string = "" [@@bs.send];
+    external writeHTML : t => string => type_::ClipboardType.t? => unit => unit = "" [@@bs.send];
+    external readImage : t => type_::ClipboardType.t? => unit => NativeImage.t = "" [@@bs.send];
+    external writeImage : t => NativeImage.t => type_::ClipboardType.t? => unit => unit = "" [@@bs.send];
+    external readRTF : t => type_::ClipboardType.t? => unit => string = "" [@@bs.send];
+    external writeRTF : t => string => type_::ClipboardType.t? => unit => unit = "" [@@bs.send];
+    external clear : t => type_::ClipboardType.t? => unit => unit = "" [@@bs.send];
+    external availableFormats : t => type_::ClipboardType.t? => unit => (array string) = "" [@@bs.send];
+    external has : t => string => type_::ClipboardType.t? => unit => bool = "" [@@bs.send];
+    external read : t => string => type_::ClipboardType.t? => unit => 'a = "" [@@bs.send];
+    external write : t => 'a => type_::ClipboardType.t? => unit => unit = "" [@@bs.send];
     external readBookmark : t => Bookmark.t = "" [@@bs.send];
-    external writeBookmark : t => string => string => type::ClipboardType.t? => unit => unit = "" [@@bs.send];
+    external writeBookmark : t => string => string => type_::ClipboardType.t? => unit => unit = "" [@@bs.send];
     external readFindText : t => string = "" [@@bs.send];
     external writeFindText : t => string => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
@@ -998,7 +998,7 @@ let module Electron = {
   let module ShowMessageBoxOptions = {
     type t;
 
-    external make : type::'a? => buttons::(array string)? => defaultId::float? => title::string? => message::string? => detail::string? => icon::NativeImage.t? => cancelId::float? => noLink::bool? => unit => t = "" [@@bs.obj];
+    external make : type_::'a? => buttons::(array string)? => defaultId::float? => title::string? => message::string? => detail::string? => icon::NativeImage.t? => cancelId::float? => noLink::bool? => unit => t = "" [@@bs.obj];
     external setType : t => option 'a => unit = "type" [@@bs.set];
     external getType : t => option 'a = "type" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -1180,7 +1180,7 @@ let module Electron = {
   let module MenuItemOptions = {
     type t;
 
-    external make : click::(MenuItem.t => BrowserWindow.t => Event.t => unit)? => type::MenuItemType.t? => label::string? => sublabel::string? => accelerator::string? => icon::'a? => enabled::bool? => visible::bool? => checked::bool? => submenu::'a? => id::string? => position::string? => role::'a? => unit => t = "" [@@bs.obj];
+    external make : click::(MenuItem.t => BrowserWindow.t => Event.t => unit)? => type_::MenuItemType.t? => label::string? => sublabel::string? => accelerator::string? => icon::'a? => enabled::bool? => visible::bool? => checked::bool? => submenu::'a? => id::string? => position::string? => role::'a? => unit => t = "" [@@bs.obj];
     external setClick : t => option (MenuItem.t => BrowserWindow.t => Event.t => unit) => unit = "click" [@@bs.set];
     external getClick : t => option (MenuItem.t => BrowserWindow.t => Event.t => unit) = "click" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -2161,7 +2161,7 @@ let module Electron = {
   let module UploadRawData = {
     type t;
 
-    external make : type::'a => bytes::Buffer.t => t = "" [@@bs.obj];
+    external make : type_::'a => bytes::Buffer.t => t = "" [@@bs.obj];
     external setType : t => 'a => unit = "type" [@@bs.set];
     external getType : t => 'a = "type" [@@bs.get];
 
@@ -2173,7 +2173,7 @@ let module Electron = {
   let module UploadFileSystem = {
     type t;
 
-    external make : type::'a => fileSystemURL::string => offset::float => length::float => modificationTime::float => t = "" [@@bs.obj];
+    external make : type_::'a => fileSystemURL::string => offset::float => length::float => modificationTime::float => t = "" [@@bs.obj];
     external setType : t => 'a => unit = "type" [@@bs.set];
     external getType : t => 'a = "type" [@@bs.get];
 
@@ -2194,7 +2194,7 @@ let module Electron = {
   let module UploadBlob = {
     type t;
 
-    external make : type::'a => blobUUID::string => t = "" [@@bs.obj];
+    external make : type_::'a => blobUUID::string => t = "" [@@bs.obj];
     external setType : t => 'a => unit = "type" [@@bs.set];
     external getType : t => 'a = "type" [@@bs.get];
 
@@ -2407,7 +2407,7 @@ let module Electron = {
   let module SendInputEvent = {
     type t;
 
-    external make : type::'a => modifiers::(array 'a) => t = "" [@@bs.obj];
+    external make : type_::'a => modifiers::(array 'a) => t = "" [@@bs.obj];
     external setType : t => 'a => unit = "type" [@@bs.set];
     external getType : t => 'a = "type" [@@bs.get];
 
@@ -3286,7 +3286,7 @@ let module NodeJS = {
     external setFdLimit : t => float => unit = "" [@@bs.send];
     external getProcessMemoryInfo : t => ProcessMemoryInfo.t = "" [@@bs.send];
     external getSystemMemoryInfo : t => SystemMemoryInfo.t = "" [@@bs.send];
-    external make : noAsar::bool? => type::'a => resourcesPath::string => mas::bool? => windowsStore::bool? => defaultApp::bool? => unit => t = "" [@@bs.obj];
+    external make : noAsar::bool? => type_::'a => resourcesPath::string => mas::bool? => windowsStore::bool? => defaultApp::bool? => unit => t = "" [@@bs.obj];
     external setNoAsar : t => option bool => unit = "noAsar" [@@bs.set];
     external getNoAsar : t => option bool = "noAsar" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
