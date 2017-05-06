@@ -21,7 +21,7 @@ export interface Parameter {
 
 export interface Interface {
   readonly name: string
-  readonly kind: 'class' | 'interface'
+  readonly kind: string
   readonly parents: ReadonlyArray<string>
   readonly properties: Array<Property>
   readonly methods: Array<Method>

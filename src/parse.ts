@@ -22,6 +22,23 @@ const MappedTypes = {
   'Function.t': "('x => 'y)",
 };
 
+interface MethodParseOptions {
+  readonly name?: string
+  readonly ctor?: boolean
+  readonly moduleName?: string
+  readonly static?: boolean
+}
+
+interface InterfaceParseOptions {
+  readonly name?: string
+  readonly kind?: string
+  readonly anonymous?: boolean
+}
+
+interface PropertyParseOptions {
+  readonly name?: string
+}
+
 export function parseFile(file: TS.SourceFile): Module {
   const rootModule = {
     name: Path.basename(file.fileName, '.d.ts'),
@@ -142,7 +159,7 @@ function getVariables(node: any): ReadonlyArray<Variable> {
   return variables
 }
 
-function getProperty(node, opts: any = {}): Property {
+function getProperty(node, opts: PropertyParseOptions = {}): Property {
   return {
     name: opts.name || getName(node),
     type: getType(node.type),
@@ -243,7 +260,7 @@ function visitInterface(node, opts) {
   return ifc;
 }
 
-function getInterface(node, opts: any = {}): Interface {
+function getInterface(node, opts: InterfaceParseOptions = {}): Interface {
   function printTypeParameters(typeParams) {
     typeParams = typeParams || [];
     return typeParams.length == 0 ? "" : "(" + typeParams.map(function (x) {
@@ -281,7 +298,7 @@ function hasFlag(flags, flag) {
   return flags != null && (flags & flag) == flag;
 }
 
-function getMethod(node, opts: any = {}): Method {
+function getMethod(node, opts: MethodParseOptions = {}): Method {
   const meth: Method = {
     name: opts.name || getName(node),
     type: getType(node.type),
@@ -347,7 +364,8 @@ function visitNode(m: Module) {
         break;
 
       case TS.SyntaxKind.FunctionDeclaration:
-        m.methods.push(getMethod(node, { static: true, moduleName: m.name }));
+        const method = getMethod(node, { static: true, moduleName: m.name })
+        m.methods.push(method);
         break;
 
       case TS.SyntaxKind.ModuleDeclaration:
