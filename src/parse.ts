@@ -173,54 +173,55 @@ function visitInterface(node, opts) {
   const ifc = getInterface(node, opts);
   const members = opts.kind === 'type-alias' ? node.type.members : node.members;
   (members || []).forEach(function(node) {
-    let member, name;
     switch (node.kind) {
       case TS.SyntaxKind.PropertySignature:
-      case TS.SyntaxKind.PropertyDeclaration:
+      case TS.SyntaxKind.PropertyDeclaration: {
+        let member: Property
         if (node.name.kind == TS.SyntaxKind.ComputedPropertyName) {
-          name = getName(node.name);
+          const name = getName(node.name);
           member = getProperty(node, { name: "["+name+"]" });
-          member.emit = "$0["+name+"]{{=$1}}";
+          // member.emit = "$0["+name+"]{{=$1}}";
         } else {
           member = getProperty(node);
         }
         ifc.properties.push(member);
-        break;
+      } break;
       // TODO: If interface only contains one `Invoke` method
       // make it an alias of Func
-      case TS.SyntaxKind.CallSignature:
-        member = getMethod(node, { name: "invoke", moduleName: ifc.name });
-        member.emit = "$0($1...)";
+      case TS.SyntaxKind.CallSignature: {
+        const member = getMethod(node, { name: "invoke", moduleName: ifc.name });
+        // member.emit = "$0($1...)";
         ifc.methods.push(member);
-        break;
+      } break;
       case TS.SyntaxKind.MethodSignature:
-      case TS.SyntaxKind.MethodDeclaration:
+      case TS.SyntaxKind.MethodDeclaration: {
+        let member: Method
         if (node.name.kind == TS.SyntaxKind.ComputedPropertyName) {
-          name = getName(node.name);
+          const name = getName(node.name);
           member = getMethod(node, { name: "["+name+"]", moduleName: ifc.name });
-          member.emit = "$0["+name+"]($1...)";
+          // member.emit = "$0["+name+"]($1...)";
         } else {
           member = getMethod(node, { moduleName: ifc.name });
         }
 
         ifc.methods.push(member);
-        break;
-      case TS.SyntaxKind.ConstructSignature:
-        member = getMethod(node, { name: "Create", moduleName: ifc.name });
-        member.emit = "new $0($1...)";
+      } break;
+      case TS.SyntaxKind.ConstructSignature: {
+        const member = getMethod(node, { name: "Create", moduleName: ifc.name });
+        // member.emit = "new $0($1...)";
         ifc.methods.push(member);
-        break;
-      case TS.SyntaxKind.IndexSignature:
-        member = getMethod(node, { name: "value", moduleName: ifc.name });
+      } break;
+      case TS.SyntaxKind.IndexSignature: {
+        const member = getMethod(node, { name: "value", moduleName: ifc.name });
         // TODO:
-        member.emit = "$0[$1]{{=$2}}";
+        // member.emit = "$0[$1]{{=$2}}";
         ifc.properties.push(member);
-        break;
-      case TS.SyntaxKind.Constructor:
-        member = getMethod(node, { name: 'make', ctor: true, moduleName: ifc.name });
+      } break;
+      case TS.SyntaxKind.Constructor: {
+        const member = getMethod(node, { name: 'make', ctor: true, moduleName: ifc.name });
         ifc.methods.push(member);
         // ifc.constructorParameters = node.parameters.map(getParameter);
-        break;
+      } break;
     }
   });
 
