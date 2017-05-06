@@ -135,7 +135,8 @@ function getVariables(node: any): ReadonlyArray<Variable> {
     : [ node.declarationList ];
   const variables = new Array<Variable>()
   for (const declarations of declarationList) {
-    for (const declaration of declarations) {
+    for (let i = 0; i < declarations.length; i++) {
+      const declaration = declarations[i]
       const name = declaration.name.text
       let type: string
       if (declaration.type.kind == TS.SyntaxKind.TypeLiteral) {
