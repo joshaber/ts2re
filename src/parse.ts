@@ -234,7 +234,7 @@ function visitInterface(node, opts) {
       rest: false,
     }))
 
-    if ((params as any).find(p => p.optional)) {
+    if (params.find(p => p.optional)) {
       const sentinelParam: Parameter = {
         name: '',
         type: 'unit',
@@ -313,7 +313,7 @@ function getMethod(node, opts: MethodParseOptions = {}): Method {
     moduleName: opts.moduleName || '',
   };
 
-  const containsOptionalParam = !!(meth.parameters as any).find(p => p.optional)
+  const containsOptionalParam = !!meth.parameters.find(p => p.optional)
   if (containsOptionalParam) {
     const sentinelParam: Parameter = {
       name: '',
