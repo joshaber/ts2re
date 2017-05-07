@@ -37,7 +37,7 @@ function printVariable(variable: Variable): string {
 }
 
 function printParameter(p: Parameter, includeName: boolean): string {
-  const prefix = (p.optional || includeName) && p.name.length
+  const prefix = includeName && p.name.length
     ? `${printName(p.name)}::`
     : ''
 
@@ -52,7 +52,7 @@ function printMethod(m: Method, rootModule: Module): string {
   if (m.ctor || m.maker) {
     const bsAttribute = m.ctor ? 'new' : 'obj'
     const params = m.parameters.length
-      ? m.parameters.map(p => printParameter(p, true)).join(" => ")
+      ? m.parameters.map(p => printParameter(p, m.maker)).join(" => ")
       : "unit"
     const suffix = m.ctor
       ? ` [@@bs.module "${rootModule.name}"]`
