@@ -170,7 +170,7 @@ function getProperty(node, opts: PropertyParseOptions = {}): Property {
 }
 
 function visitInterface(node, opts) {
-  const ifc = getInterface(node, opts);
+  let ifc = getInterface(node, opts);
   const members = opts.kind === 'type-alias' ? node.type.members : node.members;
   (members || []).forEach(function(node) {
     switch (node.kind) {
@@ -258,6 +258,23 @@ function visitInterface(node, opts) {
 
     ifc.methods.push(makeMeth);
   }
+
+  // We could have duplicate methods that vary by their types. For now,
+  // we'll just uniquify them by index.
+  // TODO: Unique using something smarter
+  const updatedMethods = ifc.methods.map(method => {
+    // TODO: This is super inefficient
+    const existingMethods = ifc.methods.filter(m => m.name === method.name)
+    if (existingMethods.length > 1) {
+      const i = existingMethods.findIndex(m => m === method)
+      const uniqueSuffix = i.toString()
+      return { ...method, name: `${method.name}${uniqueSuffix}` }
+    } else {
+      return method
+    }
+  })
+
+  ifc = { ...ifc, methods: updatedMethods }
 
   return ifc;
 }
