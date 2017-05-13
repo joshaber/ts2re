@@ -3345,7 +3345,7 @@ let module NodeJS = {
 
 };
 
-let module electron = {
+let module Electron = {
 
 };
 
