@@ -76,8 +76,8 @@ function printMethod(m: Method, rootModule: Module): string {
 
 function printProperty(p: Property, depth: number): string {
   let str = ''
-  str += pp(`external set${capitalize(p.name)} : ${ModuleTypeName} => ${p.optional ? 'option ' : ''}${p.type} => unit = "${p.name}" [@@bs.set];`, depth)
-  str += pp(`external get${capitalize(p.name)} : ${ModuleTypeName} => ${p.optional ? 'option ' : ''}${p.type} = "${p.name}" [@@bs.get]${p.optional ? ' [@@bs.return null_undefined_to_opt]' : ''};`, depth)
+  str += pp(`external set${capitalized(p.name)} : ${ModuleTypeName} => ${p.optional ? 'option ' : ''}${p.type} => unit = "${p.name}" [@@bs.set];`, depth)
+  str += pp(`external get${capitalized(p.name)} : ${ModuleTypeName} => ${p.optional ? 'option ' : ''}${p.type} = "${p.name}" [@@bs.get]${p.optional ? ' [@@bs.return null_undefined_to_opt]' : ''};`, depth)
   str += '\n'
   return str
 }
@@ -104,7 +104,7 @@ export function printModule(m: Module, rootModule: Module | null, depth: number)
   let str = ''
   const isRoot = !rootModule
   if (!isRoot) {
-    str += pp(`let module ${m.name} = {`, depth)
+    str += pp(`let module ${capitalized(m.name)} = {`, depth)
     str += '\n'
   }
 
@@ -135,6 +135,6 @@ export function printModule(m: Module, rootModule: Module | null, depth: number)
   return str
 }
 
-function capitalize(str: string): string {
+function capitalized(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
