@@ -360,8 +360,8 @@ function visitNode(m: Module) {
         break;
 
       case TS.SyntaxKind.TypeAliasDeclaration:
-        // TODO:
         if ((node as any).type.types && (node as any).type.types[0].kind == TS.SyntaxKind.StringLiteral) {
+          // TODO:
           // m.interfaces.push(getStringEnum(node))
         } else {
           m.interfaces.push(visitInterface(node, { kind: 'type-alias' }));
