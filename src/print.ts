@@ -89,7 +89,7 @@ function printProperty(p: Property, depth: number): string {
 
 function printInterface(i: Interface, rootModule: Module, depth: number): string {
   let str = ''
-  str += pp(`let module ${i.name} = {`, depth)
+  str += pp(`let module ${capitalized(i.name)} = {`, depth)
 
   const typeParams = printTypeParameters(i)
   str += pp(`type ${ModuleTypeName}${typeParams};`, depth + 1)
