@@ -280,19 +280,13 @@ function visitInterface(node, opts) {
 }
 
 function getInterface(node, opts: InterfaceParseOptions = {}): Interface {
-  function printTypeParameters(typeParams) {
-    typeParams = typeParams || [];
-    return typeParams.length == 0 ? "" : "(" + typeParams.map(function (x) {
-        return "'" + x.name.text
-    }).join(", ") + ")";
-  }
-
   const ifc: Interface = {
-    name: opts.name || (getName(node) + printTypeParameters(node.typeParameters)),
+    name: opts.name || getName(node),
     kind: opts.kind || "interface",
     parents: opts.kind == "alias" ? [getType(node.type)] : getParents(node),
     properties: [],
     methods: [],
+    typeParameters: (node.typeParameters || []).map(x => x.name.text),
   };
   if (!opts.anonymous)
     // TODO:

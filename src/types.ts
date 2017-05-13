@@ -25,6 +25,7 @@ export interface Interface {
   readonly parents: ReadonlyArray<string>
   readonly properties: Array<Property>
   readonly methods: Array<Method>
+  readonly typeParameters: Array<string>
 }
 
 export interface Method {
