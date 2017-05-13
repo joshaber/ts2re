@@ -48,7 +48,7 @@ function printParameter(p: Parameter, includeName: boolean): string {
   return `${prefix}${p.type}${suffix}`
 }
 
-function printMethod(m: Method, rootModule: Module): string {
+function printMethod(m: Method, interface_: Interface | null, rootModule: Module): string {
   if (m.ctor || m.maker) {
     const bsAttribute = m.ctor ? 'new' : 'obj'
     const params = m.parameters.length
@@ -62,10 +62,15 @@ function printMethod(m: Method, rootModule: Module): string {
       : ''
     return `external ${printName(m.name)} : ${params} => ${ModuleTypeName} = "${ffiName}" [@@bs.${bsAttribute}]${suffix};`
   } else if (!m.static) {
+    let typeParams = ''
+    if (interface_) {
+      typeParams = printTypeParameters(interface_)
+    }
+
     const params = m.parameters.length
       ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
       : ""
-    return `external ${printName(m.name)} : ${ModuleTypeName}${params} => ${m.type} = "" [@@bs.send];`
+    return `external ${printName(m.name)} : ${ModuleTypeName}${typeParams}${params} => ${m.type} = "" [@@bs.send];`
   } else {
     const params = m.parameters.length
       ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
@@ -85,11 +90,13 @@ function printProperty(p: Property, depth: number): string {
 function printInterface(i: Interface, rootModule: Module, depth: number): string {
   let str = ''
   str += pp(`let module ${i.name} = {`, depth)
-  str += pp(`type ${ModuleTypeName};`, depth + 1)
+
+  const typeParams = printTypeParameters(i)
+  str += pp(`type ${ModuleTypeName}${typeParams};`, depth + 1)
   str += '\n'
 
   for (const meth of i.methods) {
-    str += pp(printMethod(meth, rootModule), depth + 1)
+    str += pp(printMethod(meth, i, rootModule), depth + 1)
   }
 
   for (const prop of i.properties) {
@@ -115,7 +122,7 @@ export function printModule(m: Module, rootModule: Module | null, depth: number)
   }
 
   for (const method of m.methods) {
-    str += pp(printMethod(method, rootModule), childDepth)
+    str += pp(printMethod(method, null, rootModule), childDepth)
   }
 
   for (const i of m.interfaces) {
@@ -133,6 +140,14 @@ export function printModule(m: Module, rootModule: Module | null, depth: number)
   }
 
   return str
+}
+
+function printTypeParameters(i: Interface): string {
+  if (i.typeParameters.length) {
+    return ' ' + i.typeParameters.map(p => `'${p}`).join(' ')
+  } else {
+    return ''
+  }
 }
 
 function capitalized(str: string): string {
