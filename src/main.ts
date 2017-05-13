@@ -5,11 +5,12 @@ import * as FS from "fs";
 import { printModule } from './print'
 import { parseFile } from './parse'
 
-const TestInputFile = "electron.d.ts"
+const args = process.argv.slice(1)
+const inputFile = args[args.length - 1]
 
 const root = Path.join(__dirname, "..");
 
-const filePath = Path.join(root, TestInputFile);
+const filePath = Path.join(root, inputFile);
 const prog = TS.createProgram([ filePath ], TS.getDefaultCompilerOptions());
 
 const file = prog.getSourceFile(filePath);
