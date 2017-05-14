@@ -355,11 +355,11 @@ let module Request = {
     external oauth : t => OAuthOptions.t => Request.t = "" [@@bs.send];
     external jar : t => CookieJar.t => Request.t = "" [@@bs.send];
     external on0 : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external on1 : t => string => (http.ClientRequest.t => unit) => t = "" [@@bs.send];
-    external on2 : t => string => (http.IncomingMessage.t => unit) => t = "" [@@bs.send];
-    external on3 : t => string => ('a => unit) => t = "" [@@bs.send];
-    external on4 : t => string => (Error.t => unit) => t = "" [@@bs.send];
-    external on5 : t => string => (http.IncomingMessage.t => 'a => unit) => t = "" [@@bs.send];
+    external onRequest : t => string => (http.ClientRequest.t => unit) => t = "" [@@bs.send];
+    external onResponse : t => string => (http.IncomingMessage.t => unit) => t = "" [@@bs.send];
+    external onData : t => string => ('a => unit) => t = "" [@@bs.send];
+    external onError : t => string => (Error.t => unit) => t = "" [@@bs.send];
+    external onComplete : t => string => (http.IncomingMessage.t => 'a => unit) => t = "" [@@bs.send];
     external write0 : t => Buffer.t => ('x => 'y)? => unit => bool = "" [@@bs.send];
     external write1 : t => string => ('x => 'y)? => unit => bool = "" [@@bs.send];
     external write2 : t => string => string => ('x => 'y)? => unit => bool = "" [@@bs.send];

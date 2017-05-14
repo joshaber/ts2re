@@ -44,6 +44,12 @@ interface TypeParseOptions {
   readonly declarationName?: string
 }
 
+interface Type {
+  readonly name: string
+  readonly stringLiteralValue?: string
+  readonly anonymousType?: Interface
+}
+
 export function parseFile(file: TS.SourceFile): Module {
   const rootModule = {
     name: Path.basename(file.fileName, '.d.ts'),
@@ -69,9 +75,9 @@ function findTypeParameters(node, acc = []) {
   return findTypeParameters(node.parent, acc);
 }
 
-function getType(type: any, opts: TypeParseOptions = {}): { name: string, anonymousType?: Interface } {
+function getType(type: any, opts: TypeParseOptions = {}): Type {
   if (!type) {
-    return { name: "'a" };
+    return { name: "'a" }
   }
 
   switch (type.kind) {
@@ -154,7 +160,7 @@ function getType(type: any, opts: TypeParseOptions = {}): { name: string, anonym
       switch (type.literal.kind) {
         case TS.SyntaxKind.StringLiteral:
           // TODO
-          return { name: 'string' }
+          return { name: 'string', stringLiteralValue: type.literal.text }
         case TS.SyntaxKind.NumericLiteral:
           return { name: 'float' }
       }
@@ -282,7 +288,7 @@ function visitInterface(node, opts) {
   // Classes already have constructors, but interfaces and type aliases should
   // have a convenience make function.
   if (opts.kind !== 'class') {
-    const params = ifc.properties.map(p => ({
+    const params: Array<Parameter> = ifc.properties.map(p => ({
       name: p.name,
       optional: p.optional,
       type: p.type,
@@ -316,21 +322,37 @@ function visitInterface(node, opts) {
   // We could have duplicate methods that vary by their types. For now,
   // we'll just uniquify them by index.
   // TODO: Unique using something smarter
-  const updatedMethods = ifc.methods.map(method => {
-    // TODO: This is super inefficient
-    const existingMethods = ifc.methods.filter(m => m.name === method.name)
-    if (existingMethods.length > 1) {
-      const i = existingMethods.findIndex(m => m === method)
-      const uniqueSuffix = i.toString()
-      return { ...method, name: `${method.name}${uniqueSuffix}` }
-    } else {
-      return method
-    }
-  })
+  const updatedMethods = deduplicateMethods(ifc.methods)
 
   ifc = { ...ifc, methods: updatedMethods }
 
   return ifc;
+}
+
+function deduplicateMethods(methods: ReadonlyArray<Method>): Array<Method> {
+  return methods.map(method => {
+    // TODO: This is super inefficient
+    const existingMethods = methods.filter(m => m.name === method.name)
+    if (existingMethods.length > 1) {
+      let newName = method.name
+      if (method.parameters.length && method.parameters[0].stringLiteralValue) {
+        const literal = method.parameters[0].stringLiteralValue
+        const sanitized = capitalized(literal.replace(/-/g, ''))
+        // TODO: Emit the original name for the binding
+        // TODO: Make the string literal value fixed
+        newName = `${method.name}${sanitized}`
+      } else {
+        const i = existingMethods.findIndex(m => m === method)
+        const uniqueSuffix = i.toString()
+        newName = `${method.name}${uniqueSuffix}`
+      }
+      const i = existingMethods.findIndex(m => m === method)
+      const uniqueSuffix = i.toString()
+      return { ...method, name: newName }
+    } else {
+      return method
+    }
+  })
 }
 
 function getInterface(node, opts: InterfaceParseOptions = {}): Interface {
@@ -405,14 +427,18 @@ function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anony
 function getParameter(node): { parameter: Parameter, anonymousType?: Interface } {
   const name = node.name.text
   const type = getType(node.type, { declarationName: name })
-  const param = {
+  const param: Parameter = {
     name,
     type: type.name,
     optional: node.questionToken != null,
     rest: node.dotDotDotToken != null,
+    stringLiteralValue: type.stringLiteralValue,
   }
 
-  return { parameter: param, anonymousType: type.anonymousType }
+  return {
+    parameter: param,
+    anonymousType: type.anonymousType,
+  }
 }
 
 function visitNode(m: Module) {

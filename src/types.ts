@@ -17,6 +17,7 @@ export interface Parameter {
   readonly type: string
   readonly optional: boolean
   readonly rest: boolean
+  readonly stringLiteralValue?: string
 }
 
 export interface Interface {
