@@ -26,6 +26,7 @@ export interface Interface {
   readonly properties: Array<Property>
   readonly methods: Array<Method>
   readonly typeParameters: Array<string>
+  readonly anonymousTypes: Array<Interface>
 }
 
 export interface Method {

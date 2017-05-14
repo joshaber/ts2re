@@ -101,6 +101,18 @@ let module Electron = {
   let module App = {
     type t;
 
+    let module OptionsType = {
+      type t;
+
+      external make : args::(array string)? => execPath::string? => unit => t = "" [@@bs.obj];
+      external setArgs : t => option (array string) => unit = "args" [@@bs.set];
+      external getArgs : t => option (array string) = "args" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+      external setExecPath : t => option string => unit = "execPath" [@@bs.set];
+      external getExecPath : t => option string = "execPath" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+    };
+
     external on0 : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on1 : t => 'a => (Event.t => Object.t => unit) => t = "" [@@bs.send];
     external on2 : t => 'a => ('x => 'y) => t = "" [@@bs.send];
@@ -123,7 +135,7 @@ let module Electron = {
     external on19 : t => string => ('x => 'y) => t = "" [@@bs.send];
     external quit : t => unit = "" [@@bs.send];
     external exit : t => float? => unit => unit = "" [@@bs.send];
-    external relaunch : t => 'a? => unit => unit = "" [@@bs.send];
+    external relaunch : t => OptionsType.t? => unit => unit = "" [@@bs.send];
     external isReady : t => bool = "" [@@bs.send];
     external focus : t => unit = "" [@@bs.send];
     external hide : t => unit = "" [@@bs.send];
@@ -356,6 +368,15 @@ let module Electron = {
   let module BrowserWindow = {
     type t;
 
+    let module OptionsType = {
+      type t;
+
+      external make : mode::'a => t = "" [@@bs.obj];
+      external setMode : t => 'a => unit = "mode" [@@bs.set];
+      external getMode : t => 'a = "mode" [@@bs.get];
+
+    };
+
     external on0 : t => 'a => (Event.t => string => unit) => t = "" [@@bs.send];
     external on1 : t => 'a => (Event.t => unit) => t = "" [@@bs.send];
     external on2 : t => 'a => ('x => 'y) => t = "" [@@bs.send];
@@ -463,7 +484,7 @@ let module Electron = {
     external loadURL : t => string => LoadURLOptions.t? => unit => unit = "" [@@bs.send];
     external reload : t => unit = "" [@@bs.send];
     external setMenu : t => 'a => unit = "" [@@bs.send];
-    external setProgressBar : t => float => 'a? => unit => unit = "" [@@bs.send];
+    external setProgressBar : t => float => OptionsType.t? => unit => unit = "" [@@bs.send];
     external setOverlayIcon : t => NativeImage.t => string => unit = "" [@@bs.send];
     external setHasShadow : t => bool => unit = "" [@@bs.send];
     external hasShadow : t => bool = "" [@@bs.send];
@@ -532,16 +553,44 @@ let module Electron = {
   let module DevToolsExtensions = {
     type t;
 
-    external make : value::'a => t = "" [@@bs.obj];
-    external setValue : t => 'a => unit = "value" [@@bs.set];
-    external getValue : t => 'a = "value" [@@bs.get];
+    let module ValueType = {
+      type t;
 
+      external make : name::string => value::string => t = "" [@@bs.obj];
+      external setName : t => string => unit = "name" [@@bs.set];
+      external getName : t => string = "name" [@@bs.get];
+
+      external setValue : t => string => unit = "value" [@@bs.set];
+      external getValue : t => string = "value" [@@bs.get];
+
+    };
+
+    external value : t => string => ValueType.t = "" [@@bs.send];
+    external make : unit => t = "" [@@bs.obj];
   };
 
   let module WebPreferences = {
     type t;
 
-    external make : devTools::bool? => nodeIntegration::bool? => preload::string? => session::Session.t? => partition::string? => zoomFactor::float? => javascript::bool? => webSecurity::bool? => allowDisplayingInsecureContent::bool? => allowRunningInsecureContent::bool? => images::bool? => textAreasAreResizable::bool? => webgl::bool? => webaudio::bool? => plugins::bool? => experimentalFeatures::bool? => experimentalCanvasFeatures::bool? => directWrite::bool? => scrollBounce::bool? => blinkFeatures::string? => disableBlinkFeatures::string? => defaultFontFamily::'a? => defaultFontSize::float? => defaultMonospaceFontSize::float? => minimumFontSize::float? => defaultEncoding::string? => backgroundThrottling::bool? => offscreen::bool? => sandbox::bool? => unit => t = "" [@@bs.obj];
+    let module DefaultFontFamilyType = {
+      type t;
+
+      external make : standard::string? => serif::string? => sansSerif::string? => monospace::string? => unit => t = "" [@@bs.obj];
+      external setStandard : t => option string => unit = "standard" [@@bs.set];
+      external getStandard : t => option string = "standard" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+      external setSerif : t => option string => unit = "serif" [@@bs.set];
+      external getSerif : t => option string = "serif" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+      external setSansSerif : t => option string => unit = "sansSerif" [@@bs.set];
+      external getSansSerif : t => option string = "sansSerif" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+      external setMonospace : t => option string => unit = "monospace" [@@bs.set];
+      external getMonospace : t => option string = "monospace" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+    };
+
+    external make : devTools::bool? => nodeIntegration::bool? => preload::string? => session::Session.t? => partition::string? => zoomFactor::float? => javascript::bool? => webSecurity::bool? => allowDisplayingInsecureContent::bool? => allowRunningInsecureContent::bool? => images::bool? => textAreasAreResizable::bool? => webgl::bool? => webaudio::bool? => plugins::bool? => experimentalFeatures::bool? => experimentalCanvasFeatures::bool? => directWrite::bool? => scrollBounce::bool? => blinkFeatures::string? => disableBlinkFeatures::string? => defaultFontFamily::DefaultFontFamilyType.t? => defaultFontSize::float? => defaultMonospaceFontSize::float? => minimumFontSize::float? => defaultEncoding::string? => backgroundThrottling::bool? => offscreen::bool? => sandbox::bool? => unit => t = "" [@@bs.obj];
     external setDevTools : t => option bool => unit = "devTools" [@@bs.set];
     external getDevTools : t => option bool = "devTools" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -605,8 +654,8 @@ let module Electron = {
     external setDisableBlinkFeatures : t => option string => unit = "disableBlinkFeatures" [@@bs.set];
     external getDisableBlinkFeatures : t => option string = "disableBlinkFeatures" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setDefaultFontFamily : t => option 'a => unit = "defaultFontFamily" [@@bs.set];
-    external getDefaultFontFamily : t => option 'a = "defaultFontFamily" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setDefaultFontFamily : t => option DefaultFontFamilyType.t => unit = "defaultFontFamily" [@@bs.set];
+    external getDefaultFontFamily : t => option DefaultFontFamilyType.t = "defaultFontFamily" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setDefaultFontSize : t => option float => unit = "defaultFontSize" [@@bs.set];
     external getDefaultFontSize : t => option float = "defaultFontSize" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -861,7 +910,14 @@ let module Electron = {
   let module CrashReporterStartOptions = {
     type t;
 
-    external make : productName::string? => companyName::string => submitURL::string => autoSubmit::bool? => ignoreSystemCrashHandler::bool? => extra::'a? => unit => t = "" [@@bs.obj];
+    let module ExtraType = {
+      type t;
+
+      external value : t => string => string = "" [@@bs.send];
+      external make : unit => t = "" [@@bs.obj];
+    };
+
+    external make : productName::string? => companyName::string => submitURL::string => autoSubmit::bool? => ignoreSystemCrashHandler::bool? => extra::ExtraType.t? => unit => t = "" [@@bs.obj];
     external setProductName : t => option string => unit = "productName" [@@bs.set];
     external getProductName : t => option string = "productName" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -877,8 +933,8 @@ let module Electron = {
     external setIgnoreSystemCrashHandler : t => option bool => unit = "ignoreSystemCrashHandler" [@@bs.set];
     external getIgnoreSystemCrashHandler : t => option bool = "ignoreSystemCrashHandler" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setExtra : t => option 'a => unit = "extra" [@@bs.set];
-    external getExtra : t => option 'a = "extra" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setExtra : t => option ExtraType.t => unit = "extra" [@@bs.set];
+    external getExtra : t => option ExtraType.t = "extra" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
   };
 
@@ -944,7 +1000,19 @@ let module Electron = {
   let module OpenDialogOptions = {
     type t;
 
-    external make : title::string? => defaultPath::string? => buttonLabel::string? => filters::(array 'a)? => properties::(array 'a)? => normalizeAccessKeys::bool? => message::string? => unit => t = "" [@@bs.obj];
+    let module FiltersType = {
+      type t;
+
+      external make : name::string => extensions::(array string) => t = "" [@@bs.obj];
+      external setName : t => string => unit = "name" [@@bs.set];
+      external getName : t => string = "name" [@@bs.get];
+
+      external setExtensions : t => (array string) => unit = "extensions" [@@bs.set];
+      external getExtensions : t => (array string) = "extensions" [@@bs.get];
+
+    };
+
+    external make : title::string? => defaultPath::string? => buttonLabel::string? => filters::(array FiltersType.t)? => properties::(array 'a)? => normalizeAccessKeys::bool? => message::string? => unit => t = "" [@@bs.obj];
     external setTitle : t => option string => unit = "title" [@@bs.set];
     external getTitle : t => option string = "title" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -954,8 +1022,8 @@ let module Electron = {
     external setButtonLabel : t => option string => unit = "buttonLabel" [@@bs.set];
     external getButtonLabel : t => option string = "buttonLabel" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setFilters : t => option (array 'a) => unit = "filters" [@@bs.set];
-    external getFilters : t => option (array 'a) = "filters" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setFilters : t => option (array FiltersType.t) => unit = "filters" [@@bs.set];
+    external getFilters : t => option (array FiltersType.t) = "filters" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setProperties : t => option (array 'a) => unit = "properties" [@@bs.set];
     external getProperties : t => option (array 'a) = "properties" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -971,7 +1039,19 @@ let module Electron = {
   let module SaveDialogOptions = {
     type t;
 
-    external make : title::string? => defaultPath::string? => buttonLabel::string? => filters::(array 'a)? => message::string? => nameFieldLabel::string? => showsTagField::bool? => unit => t = "" [@@bs.obj];
+    let module FiltersType = {
+      type t;
+
+      external make : name::string => extensions::(array string) => t = "" [@@bs.obj];
+      external setName : t => string => unit = "name" [@@bs.set];
+      external getName : t => string = "name" [@@bs.get];
+
+      external setExtensions : t => (array string) => unit = "extensions" [@@bs.set];
+      external getExtensions : t => (array string) = "extensions" [@@bs.get];
+
+    };
+
+    external make : title::string? => defaultPath::string? => buttonLabel::string? => filters::(array FiltersType.t)? => message::string? => nameFieldLabel::string? => showsTagField::bool? => unit => t = "" [@@bs.obj];
     external setTitle : t => option string => unit = "title" [@@bs.set];
     external getTitle : t => option string = "title" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -981,8 +1061,8 @@ let module Electron = {
     external setButtonLabel : t => option string => unit = "buttonLabel" [@@bs.set];
     external getButtonLabel : t => option string = "buttonLabel" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setFilters : t => option (array 'a) => unit = "filters" [@@bs.set];
-    external getFilters : t => option (array 'a) = "filters" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setFilters : t => option (array FiltersType.t) => unit = "filters" [@@bs.set];
+    external getFilters : t => option (array FiltersType.t) = "filters" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setMessage : t => option string => unit = "message" [@@bs.set];
     external getMessage : t => option string = "message" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -1267,7 +1347,14 @@ let module Electron = {
   let module RequestOptions = {
     type t;
 
-    external make : method::string? => url::string? => session::Session.t? => partition::string? => protocol::'a? => host::string? => hostname::string? => port::float? => path::string? => headers::'a? => unit => t = "" [@@bs.obj];
+    let module HeadersType = {
+      type t;
+
+      external value : t => string => 'a = "" [@@bs.send];
+      external make : unit => t = "" [@@bs.obj];
+    };
+
+    external make : method::string? => url::string? => session::Session.t? => partition::string? => protocol::'a? => host::string? => hostname::string? => port::float? => path::string? => headers::HeadersType.t? => unit => t = "" [@@bs.obj];
     external setMethod : t => option string => unit = "method" [@@bs.set];
     external getMethod : t => option string = "method" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -1295,8 +1382,8 @@ let module Electron = {
     external setPath : t => option string => unit = "path" [@@bs.set];
     external getPath : t => option string = "path" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setHeaders : t => option 'a => unit = "headers" [@@bs.set];
-    external getHeaders : t => option 'a = "headers" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setHeaders : t => option HeadersType.t => unit = "headers" [@@bs.set];
+    external getHeaders : t => option HeadersType.t = "headers" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
   };
 
@@ -1325,20 +1412,27 @@ let module Electron = {
   let module IncomingMessage = {
     type t;
 
+    let module HeadersType = {
+      type t;
+
+      external value : t => string => (array string) = "" [@@bs.send];
+      external make : unit => t = "" [@@bs.obj];
+    };
+
     external on0 : t => 'a => (Buffer.t => unit) => t = "" [@@bs.send];
     external on1 : t => 'a => (unit => unit) => t = "" [@@bs.send];
     external on2 : t => 'a => (unit => unit) => t = "" [@@bs.send];
     external on3 : t => 'a => (Error.t => unit) => t = "" [@@bs.send];
     external on4 : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external make : statusCode::float => statusMessage::string => headers::'a => httpVersion::string => httpVersionMajor::float => httpVersionMinor::float => t = "" [@@bs.obj];
+    external make : statusCode::float => statusMessage::string => headers::HeadersType.t => httpVersion::string => httpVersionMajor::float => httpVersionMinor::float => t = "" [@@bs.obj];
     external setStatusCode : t => float => unit = "statusCode" [@@bs.set];
     external getStatusCode : t => float = "statusCode" [@@bs.get];
 
     external setStatusMessage : t => string => unit = "statusMessage" [@@bs.set];
     external getStatusMessage : t => string = "statusMessage" [@@bs.get];
 
-    external setHeaders : t => 'a => unit = "headers" [@@bs.set];
-    external getHeaders : t => 'a = "headers" [@@bs.get];
+    external setHeaders : t => HeadersType.t => unit = "headers" [@@bs.set];
+    external getHeaders : t => HeadersType.t = "headers" [@@bs.get];
 
     external setHttpVersion : t => string => unit = "httpVersion" [@@bs.set];
     external getHttpVersion : t => string = "httpVersion" [@@bs.get];
@@ -1417,7 +1511,22 @@ let module Electron = {
   let module ProtocolRequest = {
     type t;
 
-    external make : url::string => referrer::string => method::string => uploadData::(array 'a)? => unit => t = "" [@@bs.obj];
+    let module UploadDataType = {
+      type t;
+
+      external make : bytes::Buffer.t => file::string => blobUUID::string => t = "" [@@bs.obj];
+      external setBytes : t => Buffer.t => unit = "bytes" [@@bs.set];
+      external getBytes : t => Buffer.t = "bytes" [@@bs.get];
+
+      external setFile : t => string => unit = "file" [@@bs.set];
+      external getFile : t => string = "file" [@@bs.get];
+
+      external setBlobUUID : t => string => unit = "blobUUID" [@@bs.set];
+      external getBlobUUID : t => string = "blobUUID" [@@bs.get];
+
+    };
+
+    external make : url::string => referrer::string => method::string => uploadData::(array UploadDataType.t)? => unit => t = "" [@@bs.obj];
     external setUrl : t => string => unit = "url" [@@bs.set];
     external getUrl : t => string = "url" [@@bs.get];
 
@@ -1427,16 +1536,25 @@ let module Electron = {
     external setMethod : t => string => unit = "method" [@@bs.set];
     external getMethod : t => string = "method" [@@bs.get];
 
-    external setUploadData : t => option (array 'a) => unit = "uploadData" [@@bs.set];
-    external getUploadData : t => option (array 'a) = "uploadData" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setUploadData : t => option (array UploadDataType.t) => unit = "uploadData" [@@bs.set];
+    external getUploadData : t => option (array UploadDataType.t) = "uploadData" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
   };
 
   let module ProtocolCallback = {
     type t;
 
+    let module ObjType = {
+      type t;
+
+      external make : error::float => t = "" [@@bs.obj];
+      external setError : t => float => unit = "error" [@@bs.set];
+      external getError : t => float = "error" [@@bs.get];
+
+    };
+
     external invoke0 : t => float => unit = "" [@@bs.send];
-    external invoke1 : t => 'a => unit = "" [@@bs.send];
+    external invoke1 : t => ObjType.t => unit = "" [@@bs.send];
     external invoke2 : t => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
@@ -1444,31 +1562,100 @@ let module Electron = {
   let module FileProtocolCallback = {
     type t;
 
+    let module ObjType = {
+      type t;
+
+      external make : path::string => t = "" [@@bs.obj];
+      external setPath : t => string => unit = "path" [@@bs.set];
+      external getPath : t => string = "path" [@@bs.get];
+
+    };
+
     external invoke0 : t => string => unit = "" [@@bs.send];
-    external invoke1 : t => 'a => unit = "" [@@bs.send];
+    external invoke1 : t => ObjType.t => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
   let module BufferProtocolCallback = {
     type t;
 
+    let module ObjType = {
+      type t;
+
+      external make : data::Buffer.t => mimeType::string => charset::string? => unit => t = "" [@@bs.obj];
+      external setData : t => Buffer.t => unit = "data" [@@bs.set];
+      external getData : t => Buffer.t = "data" [@@bs.get];
+
+      external setMimeType : t => string => unit = "mimeType" [@@bs.set];
+      external getMimeType : t => string = "mimeType" [@@bs.get];
+
+      external setCharset : t => option string => unit = "charset" [@@bs.set];
+      external getCharset : t => option string = "charset" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+    };
+
     external invoke0 : t => Buffer.t => unit = "" [@@bs.send];
-    external invoke1 : t => 'a => unit = "" [@@bs.send];
+    external invoke1 : t => ObjType.t => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
   let module StringProtocolCallback = {
     type t;
 
+    let module ObjType = {
+      type t;
+
+      external make : data::string => mimeType::string => charset::string? => unit => t = "" [@@bs.obj];
+      external setData : t => string => unit = "data" [@@bs.set];
+      external getData : t => string = "data" [@@bs.get];
+
+      external setMimeType : t => string => unit = "mimeType" [@@bs.set];
+      external getMimeType : t => string = "mimeType" [@@bs.get];
+
+      external setCharset : t => option string => unit = "charset" [@@bs.set];
+      external getCharset : t => option string = "charset" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+    };
+
     external invoke0 : t => string => unit = "" [@@bs.send];
-    external invoke1 : t => 'a => unit = "" [@@bs.send];
+    external invoke1 : t => ObjType.t => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
   let module HttpProtocolCallback = {
     type t;
 
-    external invoke : t => 'a => unit = "" [@@bs.send];
+    let module RedirectRequestType = {
+      type t;
+
+      let module UploadDataType = {
+        type t;
+
+        external make : contentType::string => data::string => t = "" [@@bs.obj];
+        external setContentType : t => string => unit = "contentType" [@@bs.set];
+        external getContentType : t => string = "contentType" [@@bs.get];
+
+        external setData : t => string => unit = "data" [@@bs.set];
+        external getData : t => string = "data" [@@bs.get];
+
+      };
+
+      external make : url::string => method::string => session::Object.t? => uploadData::UploadDataType.t? => unit => t = "" [@@bs.obj];
+      external setUrl : t => string => unit = "url" [@@bs.set];
+      external getUrl : t => string = "url" [@@bs.get];
+
+      external setMethod : t => string => unit = "method" [@@bs.set];
+      external getMethod : t => string = "method" [@@bs.get];
+
+      external setSession : t => option Object.t => unit = "session" [@@bs.set];
+      external getSession : t => option Object.t = "session" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+      external setUploadData : t => option UploadDataType.t => unit = "uploadData" [@@bs.set];
+      external getUploadData : t => option UploadDataType.t = "uploadData" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+    };
+
+    external invoke : t => RedirectRequestType.t => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -1765,9 +1952,18 @@ let module Electron = {
   let module Shell = {
     type t;
 
+    let module OptionsType = {
+      type t;
+
+      external make : activate::bool => t = "" [@@bs.obj];
+      external setActivate : t => bool => unit = "activate" [@@bs.set];
+      external getActivate : t => bool = "activate" [@@bs.get];
+
+    };
+
     external showItemInFolder : t => string => bool = "" [@@bs.send];
     external openItem : t => string => bool = "" [@@bs.send];
-    external openExternal : t => string => 'a? => unit => bool = "" [@@bs.send];
+    external openExternal : t => string => OptionsType.t? => unit => bool = "" [@@bs.send];
     external moveItemToTrash : t => string => bool = "" [@@bs.send];
     external beep : t => unit = "" [@@bs.send];
     external writeShortcutLink0 : t => string => ShortcutLinkOptions.t => bool = "" [@@bs.send];
@@ -1835,6 +2031,21 @@ let module Electron = {
   let module Tray = {
     type t;
 
+    let module OptionsType = {
+      type t;
+
+      external make : icon::NativeImage.t? => title::string? => content::string? => unit => t = "" [@@bs.obj];
+      external setIcon : t => option NativeImage.t => unit = "icon" [@@bs.set];
+      external getIcon : t => option NativeImage.t = "icon" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+      external setTitle : t => option string => unit = "title" [@@bs.set];
+      external getTitle : t => option string = "title" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+      external setContent : t => option string => unit = "content" [@@bs.set];
+      external getContent : t => option string = "content" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+    };
+
     external on0 : t => 'a => (Modifiers.t => Rectangle.t => unit) => t = "" [@@bs.send];
     external on1 : t => 'a => (Modifiers.t => Rectangle.t => unit) => t = "" [@@bs.send];
     external on2 : t => 'a => (Modifiers.t => Rectangle.t => unit) => t = "" [@@bs.send];
@@ -1855,7 +2066,7 @@ let module Electron = {
     external setToolTip : t => string => unit = "" [@@bs.send];
     external setTitle : t => string => unit = "" [@@bs.send];
     external setHighlightMode : t => 'a => unit = "" [@@bs.send];
-    external displayBalloon : t => 'a? => unit => unit = "" [@@bs.send];
+    external displayBalloon : t => OptionsType.t? => unit => unit = "" [@@bs.send];
     external popUpContextMenu : t => Menu.t? => Point.t? => unit => unit = "" [@@bs.send];
     external setContextMenu : t => Menu.t => unit = "" [@@bs.send];
     external getBounds : t => Rectangle.t = "" [@@bs.send];
@@ -1903,6 +2114,15 @@ let module Electron = {
 
   let module WebContents = {
     type t;
+
+    let module OptionsType = {
+      type t;
+
+      external make : mode::'a? => unit => t = "" [@@bs.obj];
+      external setMode : t => option 'a => unit = "mode" [@@bs.set];
+      external getMode : t => option 'a = "mode" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+    };
 
     external on0 : t => 'a => ('x => 'y) => t = "" [@@bs.send];
     external on1 : t => 'a => (Event.t => float => string => string => bool => unit) => t = "" [@@bs.send];
@@ -1990,7 +2210,7 @@ let module Electron = {
     external printToPDF : t => PrintToPDFOptions.t => (Error.t => Buffer.t => unit) => unit = "" [@@bs.send];
     external addWorkSpace : t => string => unit = "" [@@bs.send];
     external removeWorkSpace : t => string => unit = "" [@@bs.send];
-    external openDevTools : t => 'a? => unit => unit = "" [@@bs.send];
+    external openDevTools : t => OptionsType.t? => unit => unit = "" [@@bs.send];
     external closeDevTools : t => unit = "" [@@bs.send];
     external isDevToolsOpened : t => bool = "" [@@bs.send];
     external isDevToolsFocused : t => bool = "" [@@bs.send];
@@ -2044,7 +2264,64 @@ let module Electron = {
   let module ContextMenuParams = {
     type t;
 
-    external make : x::float => y::float => linkURL::string => linkText::string => pageURL::string => frameURL::string => srcURL::string => mediaType::'a => mediaFlags::'a => hasImageContents::bool => isEditable::bool => editFlags::'a => selectionText::string => titleText::string => misspelledWord::string => frameCharset::string => inputFieldType::'a => menuSourceType::'a => t = "" [@@bs.obj];
+    let module MediaFlagsType = {
+      type t;
+
+      external make : inError::bool => isPaused::bool => isMuted::bool => hasAudio::bool => isLooping::bool => isControlsVisible::bool => canToggleControls::bool => canRotate::bool => t = "" [@@bs.obj];
+      external setInError : t => bool => unit = "inError" [@@bs.set];
+      external getInError : t => bool = "inError" [@@bs.get];
+
+      external setIsPaused : t => bool => unit = "isPaused" [@@bs.set];
+      external getIsPaused : t => bool = "isPaused" [@@bs.get];
+
+      external setIsMuted : t => bool => unit = "isMuted" [@@bs.set];
+      external getIsMuted : t => bool = "isMuted" [@@bs.get];
+
+      external setHasAudio : t => bool => unit = "hasAudio" [@@bs.set];
+      external getHasAudio : t => bool = "hasAudio" [@@bs.get];
+
+      external setIsLooping : t => bool => unit = "isLooping" [@@bs.set];
+      external getIsLooping : t => bool = "isLooping" [@@bs.get];
+
+      external setIsControlsVisible : t => bool => unit = "isControlsVisible" [@@bs.set];
+      external getIsControlsVisible : t => bool = "isControlsVisible" [@@bs.get];
+
+      external setCanToggleControls : t => bool => unit = "canToggleControls" [@@bs.set];
+      external getCanToggleControls : t => bool = "canToggleControls" [@@bs.get];
+
+      external setCanRotate : t => bool => unit = "canRotate" [@@bs.set];
+      external getCanRotate : t => bool = "canRotate" [@@bs.get];
+
+    };
+
+    let module EditFlagsType = {
+      type t;
+
+      external make : canUndo::bool => canRedo::bool => canCut::bool => canCopy::bool => canPaste::bool => canDelete::bool => canSelectAll::bool => t = "" [@@bs.obj];
+      external setCanUndo : t => bool => unit = "canUndo" [@@bs.set];
+      external getCanUndo : t => bool = "canUndo" [@@bs.get];
+
+      external setCanRedo : t => bool => unit = "canRedo" [@@bs.set];
+      external getCanRedo : t => bool = "canRedo" [@@bs.get];
+
+      external setCanCut : t => bool => unit = "canCut" [@@bs.set];
+      external getCanCut : t => bool = "canCut" [@@bs.get];
+
+      external setCanCopy : t => bool => unit = "canCopy" [@@bs.set];
+      external getCanCopy : t => bool = "canCopy" [@@bs.get];
+
+      external setCanPaste : t => bool => unit = "canPaste" [@@bs.set];
+      external getCanPaste : t => bool = "canPaste" [@@bs.get];
+
+      external setCanDelete : t => bool => unit = "canDelete" [@@bs.set];
+      external getCanDelete : t => bool = "canDelete" [@@bs.get];
+
+      external setCanSelectAll : t => bool => unit = "canSelectAll" [@@bs.set];
+      external getCanSelectAll : t => bool = "canSelectAll" [@@bs.get];
+
+    };
+
+    external make : x::float => y::float => linkURL::string => linkText::string => pageURL::string => frameURL::string => srcURL::string => mediaType::'a => mediaFlags::MediaFlagsType.t => hasImageContents::bool => isEditable::bool => editFlags::EditFlagsType.t => selectionText::string => titleText::string => misspelledWord::string => frameCharset::string => inputFieldType::'a => menuSourceType::'a => t = "" [@@bs.obj];
     external setX : t => float => unit = "x" [@@bs.set];
     external getX : t => float = "x" [@@bs.get];
 
@@ -2069,8 +2346,8 @@ let module Electron = {
     external setMediaType : t => 'a => unit = "mediaType" [@@bs.set];
     external getMediaType : t => 'a = "mediaType" [@@bs.get];
 
-    external setMediaFlags : t => 'a => unit = "mediaFlags" [@@bs.set];
-    external getMediaFlags : t => 'a = "mediaFlags" [@@bs.get];
+    external setMediaFlags : t => MediaFlagsType.t => unit = "mediaFlags" [@@bs.set];
+    external getMediaFlags : t => MediaFlagsType.t = "mediaFlags" [@@bs.get];
 
     external setHasImageContents : t => bool => unit = "hasImageContents" [@@bs.set];
     external getHasImageContents : t => bool = "hasImageContents" [@@bs.get];
@@ -2078,8 +2355,8 @@ let module Electron = {
     external setIsEditable : t => bool => unit = "isEditable" [@@bs.set];
     external getIsEditable : t => bool = "isEditable" [@@bs.get];
 
-    external setEditFlags : t => 'a => unit = "editFlags" [@@bs.set];
-    external getEditFlags : t => 'a = "editFlags" [@@bs.get];
+    external setEditFlags : t => EditFlagsType.t => unit = "editFlags" [@@bs.set];
+    external getEditFlags : t => EditFlagsType.t = "editFlags" [@@bs.get];
 
     external setSelectionText : t => string => unit = "selectionText" [@@bs.set];
     external getSelectionText : t => string = "selectionText" [@@bs.get];
@@ -2116,10 +2393,8 @@ let module Electron = {
   let module Headers = {
     type t;
 
-    external make : value::string => t = "" [@@bs.obj];
-    external setValue : t => string => unit = "value" [@@bs.set];
-    external getValue : t => string = "value" [@@bs.get];
-
+    external value : t => string => string = "" [@@bs.send];
+    external make : unit => t = "" [@@bs.obj];
   };
 
   let module NewWindowDisposition = {
@@ -2501,13 +2776,22 @@ let module Electron = {
   let module WebFrame = {
     type t;
 
+    let module ProviderType = {
+      type t;
+
+      external make : spellCheck::(string => bool) => t = "" [@@bs.obj];
+      external setSpellCheck : t => (string => bool) => unit = "spellCheck" [@@bs.set];
+      external getSpellCheck : t => (string => bool) = "spellCheck" [@@bs.get];
+
+    };
+
     external setZoomFactor : t => float => unit = "" [@@bs.send];
     external getZoomFactor : t => float = "" [@@bs.send];
     external setZoomLevel : t => float => unit = "" [@@bs.send];
     external getZoomLevel : t => float = "" [@@bs.send];
     external setVisualZoomLevelLimits : t => float => float => unit = "" [@@bs.send];
     external setLayoutZoomLevelLimits : t => float => float => unit = "" [@@bs.send];
-    external setSpellCheckProvider : t => string => bool => 'a => unit = "" [@@bs.send];
+    external setSpellCheckProvider : t => string => bool => ProviderType.t => unit = "" [@@bs.send];
     external registerURLSchemeAsSecure : t => string => unit = "" [@@bs.send];
     external registerURLSchemeAsBypassingCSP : t => string => unit = "" [@@bs.send];
     external registerURLSchemeAsPrivileged : t => string => RegisterURLSchemeOptions.t? => unit => unit = "" [@@bs.send];

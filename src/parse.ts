@@ -10,6 +10,7 @@ import {
   Property,
   Interface,
 } from './types'
+import { capitalized } from './common'
 
 // TODO:
 const MappedTypes = {
@@ -39,6 +40,10 @@ interface PropertyParseOptions {
   readonly name?: string
 }
 
+interface TypeParseOptions {
+  readonly declarationName?: string
+}
+
 export function parseFile(file: TS.SourceFile): Module {
   const rootModule = {
     name: Path.basename(file.fileName, '.d.ts'),
@@ -64,46 +69,53 @@ function findTypeParameters(node, acc = []) {
   return findTypeParameters(node.parent, acc);
 }
 
-function getType(type): string {
+function getType(type: any, opts: TypeParseOptions = {}): { name: string, anonymousType?: Interface } {
   if (!type) {
-    return "'a";
+    return { name: "'a" };
   }
 
   switch (type.kind) {
     case TS.SyntaxKind.StringKeyword:
-      return "string";
+      return { name: "string" }
     case TS.SyntaxKind.NumberKeyword:
-      return "float";
+      return { name: "float" }
     case TS.SyntaxKind.BooleanKeyword:
-      return "bool";
+      return { name: "bool" }
     case TS.SyntaxKind.VoidKeyword:
-      return "unit";
+      return { name: "unit" }
     case TS.SyntaxKind.SymbolKeyword:
       // TODO:
-      return "Symbol";
-    case TS.SyntaxKind.ArrayType:
-      return `(array ${getType(type.elementType)})`
+      return { name: "Symbol" }
+    case TS.SyntaxKind.ArrayType: {
+      const innerType = getType(type.elementType, opts)
+      // TODO: This paren wrapping is a hack that needs to be generalized.
+      return { name: `(array ${innerType.name})`, anonymousType: innerType.anonymousType }
+    }
     case TS.SyntaxKind.FunctionType:
       const cbParams = type.parameters.map(function (x) {
-        return x.dotDotDotToken ? "'a" : getType(x.type);
+        return x.dotDotDotToken ? "'a" : getType(x.type, opts).name;
       }).join(" => ");
-      return "(" + (cbParams || "unit") + " => " + getType(type.type) + ")";
+      return { name: "(" + (cbParams || "unit") + " => " + getType(type.type, opts).name + ")" }
     case TS.SyntaxKind.UnionType:
       // TODO:
       if (type.types && type.types[0].kind == TS.SyntaxKind.StringLiteral)
-        return "(* TODO StringEnum " + type.types.map(x=>x.text).join(" | ") + " *) string";
+        return { name: "(* TODO StringEnum " + type.types.map(x=>x.text).join(" | ") + " *) string" }
       else if (type.types.length <= 4)
         // TODO:
-        return "'a";
+        return { name: "'a" }
       else
         // TODO:
-        return "'a";
+        return { name: "'a" }
     case TS.SyntaxKind.TupleType:
-      return type.elementTypes.map(getType).join(" * ");
+      return { name: type.elementTypes.map(t => getType(t, opts)).map(t => t.name).join(" * ") }
     case TS.SyntaxKind.ParenthesizedType:
-      return getType(type.type);
+      return getType(type.type, opts)
     case TS.SyntaxKind.ThisType:
-      return ModuleTypeName;
+      return { name: ModuleTypeName }
+    case TS.SyntaxKind.TypeLiteral: {
+      const i = visitInterface(type, { name: `${capitalized(opts.declarationName)}Type`, anonymous: true });
+      return { name: `${i.name}.${ModuleTypeName}`, anonymousType: i }
+    }
     default:
       let name = type.typeName ? `${type.typeName.text}.${ModuleTypeName}` : (type.expression ? type.expression.text : null)
       if (type.expression && type.expression.kind == TS.SyntaxKind.PropertyAccessExpression) {
@@ -115,7 +127,7 @@ function getType(type): string {
 
       // TODO:
       if (!name) {
-        return "'a"
+        return { name: "'a" }
       }
 
       const t = MappedTypes[name]
@@ -125,7 +137,7 @@ function getType(type): string {
 
       const typeParameters = findTypeParameters(type);
       const result = `${name}${printTypeArguments(type.typeArguments)}`
-      return (typeParameters.indexOf(result) > -1 ? "'" : "") + result;
+      return { name: (typeParameters.indexOf(result) > -1 ? "'" : "") + result }
   }
 }
 
@@ -145,12 +157,12 @@ function getVariables(node: any): ReadonlyArray<Variable> {
         // anonymousTypes.push(type);
         type = i.name;
       } else {
-        type = getType(declarations.type);
+        type = getType(declarations.type).name
       }
 
       variables.push({
-        name: name,
-        type: type,
+        name,
+        type,
         static: true,
         parameters: []
       });
@@ -160,13 +172,17 @@ function getVariables(node: any): ReadonlyArray<Variable> {
   return variables
 }
 
-function getProperty(node, opts: PropertyParseOptions = {}): Property {
-  return {
-    name: opts.name || getName(node),
-    type: getType(node.type),
+function getProperty(node, opts: PropertyParseOptions = {}): { property: Property, anonymousType?: Interface } {
+  const name = opts.name || getName(node)
+  const type = getType(node.type, { declarationName: name })
+  const prop: Property = {
+    name,
+    type: type.name,
     optional: node.questionToken != null,
     static: node.name ? hasFlag(node.name.parserContextFlags, TS.ModifierFlags.Static) : false
   };
+
+  return { property: prop, anonymousType: type.anonymousType }
 }
 
 function visitInterface(node, opts) {
@@ -176,50 +192,63 @@ function visitInterface(node, opts) {
     switch (node.kind) {
       case TS.SyntaxKind.PropertySignature:
       case TS.SyntaxKind.PropertyDeclaration: {
-        let member: Property
         if (node.name.kind == TS.SyntaxKind.ComputedPropertyName) {
           const name = getName(node.name);
-          member = getProperty(node, { name: "["+name+"]" });
+          const member = getProperty(node, { name: "["+name+"]" })
+          ifc.properties.push(member.property)
+          if (member.anonymousType) {
+            ifc.anonymousTypes.push(member.anonymousType)
+          }
+
+          // TODO
           // member.emit = "$0["+name+"]{{=$1}}";
         } else {
-          member = getProperty(node);
+          const member = getProperty(node)
+          ifc.properties.push(member.property)
+          if (member.anonymousType) {
+            ifc.anonymousTypes.push(member.anonymousType)
+          }
         }
-        ifc.properties.push(member);
       } break;
       // TODO: If interface only contains one `Invoke` method
       // make it an alias of Func
       case TS.SyntaxKind.CallSignature: {
-        const member = getMethod(node, { name: "invoke", moduleName: ifc.name });
+        const member = getMethod(node, { name: "invoke", moduleName: ifc.name })
         // member.emit = "$0($1...)";
-        ifc.methods.push(member);
+        ifc.methods.push(member.method)
+        ifc.anonymousTypes.push(...member.anonymousTypes)
       } break;
       case TS.SyntaxKind.MethodSignature:
       case TS.SyntaxKind.MethodDeclaration: {
-        let member: Method
         if (node.name.kind == TS.SyntaxKind.ComputedPropertyName) {
           const name = getName(node.name);
-          member = getMethod(node, { name: "["+name+"]", moduleName: ifc.name });
+          const member = getMethod(node, { name: "["+name+"]", moduleName: ifc.name })
+          ifc.methods.push(member.method)
+          ifc.anonymousTypes.push(...member.anonymousTypes)
           // member.emit = "$0["+name+"]($1...)";
         } else {
-          member = getMethod(node, { moduleName: ifc.name });
+          const member = getMethod(node, { moduleName: ifc.name })
+          ifc.methods.push(member.method)
+          ifc.anonymousTypes.push(...member.anonymousTypes)
         }
-
-        ifc.methods.push(member);
       } break;
       case TS.SyntaxKind.ConstructSignature: {
         const member = getMethod(node, { name: "Create", moduleName: ifc.name });
         // member.emit = "new $0($1...)";
-        ifc.methods.push(member);
+        ifc.methods.push(member.method)
+        ifc.anonymousTypes.push(...member.anonymousTypes)
       } break;
       case TS.SyntaxKind.IndexSignature: {
         const member = getMethod(node, { name: "value", moduleName: ifc.name });
         // TODO:
         // member.emit = "$0[$1]{{=$2}}";
-        ifc.properties.push(member);
+        ifc.methods.push(member.method)
+        ifc.anonymousTypes.push(...member.anonymousTypes)
       } break;
       case TS.SyntaxKind.Constructor: {
         const member = getMethod(node, { name: 'make', ctor: true, moduleName: ifc.name });
-        ifc.methods.push(member);
+        ifc.methods.push(member.method)
+        ifc.anonymousTypes.push(...member.anonymousTypes)
         // ifc.constructorParameters = node.parameters.map(getParameter);
       } break;
     }
@@ -283,24 +312,26 @@ function getInterface(node, opts: InterfaceParseOptions = {}): Interface {
   const ifc: Interface = {
     name: opts.name || getName(node),
     kind: opts.kind || "interface",
-    parents: opts.kind == "alias" ? [getType(node.type)] : getParents(node),
+    parents: opts.kind == "alias" ? [ getType(node.type).name ] : getParents(node),
     properties: [],
     methods: [],
     typeParameters: (node.typeParameters || []).map(x => x.name.text),
+    anonymousTypes: [],
   };
-  if (!opts.anonymous)
-    // TODO:
+  // TODO:
+  // if (!opts.anonymous)
     // typeCache[joinPath(ifc.path, ifc.name.replace(genReg,""))] = ifc;
+
   return ifc;
 }
 
 function getParents(node): ReadonlyArray<string> {
-  const parents = [];
+  const parents: Array<string> = [];
   if (Array.isArray(node.heritageClauses)) {
     for (let i = 0; i < node.heritageClauses.length; i++) {
       const types = node.heritageClauses[i].types;
       for (let j = 0; j < types.length; j++) {
-        parents.push(getType(types[j]));
+        parents.push(getType(types[j]).name);
       }
     }
   }
@@ -311,15 +342,18 @@ function hasFlag(flags, flag) {
   return flags != null && (flags & flag) == flag;
 }
 
-function getMethod(node, opts: MethodParseOptions = {}): Method {
+function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anonymousTypes: ReadonlyArray<Interface> } {
+  const params = node.parameters.map(n => getParameter(n))
+  const name = opts.name || getName(node)
+  const type = getType(node.type, { declarationName: name })
   const meth: Method = {
-    name: opts.name || getName(node),
-    type: getType(node.type),
+    name,
+    type: type.name,
     optional: node.questionToken != null,
     static: opts.static
           || (node.name && hasFlag(node.name.parserContextFlags, TS.ModifierFlags.Static))
           || (node.modifiers && hasFlag(node.modifiers.flags, TS.ModifierFlags.Static)),
-    parameters: node.parameters.map(getParameter),
+    parameters: params.map(p => p.parameter),
     ctor: opts.ctor || false,
     maker: false,
     moduleName: opts.moduleName || '',
@@ -336,16 +370,24 @@ function getMethod(node, opts: MethodParseOptions = {}): Method {
     meth.parameters.push(sentinelParam)
   }
 
-  return meth;
+  const anonTypes = params.filter(p => p.anonymousType).map(p => p.anonymousType)
+  if (type.anonymousType) {
+    anonTypes.push(type.anonymousType)
+  }
+  return { method: meth, anonymousTypes: anonTypes }
 }
 
-function getParameter(param): Parameter {
-  return {
-    name: param.name.text,
-    type: getType(param.type),
-    optional: param.questionToken != null,
-    rest: param.dotDotDotToken != null,
-  };
+function getParameter(node): { parameter: Parameter, anonymousType?: Interface } {
+  const name = node.name.text
+  const type = getType(node.type, { declarationName: name })
+  const param = {
+    name,
+    type: type.name,
+    optional: node.questionToken != null,
+    rest: node.dotDotDotToken != null,
+  }
+
+  return { parameter: param, anonymousType: type.anonymousType }
 }
 
 function visitNode(m: Module) {
@@ -377,8 +419,9 @@ function visitNode(m: Module) {
         break;
 
       case TS.SyntaxKind.FunctionDeclaration:
-        const method = getMethod(node, { static: true, moduleName: m.name })
-        m.methods.push(method);
+        const member = getMethod(node, { static: true, moduleName: m.name })
+        m.methods.push(member.method)
+        m.interfaces.push(...member.anonymousTypes)
         break;
 
       case TS.SyntaxKind.ModuleDeclaration:
@@ -444,5 +487,5 @@ function getName(node: TS.Node) {
 
 function printTypeArguments(typeArgs) {
   typeArgs = typeArgs || [];
-  return typeArgs.length == 0 ? "" : " (" + typeArgs.map(getType).join(", ") + ")";
+  return typeArgs.length == 0 ? "" : " (" + typeArgs.map(getType).map(t => t.name).join(", ") + ")";
 }

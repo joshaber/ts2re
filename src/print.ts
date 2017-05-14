@@ -9,6 +9,7 @@ import {
   Property,
   Interface,
 } from './types'
+import { capitalized } from './common'
 
 const Indentation = "  ";
 
@@ -95,6 +96,11 @@ function printInterface(i: Interface, rootModule: Module, depth: number): string
   str += pp(`type ${ModuleTypeName}${typeParams};`, depth + 1)
   str += '\n'
 
+  for (const anon of i.anonymousTypes) {
+    str += printInterface(anon, rootModule, depth + 1)
+    str += '\n'
+  }
+
   for (const meth of i.methods) {
     str += pp(printMethod(meth, i, rootModule), depth + 1)
   }
@@ -148,8 +154,4 @@ function printTypeParameters(i: Interface): string {
   } else {
     return ''
   }
-}
-
-function capitalized(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }

@@ -263,7 +263,19 @@ let module Request = {
   let module HttpArchiveRequest = {
     type t;
 
-    external make : url::string? => method::string? => headers::(array NameValuePair.t)? => postData::'a? => unit => t = "" [@@bs.obj];
+    let module PostDataType = {
+      type t;
+
+      external make : mimeType::string? => params::(array NameValuePair.t)? => unit => t = "" [@@bs.obj];
+      external setMimeType : t => option string => unit = "mimeType" [@@bs.set];
+      external getMimeType : t => option string = "mimeType" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+      external setParams : t => option (array NameValuePair.t) => unit = "params" [@@bs.set];
+      external getParams : t => option (array NameValuePair.t) = "params" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+    };
+
+    external make : url::string? => method::string? => headers::(array NameValuePair.t)? => postData::PostDataType.t? => unit => t = "" [@@bs.obj];
     external setUrl : t => option string => unit = "url" [@@bs.set];
     external getUrl : t => option string = "url" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -273,8 +285,8 @@ let module Request = {
     external setHeaders : t => option (array NameValuePair.t) => unit = "headers" [@@bs.set];
     external getHeaders : t => option (array NameValuePair.t) = "headers" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setPostData : t => option 'a => unit = "postData" [@@bs.set];
-    external getPostData : t => option 'a = "postData" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setPostData : t => option PostDataType.t => unit = "postData" [@@bs.set];
+    external getPostData : t => option PostDataType.t = "postData" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
   };
 
@@ -293,12 +305,24 @@ let module Request = {
   let module Multipart = {
     type t;
 
-    external make : chunked::bool? => data::(array 'a)? => unit => t = "" [@@bs.obj];
+    let module DataType = {
+      type t;
+
+      external make : content-type::string? => body::string => unit => t = "" [@@bs.obj];
+      external setContent-type : t => option string => unit = "content-type" [@@bs.set];
+      external getContent-type : t => option string = "content-type" [@@bs.get] [@@bs.return null_undefined_to_opt];
+
+      external setBody : t => string => unit = "body" [@@bs.set];
+      external getBody : t => string = "body" [@@bs.get];
+
+    };
+
+    external make : chunked::bool? => data::(array DataType.t)? => unit => t = "" [@@bs.obj];
     external setChunked : t => option bool => unit = "chunked" [@@bs.set];
     external getChunked : t => option bool = "chunked" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setData : t => option (array 'a) => unit = "data" [@@bs.set];
-    external getData : t => option (array 'a) = "data" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setData : t => option (array DataType.t) => unit = "data" [@@bs.set];
+    external getData : t => option (array DataType.t) = "data" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
   };
 
@@ -361,10 +385,8 @@ let module Request = {
   let module Headers = {
     type t;
 
-    external make : value::'a => t = "" [@@bs.obj];
-    external setValue : t => 'a => unit = "value" [@@bs.set];
-    external getValue : t => 'a = "value" [@@bs.get];
-
+    external value : t => string => 'a = "" [@@bs.send];
+    external make : unit => t = "" [@@bs.obj];
   };
 
   let module AuthOptions = {
