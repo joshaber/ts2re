@@ -307,6 +307,7 @@ function visitInterface(node, opts) {
 
     const makeMeth: Method = {
       name: 'make',
+      bindingName: 'make',
       type: ModuleTypeName,
       optional: false,
       static: true,
@@ -395,6 +396,7 @@ function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anony
   const type = getType(node.type, { declarationName: name })
   const meth: Method = {
     name,
+    bindingName: name,
     type: type.name,
     optional: node.questionToken != null,
     static: opts.static

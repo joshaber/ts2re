@@ -32,6 +32,8 @@ export interface Interface {
 
 export interface Method {
   readonly name: string
+  // This will be different from `name` if the method was deduplicated.
+  readonly bindingName: string
   readonly type: string
   readonly optional: boolean
   readonly static: boolean

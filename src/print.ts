@@ -71,12 +71,14 @@ function printMethod(m: Method, interface_: Interface | null, rootModule: Module
     const params = m.parameters.length
       ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
       : ""
-    return `external ${printName(m.name)} : ${ModuleTypeName}${typeParams}${params} => ${m.type} = "" [@@bs.send];`
+    const bindingName = m.name === m.bindingName ? '' : m.bindingName
+    return `external ${printName(m.name)} : ${ModuleTypeName}${typeParams}${params} => ${m.type} = "${bindingName}" [@@bs.send];`
   } else {
+    const bindingName = m.name === m.bindingName ? '' : m.bindingName
     const params = m.parameters.length
       ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
       : "unit"
-    return `external ${printName(m.name)} : ${params} => ${m.type} = "";`
+    return `external ${printName(m.name)} : ${params} => ${m.type} = "${bindingName}";`
   }
 }
 
