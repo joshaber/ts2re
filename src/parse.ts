@@ -116,7 +116,7 @@ function getType(type: any, opts: TypeParseOptions = {}): { name: string, anonym
       const i = visitInterface(type, { name: `${capitalized(opts.declarationName)}Type`, anonymous: true });
       return { name: `${i.name}.${ModuleTypeName}`, anonymousType: i }
     }
-    default:
+    case TS.SyntaxKind.TypeReference: {
       let name = type.typeName ? `${type.typeName.text}.${ModuleTypeName}` : (type.expression ? type.expression.text : null)
       if (type.expression && type.expression.kind == TS.SyntaxKind.PropertyAccessExpression) {
         name = type.expression.expression.text + "." + type.expression.name.text;
@@ -138,6 +138,22 @@ function getType(type: any, opts: TypeParseOptions = {}): { name: string, anonym
       const typeParameters = findTypeParameters(type);
       const result = `${name}${printTypeArguments(type.typeArguments)}`
       return { name: (typeParameters.indexOf(result) > -1 ? "'" : "") + result }
+    }
+    case TS.SyntaxKind.AnyKeyword: {
+      return { name: "'a" }
+    }
+    case TS.SyntaxKind.IntersectionType: {
+      // TODO
+      return { name: "'a" }
+    }
+    case TS.SyntaxKind.ExpressionWithTypeArguments: {
+      // TODO
+      return { name: "'a" }
+    }
+    default: {
+      console.log(`Unknown type! We'll emit it as "'a". Kind: ${type.kind}`)
+      return { name: "'a" }
+    }
   }
 }
 
