@@ -12,6 +12,8 @@ import {
 } from './types'
 import { capitalized } from './common'
 
+const camelCase: (str: string) => string = require('camelcase')
+
 // TODO:
 const MappedTypes = {
   Date: "DateTime",
@@ -337,7 +339,7 @@ function deduplicateMethods(methods: ReadonlyArray<Method>): Array<Method> {
     if (existingMethods.length > 1) {
       if (method.parameters.length && method.parameters[0].stringLiteralValue) {
         const literal = method.parameters[0].stringLiteralValue
-        const sanitized = capitalized(literal.replace(/-/g, ''))
+        const sanitized = capitalized(camelCase(literal))
         const newName = `${method.name}${sanitized}`
         return { ...method, name: newName }
       } else {
