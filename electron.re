@@ -1,7 +1,7 @@
 let module Document = {
   type t;
 
-  external createElement : t => string => Electron.WebViewElement.t = "" [@@bs.send];
+  external createElement : t => (_ [@bs.as "webview"]) => Electron.WebViewElement.t = "" [@@bs.send];
   external make : unit => t = "" [@@bs.obj];
 };
 
@@ -24,7 +24,7 @@ let module File = {
 let module NodeRequireFunction = {
   type t;
 
-  external invoke : t => string => Electron.ElectronMainAndRenderer.t = "" [@@bs.send];
+  external invoke : t => (_ [@bs.as "electron"]) => Electron.ElectronMainAndRenderer.t = "" [@@bs.send];
   external make : unit => t = "" [@@bs.obj];
 };
 
@@ -113,26 +113,26 @@ let module Electron = {
 
     };
 
-    external onWillfinishlaunching : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onReady : t => string => (Event.t => Object.t => unit) => t = "" [@@bs.send];
-    external onWindowallclosed : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onBeforequit : t => string => (Event.t => unit) => t = "" [@@bs.send];
-    external onWillquit : t => string => (Event.t => unit) => t = "" [@@bs.send];
-    external onQuit : t => string => (Event.t => float => unit) => t = "" [@@bs.send];
-    external onOpenfile : t => string => (Event.t => string => unit) => t = "" [@@bs.send];
-    external onOpenurl : t => string => (Event.t => string => unit) => t = "" [@@bs.send];
-    external onActivate : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onContinueactivity : t => string => (Event.t => string => Object.t => unit) => t = "" [@@bs.send];
-    external onBrowserwindowblur : t => string => (Event.t => BrowserWindow.t => unit) => t = "" [@@bs.send];
-    external onBrowserwindowfocus : t => string => (Event.t => BrowserWindow.t => unit) => t = "" [@@bs.send];
-    external onBrowserwindowcreated : t => string => (Event.t => BrowserWindow.t => unit) => t = "" [@@bs.send];
-    external onWebcontentscreated : t => string => (Event.t => WebContents.t => unit) => t = "" [@@bs.send];
-    external onCertificateerror : t => string => (Event.t => WebContents.t => string => string => Certificate.t => (bool => unit) => unit) => t = "" [@@bs.send];
-    external onSelectclientcertificate : t => string => (Event.t => WebContents.t => string => (array Certificate.t) => (Certificate.t => unit) => unit) => t = "" [@@bs.send];
-    external onLogin : t => string => (Event.t => WebContents.t => LoginRequest.t => LoginAuthInfo.t => (string => string => unit) => unit) => t = "" [@@bs.send];
-    external onGpuprocesscrashed : t => string => (Event.t => bool => unit) => t = "" [@@bs.send];
-    external onAccessibilitysupportchanged : t => string => (Event.t => bool => unit) => t = "" [@@bs.send];
-    external on19 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onWillfinishlaunching : t => (_ [@bs.as "will-finish-launching"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onReady : t => (_ [@bs.as "ready"]) => (Event.t => Object.t => unit) => t = "on" [@@bs.send];
+    external onWindowallclosed : t => (_ [@bs.as "window-all-closed"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onBeforequit : t => (_ [@bs.as "before-quit"]) => (Event.t => unit) => t = "on" [@@bs.send];
+    external onWillquit : t => (_ [@bs.as "will-quit"]) => (Event.t => unit) => t = "on" [@@bs.send];
+    external onQuit : t => (_ [@bs.as "quit"]) => (Event.t => float => unit) => t = "on" [@@bs.send];
+    external onOpenfile : t => (_ [@bs.as "open-file"]) => (Event.t => string => unit) => t = "on" [@@bs.send];
+    external onOpenurl : t => (_ [@bs.as "open-url"]) => (Event.t => string => unit) => t = "on" [@@bs.send];
+    external onActivate : t => (_ [@bs.as "activate"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onContinueactivity : t => (_ [@bs.as "continue-activity"]) => (Event.t => string => Object.t => unit) => t = "on" [@@bs.send];
+    external onBrowserwindowblur : t => (_ [@bs.as "browser-window-blur"]) => (Event.t => BrowserWindow.t => unit) => t = "on" [@@bs.send];
+    external onBrowserwindowfocus : t => (_ [@bs.as "browser-window-focus"]) => (Event.t => BrowserWindow.t => unit) => t = "on" [@@bs.send];
+    external onBrowserwindowcreated : t => (_ [@bs.as "browser-window-created"]) => (Event.t => BrowserWindow.t => unit) => t = "on" [@@bs.send];
+    external onWebcontentscreated : t => (_ [@bs.as "web-contents-created"]) => (Event.t => WebContents.t => unit) => t = "on" [@@bs.send];
+    external onCertificateerror : t => (_ [@bs.as "certificate-error"]) => (Event.t => WebContents.t => string => string => Certificate.t => (bool => unit) => unit) => t = "on" [@@bs.send];
+    external onSelectclientcertificate : t => (_ [@bs.as "select-client-certificate"]) => (Event.t => WebContents.t => string => (array Certificate.t) => (Certificate.t => unit) => unit) => t = "on" [@@bs.send];
+    external onLogin : t => (_ [@bs.as "login"]) => (Event.t => WebContents.t => LoginRequest.t => LoginAuthInfo.t => (string => string => unit) => unit) => t = "on" [@@bs.send];
+    external onGpuprocesscrashed : t => (_ [@bs.as "gpu-process-crashed"]) => (Event.t => bool => unit) => t = "on" [@@bs.send];
+    external onAccessibilitysupportchanged : t => (_ [@bs.as "accessibility-support-changed"]) => (Event.t => bool => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external quit : t => unit = "" [@@bs.send];
     external exit : t => float? => unit => unit = "" [@@bs.send];
     external relaunch : t => OptionsType.t? => unit => unit = "" [@@bs.send];
@@ -352,12 +352,12 @@ let module Electron = {
   let module AutoUpdater = {
     type t;
 
-    external onError : t => string => (Error.t => unit) => t = "" [@@bs.send];
-    external onCheckingforupdate : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onUpdateavailable : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onUpdatenotavailable : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onUpdatedownloaded : t => string => (Event.t => string => string => Date.t => string => unit) => t = "" [@@bs.send];
-    external on5 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onError : t => (_ [@bs.as "error"]) => (Error.t => unit) => t = "on" [@@bs.send];
+    external onCheckingforupdate : t => (_ [@bs.as "checking-for-update"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onUpdateavailable : t => (_ [@bs.as "update-available"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onUpdatenotavailable : t => (_ [@bs.as "update-not-available"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onUpdatedownloaded : t => (_ [@bs.as "update-downloaded"]) => (Event.t => string => string => Date.t => string => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external setFeedURL : t => string => Headers.t? => unit => unit = "" [@@bs.send];
     external getFeedURL : t => string = "" [@@bs.send];
     external checkForUpdates : t => unit = "" [@@bs.send];
@@ -377,32 +377,32 @@ let module Electron = {
 
     };
 
-    external onPagetitleupdated : t => string => (Event.t => string => unit) => t = "" [@@bs.send];
-    external onClose : t => string => (Event.t => unit) => t = "" [@@bs.send];
-    external onClosed : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onUnresponsive : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onResponsive : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onBlur : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onFocus : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onShow : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onHide : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onReadytoshow : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onMaximize : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onUnmaximize : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onMinimize : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onRestore : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onResize : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onMove : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onEnterfullscreen : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onLeavefullscreen : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onEnterhtmlfullscreen : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onLeavehtmlfullscreen : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onAppcommand : t => string => (Event.t => string => unit) => t = "" [@@bs.send];
-    external onScrolltouchbegin : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onScrolltouchend : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onScrolltouchedge : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onSwipe : t => string => (Event.t => SwipeDirection.t => unit) => t = "" [@@bs.send];
-    external on25 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onPagetitleupdated : t => (_ [@bs.as "page-title-updated"]) => (Event.t => string => unit) => t = "on" [@@bs.send];
+    external onClose : t => (_ [@bs.as "close"]) => (Event.t => unit) => t = "on" [@@bs.send];
+    external onClosed : t => (_ [@bs.as "closed"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onUnresponsive : t => (_ [@bs.as "unresponsive"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onResponsive : t => (_ [@bs.as "responsive"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onBlur : t => (_ [@bs.as "blur"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onFocus : t => (_ [@bs.as "focus"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onShow : t => (_ [@bs.as "show"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onHide : t => (_ [@bs.as "hide"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onReadytoshow : t => (_ [@bs.as "ready-to-show"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onMaximize : t => (_ [@bs.as "maximize"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onUnmaximize : t => (_ [@bs.as "unmaximize"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onMinimize : t => (_ [@bs.as "minimize"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onRestore : t => (_ [@bs.as "restore"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onResize : t => (_ [@bs.as "resize"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onMove : t => (_ [@bs.as "move"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onEnterfullscreen : t => (_ [@bs.as "enter-full-screen"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onLeavefullscreen : t => (_ [@bs.as "leave-full-screen"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onEnterhtmlfullscreen : t => (_ [@bs.as "enter-html-full-screen"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onLeavehtmlfullscreen : t => (_ [@bs.as "leave-html-full-screen"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onAppcommand : t => (_ [@bs.as "app-command"]) => (Event.t => string => unit) => t = "on" [@@bs.send];
+    external onScrolltouchbegin : t => (_ [@bs.as "scroll-touch-begin"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onScrolltouchend : t => (_ [@bs.as "scroll-touch-end"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onScrolltouchedge : t => (_ [@bs.as "scroll-touch-edge"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onSwipe : t => (_ [@bs.as "swipe"]) => (Event.t => SwipeDirection.t => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : BrowserWindowOptions.t? => unit => t = "BrowserWindow" [@@bs.new] [@@bs.module "electron"];
     external getAllWindows : t => (array BrowserWindow.t) = "" [@@bs.send];
     external getFocusedWindow : t => BrowserWindow.t = "" [@@bs.send];
@@ -479,8 +479,8 @@ let module Electron = {
     external isDocumentEdited : t => bool = "" [@@bs.send];
     external focusOnWebView : t => unit = "" [@@bs.send];
     external blurWebView : t => unit = "" [@@bs.send];
-    external capturePage0 : t => Rectangle.t => (NativeImage.t => unit) => unit = "" [@@bs.send];
-    external capturePage1 : t => (NativeImage.t => unit) => unit = "" [@@bs.send];
+    external capturePage0 : t => Rectangle.t => (NativeImage.t => unit) => unit = "capturePage" [@@bs.send];
+    external capturePage1 : t => (NativeImage.t => unit) => unit = "capturePage" [@@bs.send];
     external loadURL : t => string => LoadURLOptions.t? => unit => unit = "" [@@bs.send];
     external reload : t => unit = "" [@@bs.send];
     external setMenu : t => 'a => unit = "" [@@bs.send];
@@ -987,12 +987,12 @@ let module Electron = {
   let module Dialog = {
     type t;
 
-    external showOpenDialog0 : t => BrowserWindow.t => OpenDialogOptions.t => ((array string) => unit)? => unit => (array string) = "" [@@bs.send];
-    external showOpenDialog1 : t => OpenDialogOptions.t => ((array string) => unit)? => unit => (array string) = "" [@@bs.send];
-    external showSaveDialog0 : t => BrowserWindow.t => SaveDialogOptions.t => (string => unit)? => unit => string = "" [@@bs.send];
-    external showSaveDialog1 : t => SaveDialogOptions.t => (string => unit)? => unit => string = "" [@@bs.send];
-    external showMessageBox0 : t => BrowserWindow.t => ShowMessageBoxOptions.t => (float => unit)? => unit => float = "" [@@bs.send];
-    external showMessageBox1 : t => ShowMessageBoxOptions.t => (float => unit)? => unit => float = "" [@@bs.send];
+    external showOpenDialog0 : t => BrowserWindow.t => OpenDialogOptions.t => ((array string) => unit)? => unit => (array string) = "showOpenDialog" [@@bs.send];
+    external showOpenDialog1 : t => OpenDialogOptions.t => ((array string) => unit)? => unit => (array string) = "showOpenDialog" [@@bs.send];
+    external showSaveDialog0 : t => BrowserWindow.t => SaveDialogOptions.t => (string => unit)? => unit => string = "showSaveDialog" [@@bs.send];
+    external showSaveDialog1 : t => SaveDialogOptions.t => (string => unit)? => unit => string = "showSaveDialog" [@@bs.send];
+    external showMessageBox0 : t => BrowserWindow.t => ShowMessageBoxOptions.t => (float => unit)? => unit => float = "showMessageBox" [@@bs.send];
+    external showMessageBox1 : t => ShowMessageBoxOptions.t => (float => unit)? => unit => float = "showMessageBox" [@@bs.send];
     external showErrorBox : t => string => string => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
@@ -1111,9 +1111,9 @@ let module Electron = {
   let module DownloadItem = {
     type t;
 
-    external onUpdated : t => string => (Event.t => 'a => unit) => t = "" [@@bs.send];
-    external onDone : t => string => (Event.t => 'a => unit) => t = "" [@@bs.send];
-    external on2 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onUpdated : t => (_ [@bs.as "updated"]) => (Event.t => 'a => unit) => t = "on" [@@bs.send];
+    external onDone : t => (_ [@bs.as "done"]) => (Event.t => 'a => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external setSavePath : t => string => unit = "" [@@bs.send];
     external getSavePath : t => string = "" [@@bs.send];
     external pause : t => unit = "" [@@bs.send];
@@ -1390,13 +1390,13 @@ let module Electron = {
   let module ClientRequest = {
     type t;
 
-    external onResponse : t => string => (IncomingMessage.t => unit) => t = "" [@@bs.send];
-    external onLogin : t => string => (LoginAuthInfo.t => (string => string => unit) => unit) => t = "" [@@bs.send];
-    external onFinish : t => string => (unit => unit) => t = "" [@@bs.send];
-    external onAbort : t => string => (unit => unit) => t = "" [@@bs.send];
-    external onError : t => string => (Error.t => unit) => t = "" [@@bs.send];
-    external onClose : t => string => (unit => unit) => t = "" [@@bs.send];
-    external on6 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onResponse : t => (_ [@bs.as "response"]) => (IncomingMessage.t => unit) => t = "on" [@@bs.send];
+    external onLogin : t => (_ [@bs.as "login"]) => (LoginAuthInfo.t => (string => string => unit) => unit) => t = "on" [@@bs.send];
+    external onFinish : t => (_ [@bs.as "finish"]) => (unit => unit) => t = "on" [@@bs.send];
+    external onAbort : t => (_ [@bs.as "abort"]) => (unit => unit) => t = "on" [@@bs.send];
+    external onError : t => (_ [@bs.as "error"]) => (Error.t => unit) => t = "on" [@@bs.send];
+    external onClose : t => (_ [@bs.as "close"]) => (unit => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : 'a => (IncomingMessage.t => unit)? => unit => t = "ClientRequest" [@@bs.new] [@@bs.module "electron"];
     external setHeader : t => string => string => unit = "" [@@bs.send];
     external getHeader : t => string => string = "" [@@bs.send];
@@ -1419,11 +1419,11 @@ let module Electron = {
       external make : unit => t = "" [@@bs.obj];
     };
 
-    external onData : t => string => (Buffer.t => unit) => t = "" [@@bs.send];
-    external onEnd : t => string => (unit => unit) => t = "" [@@bs.send];
-    external onAborted : t => string => (unit => unit) => t = "" [@@bs.send];
-    external onError : t => string => (Error.t => unit) => t = "" [@@bs.send];
-    external on4 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onData : t => (_ [@bs.as "data"]) => (Buffer.t => unit) => t = "on" [@@bs.send];
+    external onEnd : t => (_ [@bs.as "end"]) => (unit => unit) => t = "on" [@@bs.send];
+    external onAborted : t => (_ [@bs.as "aborted"]) => (unit => unit) => t = "on" [@@bs.send];
+    external onError : t => (_ [@bs.as "error"]) => (Error.t => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : statusCode::float => statusMessage::string => headers::HeadersType.t => httpVersion::string => httpVersionMajor::float => httpVersionMinor::float => t = "" [@@bs.obj];
     external setStatusCode : t => float => unit = "statusCode" [@@bs.set];
     external getStatusCode : t => float = "statusCode" [@@bs.get];
@@ -1448,11 +1448,11 @@ let module Electron = {
   let module PowerMonitor = {
     type t;
 
-    external onSuspend : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onResume : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onOnac : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onOnbattery : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external on4 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onSuspend : t => (_ [@bs.as "suspend"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onResume : t => (_ [@bs.as "resume"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onOnac : t => (_ [@bs.as "on-ac"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onOnbattery : t => (_ [@bs.as "on-battery"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -1553,9 +1553,9 @@ let module Electron = {
 
     };
 
-    external invoke0 : t => float => unit = "" [@@bs.send];
-    external invoke1 : t => ObjType.t => unit = "" [@@bs.send];
-    external invoke2 : t => unit = "" [@@bs.send];
+    external invoke0 : t => float => unit = "invoke" [@@bs.send];
+    external invoke1 : t => ObjType.t => unit = "invoke" [@@bs.send];
+    external invoke2 : t => unit = "invoke" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -1571,8 +1571,8 @@ let module Electron = {
 
     };
 
-    external invoke0 : t => string => unit = "" [@@bs.send];
-    external invoke1 : t => ObjType.t => unit = "" [@@bs.send];
+    external invoke0 : t => string => unit = "invoke" [@@bs.send];
+    external invoke1 : t => ObjType.t => unit = "invoke" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -1594,8 +1594,8 @@ let module Electron = {
 
     };
 
-    external invoke0 : t => Buffer.t => unit = "" [@@bs.send];
-    external invoke1 : t => ObjType.t => unit = "" [@@bs.send];
+    external invoke0 : t => Buffer.t => unit = "invoke" [@@bs.send];
+    external invoke1 : t => ObjType.t => unit = "invoke" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -1617,8 +1617,8 @@ let module Electron = {
 
     };
 
-    external invoke0 : t => string => unit = "" [@@bs.send];
-    external invoke1 : t => ObjType.t => unit = "" [@@bs.send];
+    external invoke0 : t => string => unit = "invoke" [@@bs.send];
+    external invoke1 : t => ObjType.t => unit = "invoke" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -1711,10 +1711,10 @@ let module Electron = {
   let module Screen = {
     type t;
 
-    external onDisplayadded : t => string => (Event.t => Display.t => unit) => t = "" [@@bs.send];
-    external onDisplayremoved : t => string => (Event.t => Display.t => unit) => t = "" [@@bs.send];
-    external onDisplaymetricschanged : t => string => (Event.t => Display.t => (array DisplayMetrics.t) => unit) => t = "" [@@bs.send];
-    external on3 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onDisplayadded : t => (_ [@bs.as "display-added"]) => (Event.t => Display.t => unit) => t = "on" [@@bs.send];
+    external onDisplayremoved : t => (_ [@bs.as "display-removed"]) => (Event.t => Display.t => unit) => t = "on" [@@bs.send];
+    external onDisplaymetricschanged : t => (_ [@bs.as "display-metrics-changed"]) => (Event.t => Display.t => (array DisplayMetrics.t) => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external getCursorScreenPoint : t => Point.t = "" [@@bs.send];
     external getPrimaryDisplay : t => Display.t = "" [@@bs.send];
     external getAllDisplays : t => (array Display.t) = "" [@@bs.send];
@@ -1727,12 +1727,12 @@ let module Electron = {
     type t;
 
     external fromPartition : t => string => FromPartitionOptions.t? => unit => Session.t = "" [@@bs.send];
-    external onWilldownload : t => string => (Event.t => DownloadItem.t => WebContents.t => unit) => t = "" [@@bs.send];
-    external on1 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onWilldownload : t => (_ [@bs.as "will-download"]) => (Event.t => DownloadItem.t => WebContents.t => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external getCacheSize : t => (float => unit) => unit = "" [@@bs.send];
     external clearCache : t => ('x => 'y) => unit = "" [@@bs.send];
-    external clearStorageData0 : t => ('x => 'y) => unit = "" [@@bs.send];
-    external clearStorageData1 : t => ClearStorageDataOptions.t => ('x => 'y) => unit = "" [@@bs.send];
+    external clearStorageData0 : t => ('x => 'y) => unit = "clearStorageData" [@@bs.send];
+    external clearStorageData1 : t => ClearStorageDataOptions.t => ('x => 'y) => unit = "clearStorageData" [@@bs.send];
     external flushStorageData : t => unit = "" [@@bs.send];
     external setProxy : t => ProxyConfig.t => ('x => 'y) => unit = "" [@@bs.send];
     external resolveProxy : t => URL.t => (string => unit) => unit = "" [@@bs.send];
@@ -1850,8 +1850,8 @@ let module Electron = {
   let module Cookie = {
     type t;
 
-    external onChanged : t => string => (Event.t => Cookie.t => CookieChangedCause.t => unit) => t = "" [@@bs.send];
-    external on1 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onChanged : t => (_ [@bs.as "changed"]) => (Event.t => Cookie.t => CookieChangedCause.t => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : name::string => value::string => domain::string => hostOnly::string => path::string => secure::bool => httpOnly::bool => session::bool => expirationDate::float? => unit => t = "" [@@bs.obj];
     external setName : t => string => unit = "name" [@@bs.set];
     external getName : t => string = "name" [@@bs.get];
@@ -1930,22 +1930,22 @@ let module Electron = {
   let module WebRequest = {
     type t;
 
-    external onBeforeRequest0 : t => (WebRequest.BeforeRequestDetails.t => WebRequest.BeforeRequestCallback.t => unit) => unit = "" [@@bs.send];
-    external onBeforeRequest1 : t => WebRequest.Filter.t => (WebRequest.BeforeRequestDetails.t => WebRequest.BeforeRequestCallback.t => unit) => unit = "" [@@bs.send];
-    external onBeforeSendHeaders0 : t => (WebRequest.BeforeSendHeadersDetails.t => WebRequest.BeforeSendHeadersCallback.t => unit) => unit = "" [@@bs.send];
-    external onBeforeSendHeaders1 : t => WebRequest.Filter.t => (WebRequest.BeforeSendHeadersDetails.t => WebRequest.BeforeSendHeadersCallback.t => unit) => unit = "" [@@bs.send];
-    external onSendHeaders0 : t => (WebRequest.SendHeadersDetails.t => unit) => unit = "" [@@bs.send];
-    external onSendHeaders1 : t => WebRequest.Filter.t => (WebRequest.SendHeadersDetails.t => unit) => unit = "" [@@bs.send];
-    external onHeadersReceived0 : t => (WebRequest.HeadersReceivedDetails.t => WebRequest.HeadersReceivedCallback.t => unit) => unit = "" [@@bs.send];
-    external onHeadersReceived1 : t => WebRequest.Filter.t => (WebRequest.HeadersReceivedDetails.t => WebRequest.HeadersReceivedCallback.t => unit) => unit = "" [@@bs.send];
-    external onResponseStarted0 : t => (WebRequest.ResponseStartedDetails.t => unit) => unit = "" [@@bs.send];
-    external onResponseStarted1 : t => WebRequest.Filter.t => (WebRequest.ResponseStartedDetails.t => unit) => unit = "" [@@bs.send];
-    external onBeforeRedirect0 : t => (WebRequest.BeforeRedirectDetails.t => unit) => unit = "" [@@bs.send];
-    external onBeforeRedirect1 : t => WebRequest.Filter.t => (WebRequest.BeforeRedirectDetails.t => unit) => unit = "" [@@bs.send];
-    external onCompleted0 : t => (WebRequest.CompletedDetails.t => unit) => unit = "" [@@bs.send];
-    external onCompleted1 : t => WebRequest.Filter.t => (WebRequest.CompletedDetails.t => unit) => unit = "" [@@bs.send];
-    external onErrorOccurred0 : t => (WebRequest.ErrorOccurredDetails.t => unit) => unit = "" [@@bs.send];
-    external onErrorOccurred1 : t => WebRequest.Filter.t => (WebRequest.ErrorOccurredDetails.t => unit) => unit = "" [@@bs.send];
+    external onBeforeRequest0 : t => (WebRequest.BeforeRequestDetails.t => WebRequest.BeforeRequestCallback.t => unit) => unit = "onBeforeRequest" [@@bs.send];
+    external onBeforeRequest1 : t => WebRequest.Filter.t => (WebRequest.BeforeRequestDetails.t => WebRequest.BeforeRequestCallback.t => unit) => unit = "onBeforeRequest" [@@bs.send];
+    external onBeforeSendHeaders0 : t => (WebRequest.BeforeSendHeadersDetails.t => WebRequest.BeforeSendHeadersCallback.t => unit) => unit = "onBeforeSendHeaders" [@@bs.send];
+    external onBeforeSendHeaders1 : t => WebRequest.Filter.t => (WebRequest.BeforeSendHeadersDetails.t => WebRequest.BeforeSendHeadersCallback.t => unit) => unit = "onBeforeSendHeaders" [@@bs.send];
+    external onSendHeaders0 : t => (WebRequest.SendHeadersDetails.t => unit) => unit = "onSendHeaders" [@@bs.send];
+    external onSendHeaders1 : t => WebRequest.Filter.t => (WebRequest.SendHeadersDetails.t => unit) => unit = "onSendHeaders" [@@bs.send];
+    external onHeadersReceived0 : t => (WebRequest.HeadersReceivedDetails.t => WebRequest.HeadersReceivedCallback.t => unit) => unit = "onHeadersReceived" [@@bs.send];
+    external onHeadersReceived1 : t => WebRequest.Filter.t => (WebRequest.HeadersReceivedDetails.t => WebRequest.HeadersReceivedCallback.t => unit) => unit = "onHeadersReceived" [@@bs.send];
+    external onResponseStarted0 : t => (WebRequest.ResponseStartedDetails.t => unit) => unit = "onResponseStarted" [@@bs.send];
+    external onResponseStarted1 : t => WebRequest.Filter.t => (WebRequest.ResponseStartedDetails.t => unit) => unit = "onResponseStarted" [@@bs.send];
+    external onBeforeRedirect0 : t => (WebRequest.BeforeRedirectDetails.t => unit) => unit = "onBeforeRedirect" [@@bs.send];
+    external onBeforeRedirect1 : t => WebRequest.Filter.t => (WebRequest.BeforeRedirectDetails.t => unit) => unit = "onBeforeRedirect" [@@bs.send];
+    external onCompleted0 : t => (WebRequest.CompletedDetails.t => unit) => unit = "onCompleted" [@@bs.send];
+    external onCompleted1 : t => WebRequest.Filter.t => (WebRequest.CompletedDetails.t => unit) => unit = "onCompleted" [@@bs.send];
+    external onErrorOccurred0 : t => (WebRequest.ErrorOccurredDetails.t => unit) => unit = "onErrorOccurred" [@@bs.send];
+    external onErrorOccurred1 : t => WebRequest.Filter.t => (WebRequest.ErrorOccurredDetails.t => unit) => unit = "onErrorOccurred" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -1966,8 +1966,8 @@ let module Electron = {
     external openExternal : t => string => OptionsType.t? => unit => bool = "" [@@bs.send];
     external moveItemToTrash : t => string => bool = "" [@@bs.send];
     external beep : t => unit = "" [@@bs.send];
-    external writeShortcutLink0 : t => string => ShortcutLinkOptions.t => bool = "" [@@bs.send];
-    external writeShortcutLink1 : t => string => 'a => ShortcutLinkOptions.t => bool = "" [@@bs.send];
+    external writeShortcutLink0 : t => string => ShortcutLinkOptions.t => bool = "writeShortcutLink" [@@bs.send];
+    external writeShortcutLink1 : t => string => 'a => ShortcutLinkOptions.t => bool = "writeShortcutLink" [@@bs.send];
     external readShortcutLink : t => string => ShortcutLinkOptions.t = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
@@ -2008,10 +2008,10 @@ let module Electron = {
   let module SystemPreferences = {
     type t;
 
-    external onAccentcolorchanged : t => string => (Event.t => string => unit) => t = "" [@@bs.send];
-    external onColorchanged : t => string => (Event.t => unit) => t = "" [@@bs.send];
-    external onInvertedcolorschemechanged : t => string => (Event.t => bool => unit) => t = "" [@@bs.send];
-    external on3 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onAccentcolorchanged : t => (_ [@bs.as "accent-color-changed"]) => (Event.t => string => unit) => t = "on" [@@bs.send];
+    external onColorchanged : t => (_ [@bs.as "color-changed"]) => (Event.t => unit) => t = "on" [@@bs.send];
+    external onInvertedcolorschemechanged : t => (_ [@bs.as "inverted-color-scheme-changed"]) => (Event.t => bool => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external isDarkMode : t => bool = "" [@@bs.send];
     external isSwipeTrackingFromScrollEventsEnabled : t => bool = "" [@@bs.send];
     external postNotification : t => string => Object.t => unit = "" [@@bs.send];
@@ -2046,19 +2046,19 @@ let module Electron = {
 
     };
 
-    external onClick : t => string => (Modifiers.t => Rectangle.t => unit) => t = "" [@@bs.send];
-    external onRightclick : t => string => (Modifiers.t => Rectangle.t => unit) => t = "" [@@bs.send];
-    external onDoubleclick : t => string => (Modifiers.t => Rectangle.t => unit) => t = "" [@@bs.send];
-    external onBalloonshow : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onBalloonclick : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onBalloonclosed : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDrop : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDropfiles : t => string => (Event.t => (array string) => unit) => t = "" [@@bs.send];
-    external onDroptext : t => string => (Event.t => string => unit) => t = "" [@@bs.send];
-    external onDragenter : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDragleave : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDragend : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external on12 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onClick : t => (_ [@bs.as "click"]) => (Modifiers.t => Rectangle.t => unit) => t = "on" [@@bs.send];
+    external onRightclick : t => (_ [@bs.as "right-click"]) => (Modifiers.t => Rectangle.t => unit) => t = "on" [@@bs.send];
+    external onDoubleclick : t => (_ [@bs.as "double-click"]) => (Modifiers.t => Rectangle.t => unit) => t = "on" [@@bs.send];
+    external onBalloonshow : t => (_ [@bs.as "balloon-show"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onBalloonclick : t => (_ [@bs.as "balloon-click"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onBalloonclosed : t => (_ [@bs.as "balloon-closed"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDrop : t => (_ [@bs.as "drop"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDropfiles : t => (_ [@bs.as "drop-files"]) => (Event.t => (array string) => unit) => t = "on" [@@bs.send];
+    external onDroptext : t => (_ [@bs.as "drop-text"]) => (Event.t => string => unit) => t = "on" [@@bs.send];
+    external onDragenter : t => (_ [@bs.as "drag-enter"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDragleave : t => (_ [@bs.as "drag-leave"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDragend : t => (_ [@bs.as "drag-end"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : 'a => t = "Tray" [@@bs.new] [@@bs.module "electron"];
     external destroy : t => unit = "" [@@bs.send];
     external setImage : t => 'a => unit = "" [@@bs.send];
@@ -2124,38 +2124,38 @@ let module Electron = {
 
     };
 
-    external onDidfinishload : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDidfailload : t => string => (Event.t => float => string => string => bool => unit) => t = "" [@@bs.send];
-    external onDidframefinishload : t => string => (Event.t => bool => unit) => t = "" [@@bs.send];
-    external onDidstartloading : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDidstoploading : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDidgetresponsedetails : t => string => (Event.t => bool => string => string => float => string => string => Headers.t => string => unit) => t = "" [@@bs.send];
-    external onDidgetredirectrequest : t => string => (Event.t => string => string => bool => float => string => string => Headers.t => unit) => t = "" [@@bs.send];
-    external onDomready : t => string => (Event.t => unit) => t = "" [@@bs.send];
-    external onPagefaviconupdated : t => string => (Event.t => (array string) => unit) => t = "" [@@bs.send];
-    external onNewwindow : t => string => (Event.t => string => string => NewWindowDisposition.t => BrowserWindowOptions.t => unit) => t = "" [@@bs.send];
-    external onWillnavigate : t => string => (Event.t => string => unit) => t = "" [@@bs.send];
-    external onDidnavigate : t => string => (Event.t => string => unit) => t = "" [@@bs.send];
-    external onDidnavigateinpage : t => string => (Event.t => string => bool => unit) => t = "" [@@bs.send];
-    external onCrashed : t => string => (Event.t => bool => unit) => t = "" [@@bs.send];
-    external onPlugincrashed : t => string => (Event.t => string => string => unit) => t = "" [@@bs.send];
-    external onDestroyed : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDevtoolsopened : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDevtoolsclosed : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDevtoolsfocused : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onCertificateerror : t => string => (Event.t => string => string => Certificate.t => (bool => unit) => unit) => t = "" [@@bs.send];
-    external onSelectclientcertificate : t => string => (Event.t => string => (array Certificate.t) => (Certificate.t => unit) => unit) => t = "" [@@bs.send];
-    external onLogin : t => string => (Event.t => LoginRequest.t => LoginAuthInfo.t => (string => string => unit) => unit) => t = "" [@@bs.send];
-    external onFoundinpage : t => string => (Event.t => FoundInPageResult.t => unit) => t = "" [@@bs.send];
-    external onMediastartedplaying : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onMediapaused : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onDidchangethemecolor : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onUpdatetargeturl : t => string => (Event.t => string => unit) => t = "" [@@bs.send];
-    external onCursorchanged : t => string => (Event.t => CursorType.t => NativeImage.t => float => Size.t => Point.t => unit) => t = "" [@@bs.send];
-    external onContextmenu : t => string => (Event.t => ContextMenuParams.t => unit) => t = "" [@@bs.send];
-    external onSelectbluetoothdevice : t => string => (Event.t => (array BluetoothDevice.t) => (string => unit) => unit) => t = "" [@@bs.send];
-    external onPaint : t => string => (Event.t => Rectangle.t => NativeImage.t => unit) => t = "" [@@bs.send];
-    external on31 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onDidfinishload : t => (_ [@bs.as "did-finish-load"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDidfailload : t => (_ [@bs.as "did-fail-load"]) => (Event.t => float => string => string => bool => unit) => t = "on" [@@bs.send];
+    external onDidframefinishload : t => (_ [@bs.as "did-frame-finish-load"]) => (Event.t => bool => unit) => t = "on" [@@bs.send];
+    external onDidstartloading : t => (_ [@bs.as "did-start-loading"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDidstoploading : t => (_ [@bs.as "did-stop-loading"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDidgetresponsedetails : t => (_ [@bs.as "did-get-response-details"]) => (Event.t => bool => string => string => float => string => string => Headers.t => string => unit) => t = "on" [@@bs.send];
+    external onDidgetredirectrequest : t => (_ [@bs.as "did-get-redirect-request"]) => (Event.t => string => string => bool => float => string => string => Headers.t => unit) => t = "on" [@@bs.send];
+    external onDomready : t => (_ [@bs.as "dom-ready"]) => (Event.t => unit) => t = "on" [@@bs.send];
+    external onPagefaviconupdated : t => (_ [@bs.as "page-favicon-updated"]) => (Event.t => (array string) => unit) => t = "on" [@@bs.send];
+    external onNewwindow : t => (_ [@bs.as "new-window"]) => (Event.t => string => string => NewWindowDisposition.t => BrowserWindowOptions.t => unit) => t = "on" [@@bs.send];
+    external onWillnavigate : t => (_ [@bs.as "will-navigate"]) => (Event.t => string => unit) => t = "on" [@@bs.send];
+    external onDidnavigate : t => (_ [@bs.as "did-navigate"]) => (Event.t => string => unit) => t = "on" [@@bs.send];
+    external onDidnavigateinpage : t => (_ [@bs.as "did-navigate-in-page"]) => (Event.t => string => bool => unit) => t = "on" [@@bs.send];
+    external onCrashed : t => (_ [@bs.as "crashed"]) => (Event.t => bool => unit) => t = "on" [@@bs.send];
+    external onPlugincrashed : t => (_ [@bs.as "plugin-crashed"]) => (Event.t => string => string => unit) => t = "on" [@@bs.send];
+    external onDestroyed : t => (_ [@bs.as "destroyed"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDevtoolsopened : t => (_ [@bs.as "devtools-opened"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDevtoolsclosed : t => (_ [@bs.as "devtools-closed"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDevtoolsfocused : t => (_ [@bs.as "devtools-focused"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onCertificateerror : t => (_ [@bs.as "certificate-error"]) => (Event.t => string => string => Certificate.t => (bool => unit) => unit) => t = "on" [@@bs.send];
+    external onSelectclientcertificate : t => (_ [@bs.as "select-client-certificate"]) => (Event.t => string => (array Certificate.t) => (Certificate.t => unit) => unit) => t = "on" [@@bs.send];
+    external onLogin : t => (_ [@bs.as "login"]) => (Event.t => LoginRequest.t => LoginAuthInfo.t => (string => string => unit) => unit) => t = "on" [@@bs.send];
+    external onFoundinpage : t => (_ [@bs.as "found-in-page"]) => (Event.t => FoundInPageResult.t => unit) => t = "on" [@@bs.send];
+    external onMediastartedplaying : t => (_ [@bs.as "media-started-playing"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onMediapaused : t => (_ [@bs.as "media-paused"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onDidchangethemecolor : t => (_ [@bs.as "did-change-theme-color"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external onUpdatetargeturl : t => (_ [@bs.as "update-target-url"]) => (Event.t => string => unit) => t = "on" [@@bs.send];
+    external onCursorchanged : t => (_ [@bs.as "cursor-changed"]) => (Event.t => CursorType.t => NativeImage.t => float => Size.t => Point.t => unit) => t = "on" [@@bs.send];
+    external onContextmenu : t => (_ [@bs.as "context-menu"]) => (Event.t => ContextMenuParams.t => unit) => t = "on" [@@bs.send];
+    external onSelectbluetoothdevice : t => (_ [@bs.as "select-bluetooth-device"]) => (Event.t => (array BluetoothDevice.t) => (string => unit) => unit) => t = "on" [@@bs.send];
+    external onPaint : t => (_ [@bs.as "paint"]) => (Event.t => Rectangle.t => NativeImage.t => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external loadURL : t => string => LoadURLOptions.t? => unit => unit = "" [@@bs.send];
     external downloadURL : t => string => unit = "" [@@bs.send];
     external getURL : t => string = "" [@@bs.send];
@@ -2221,8 +2221,8 @@ let module Electron = {
     external enableDeviceEmulation : t => DeviceEmulationParameters.t => unit = "" [@@bs.send];
     external disableDeviceEmulation : t => unit = "" [@@bs.send];
     external sendInputEvent : t => SendInputEvent.t => unit = "" [@@bs.send];
-    external beginFrameSubscription0 : t => bool => BeginFrameSubscriptionCallback.t => unit = "" [@@bs.send];
-    external beginFrameSubscription1 : t => BeginFrameSubscriptionCallback.t => unit = "" [@@bs.send];
+    external beginFrameSubscription0 : t => bool => BeginFrameSubscriptionCallback.t => unit = "beginFrameSubscription" [@@bs.send];
+    external beginFrameSubscription1 : t => BeginFrameSubscriptionCallback.t => unit = "beginFrameSubscription" [@@bs.send];
     external endFrameSubscription : t => unit = "" [@@bs.send];
     external savePage : t => string => 'a => (Error.t => unit)? => unit => bool = "" [@@bs.send];
     external showDefinitionForSelection : t => unit = "" [@@bs.send];
@@ -2234,8 +2234,8 @@ let module Electron = {
     external getFrameRate : t => float = "" [@@bs.send];
     external invalidate : t => unit = "" [@@bs.send];
     external startDrag : t => DragItem.t => unit = "" [@@bs.send];
-    external capturePage0 : t => (NativeImage.t => unit) => unit = "" [@@bs.send];
-    external capturePage1 : t => Rectangle.t => (NativeImage.t => unit) => unit = "" [@@bs.send];
+    external capturePage0 : t => (NativeImage.t => unit) => unit = "capturePage" [@@bs.send];
+    external capturePage1 : t => Rectangle.t => (NativeImage.t => unit) => unit = "capturePage" [@@bs.send];
     external make : id::float => session::Session.t => hostWebContents::WebContents.t => devToolsWebContents::WebContents.t => debugger::Debugger.t => t = "" [@@bs.obj];
     external setId : t => float => unit = "id" [@@bs.set];
     external getId : t => float = "id" [@@bs.get];
@@ -2767,9 +2767,9 @@ let module Electron = {
     external isAttached : t => bool = "" [@@bs.send];
     external detach : t => unit = "" [@@bs.send];
     external sendCommand : t => string => 'a? => (Error.t => 'a => unit)? => unit => unit = "" [@@bs.send];
-    external onDetach : t => string => (Event.t => string => unit) => t = "" [@@bs.send];
-    external onMessage : t => string => (Event.t => string => 'a => unit) => t = "" [@@bs.send];
-    external on2 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onDetach : t => (_ [@bs.as "detach"]) => (Event.t => string => unit) => t = "on" [@@bs.send];
+    external onMessage : t => (_ [@bs.as "message"]) => (Event.t => string => 'a => unit) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -2927,41 +2927,41 @@ let module Electron = {
     external setZoomLevel : t => float => unit = "" [@@bs.send];
     external showDefinitionForSelection : t => unit = "" [@@bs.send];
     external getWebContents : t => WebContents.t = "" [@@bs.send];
-    external capturePage0 : t => (NativeImage.t => unit) => unit = "" [@@bs.send];
-    external capturePage1 : t => Rectangle.t => (NativeImage.t => unit) => unit = "" [@@bs.send];
-    external addEventListenerLoadcommit : t => string => (WebViewElement.LoadCommitEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDidfinishload : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDidfailload : t => string => (WebViewElement.DidFailLoadEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDidframefinishload : t => string => (WebViewElement.DidFrameFinishLoadEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDidstartloading : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDidstoploading : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDidgetresponsedetails : t => string => (WebViewElement.DidGetResponseDetails.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDidgetredirectrequest : t => string => (WebViewElement.DidGetRedirectRequestEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDomready : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerPagetitleupdated : t => string => (WebViewElement.PageTitleUpdatedEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerPagefaviconupdated : t => string => (WebViewElement.PageFaviconUpdatedEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerEnterhtmlfullscreen : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerLeavehtmlfullscreen : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerConsolemessage : t => string => (WebViewElement.ConsoleMessageEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerFoundinpage : t => string => (WebViewElement.FoundInPageEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerNewwindow : t => string => (WebViewElement.NewWindowEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerWillnavigate : t => string => (WebViewElement.WillNavigateEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDidnavigate : t => string => (WebViewElement.DidNavigateEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDidnavigateinpage : t => string => (WebViewElement.DidNavigateInPageEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerClose : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerIpcmessage : t => string => (WebViewElement.IpcMessageEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerCrashed : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerGpucrashed : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerPlugincrashed : t => string => (WebViewElement.PluginCrashedEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDestroyed : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerMediastartedplaying : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerMediapaused : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDidchangethemecolor : t => string => (WebViewElement.DidChangeThemeColorEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerUpdatetargeturl : t => string => (WebViewElement.UpdateTargetUrlEvent.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDevtoolsopened : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDevtoolsclosed : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListenerDevtoolsfocused : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
-    external addEventListener32 : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
+    external capturePage0 : t => (NativeImage.t => unit) => unit = "capturePage" [@@bs.send];
+    external capturePage1 : t => Rectangle.t => (NativeImage.t => unit) => unit = "capturePage" [@@bs.send];
+    external addEventListenerLoadcommit : t => (_ [@bs.as "load-commit"]) => (WebViewElement.LoadCommitEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDidfinishload : t => (_ [@bs.as "did-finish-load"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDidfailload : t => (_ [@bs.as "did-fail-load"]) => (WebViewElement.DidFailLoadEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDidframefinishload : t => (_ [@bs.as "did-frame-finish-load"]) => (WebViewElement.DidFrameFinishLoadEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDidstartloading : t => (_ [@bs.as "did-start-loading"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDidstoploading : t => (_ [@bs.as "did-stop-loading"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDidgetresponsedetails : t => (_ [@bs.as "did-get-response-details"]) => (WebViewElement.DidGetResponseDetails.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDidgetredirectrequest : t => (_ [@bs.as "did-get-redirect-request"]) => (WebViewElement.DidGetRedirectRequestEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDomready : t => (_ [@bs.as "dom-ready"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerPagetitleupdated : t => (_ [@bs.as "page-title-updated"]) => (WebViewElement.PageTitleUpdatedEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerPagefaviconupdated : t => (_ [@bs.as "page-favicon-updated"]) => (WebViewElement.PageFaviconUpdatedEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerEnterhtmlfullscreen : t => (_ [@bs.as "enter-html-full-screen"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerLeavehtmlfullscreen : t => (_ [@bs.as "leave-html-full-screen"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerConsolemessage : t => (_ [@bs.as "console-message"]) => (WebViewElement.ConsoleMessageEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerFoundinpage : t => (_ [@bs.as "found-in-page"]) => (WebViewElement.FoundInPageEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerNewwindow : t => (_ [@bs.as "new-window"]) => (WebViewElement.NewWindowEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerWillnavigate : t => (_ [@bs.as "will-navigate"]) => (WebViewElement.WillNavigateEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDidnavigate : t => (_ [@bs.as "did-navigate"]) => (WebViewElement.DidNavigateEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDidnavigateinpage : t => (_ [@bs.as "did-navigate-in-page"]) => (WebViewElement.DidNavigateInPageEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerClose : t => (_ [@bs.as "close"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerIpcmessage : t => (_ [@bs.as "ipc-message"]) => (WebViewElement.IpcMessageEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerCrashed : t => (_ [@bs.as "crashed"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerGpucrashed : t => (_ [@bs.as "gpu-crashed"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerPlugincrashed : t => (_ [@bs.as "plugin-crashed"]) => (WebViewElement.PluginCrashedEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDestroyed : t => (_ [@bs.as "destroyed"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerMediastartedplaying : t => (_ [@bs.as "media-started-playing"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerMediapaused : t => (_ [@bs.as "media-paused"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDidchangethemecolor : t => (_ [@bs.as "did-change-theme-color"]) => (WebViewElement.DidChangeThemeColorEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerUpdatetargeturl : t => (_ [@bs.as "update-target-url"]) => (WebViewElement.UpdateTargetUrlEvent.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDevtoolsopened : t => (_ [@bs.as "devtools-opened"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDevtoolsclosed : t => (_ [@bs.as "devtools-closed"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListenerDevtoolsfocused : t => (_ [@bs.as "devtools-focused"]) => (WebViewElement.Event.t => unit) => bool? => unit => unit = "addEventListener" [@@bs.send];
+    external addEventListener : t => string => (WebViewElement.Event.t => unit) => bool? => unit => unit = "" [@@bs.send];
     external make : src::string => autosize::string => nodeintegration::string => plugins::string => preload::string => httpreferrer::string => useragent::string => disablewebsecurity::string => partition::string => allowpopups::string => webpreferences::string => blinkfeatures::string => disableblinkfeatures::string => guestinstance::string => t = "" [@@bs.obj];
     external setSrc : t => string => unit = "src" [@@bs.set];
     external getSrc : t => string = "src" [@@bs.get];
@@ -3563,8 +3563,8 @@ let module NodeJS = {
   let module Process = {
     type t;
 
-    external onLoaded : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external on1 : t => string => ('x => 'y) => t = "" [@@bs.send];
+    external onLoaded : t => (_ [@bs.as "loaded"]) => ('x => 'y) => t = "on" [@@bs.send];
+    external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external crash : t => unit = "" [@@bs.send];
     external hang : t => unit = "" [@@bs.send];
     external setFdLimit : t => float => unit = "" [@@bs.send];

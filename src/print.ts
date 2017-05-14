@@ -38,15 +38,19 @@ function printVariable(variable: Variable): string {
 }
 
 function printParameter(p: Parameter, includeName: boolean): string {
-  const prefix = includeName && p.name.length
-    ? `${printName(p.name)}::`
-    : ''
+  if (p.stringLiteralValue) {
+    return `(_ [@bs.as "${p.stringLiteralValue}"])`
+  } else {
+    const prefix = includeName && p.name.length
+      ? `${printName(p.name)}::`
+      : ''
 
-  const suffix = p.optional
-    ? '?'
-    : ''
+    const suffix = p.optional
+      ? '?'
+      : ''
 
-  return `${prefix}${p.type}${suffix}`
+    return `${prefix}${p.type}${suffix}`
+  }
 }
 
 function printMethod(m: Method, interface_: Interface | null, rootModule: Module): string {
