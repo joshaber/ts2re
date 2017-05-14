@@ -4,37 +4,37 @@ let module Request = {
     type t 'TRequest 'TOptions 'TUriUrlOptions;
 
     external defaults0 : t 'TRequest 'TOptions 'TUriUrlOptions => TOptions.t => RequestAPI.t (TRequest.t, TOptions.t, RequiredUriUrl.t) = "defaults" [@@bs.send];
-    external defaults1 : t 'TRequest 'TOptions 'TUriUrlOptions => 'a => DefaultUriUrlRequestApi.t (TRequest.t, TOptions.t, OptionalUriUrl.t) = "defaults" [@@bs.send];
+    external defaults1 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => DefaultUriUrlRequestApi.t (TRequest.t, TOptions.t, OptionalUriUrl.t) = "defaults" [@@bs.send];
     external invoke0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "invoke" [@@bs.send];
     external invoke1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "invoke" [@@bs.send];
-    external invoke2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'a => RequestCallback.t? => unit => TRequest.t = "invoke" [@@bs.send];
+    external invoke2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "invoke" [@@bs.send];
     external get0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "get" [@@bs.send];
     external get1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "get" [@@bs.send];
-    external get2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'a => RequestCallback.t? => unit => TRequest.t = "get" [@@bs.send];
+    external get2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "get" [@@bs.send];
     external post0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "post" [@@bs.send];
     external post1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "post" [@@bs.send];
-    external post2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'a => RequestCallback.t? => unit => TRequest.t = "post" [@@bs.send];
+    external post2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "post" [@@bs.send];
     external put0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "put" [@@bs.send];
     external put1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "put" [@@bs.send];
-    external put2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'a => RequestCallback.t? => unit => TRequest.t = "put" [@@bs.send];
+    external put2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "put" [@@bs.send];
     external head0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "head" [@@bs.send];
     external head1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "head" [@@bs.send];
-    external head2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'a => RequestCallback.t? => unit => TRequest.t = "head" [@@bs.send];
+    external head2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "head" [@@bs.send];
     external patch0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "patch" [@@bs.send];
     external patch1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "patch" [@@bs.send];
-    external patch2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'a => RequestCallback.t? => unit => TRequest.t = "patch" [@@bs.send];
+    external patch2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "patch" [@@bs.send];
     external del0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "del" [@@bs.send];
     external del1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "del" [@@bs.send];
-    external del2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'a => RequestCallback.t? => unit => TRequest.t = "del" [@@bs.send];
+    external del2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "del" [@@bs.send];
     external delete0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "delete" [@@bs.send];
     external delete1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "delete" [@@bs.send];
-    external delete2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'a => RequestCallback.t? => unit => TRequest.t = "delete" [@@bs.send];
-    external forever : t 'TRequest 'TOptions 'TUriUrlOptions => 'a => 'a => TRequest.t = "" [@@bs.send];
-    external jar : t 'TRequest 'TOptions 'TUriUrlOptions => 'a? => unit => CookieJar.t = "" [@@bs.send];
+    external delete2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "delete" [@@bs.send];
+    external forever : t 'TRequest 'TOptions 'TUriUrlOptions => 'Any => 'Any => TRequest.t = "" [@@bs.send];
+    external jar : t 'TRequest 'TOptions 'TUriUrlOptions => 'Any? => unit => CookieJar.t = "" [@@bs.send];
     external cookie : t 'TRequest 'TOptions 'TUriUrlOptions => string => Cookie.t = "" [@@bs.send];
-    external make : initParams::'a => debug::bool => t = "" [@@bs.obj];
-    external setInitParams : t => 'a => unit = "initParams" [@@bs.set];
-    external getInitParams : t => 'a = "initParams" [@@bs.get];
+    external make : initParams::'Any => debug::bool => t = "" [@@bs.obj];
+    external setInitParams : t => 'Any => unit = "initParams" [@@bs.set];
+    external getInitParams : t => 'Any = "initParams" [@@bs.get];
 
     external setDebug : t => bool => unit = "debug" [@@bs.set];
     external getDebug : t => bool = "debug" [@@bs.get];
@@ -58,21 +58,21 @@ let module Request = {
   let module CoreOptions = {
     type t;
 
-    external make : baseUrl::string? => callback::('a => RequestResponse.t => 'a => unit)? => jar::'a? => formData::'a? => form::'a? => auth::AuthOptions.t? => oauth::OAuthOptions.t? => aws::AWSOptions.t? => hawk::HawkOptions.t? => qs::'a? => qsStringifyOptions::'a? => qsParseOptions::'a? => json::'a? => jsonReviver::(string => 'a => 'a)? => jsonReplacer::(string => 'a => 'a)? => multipart::'a? => agent::'a? => agentOptions::'a? => agentClass::'a? => forever::'a? => host::string? => port::float? => method::string? => headers::Headers.t? => body::'a? => followRedirect::'a? => followAllRedirects::bool? => maxRedirects::float? => encoding::'a? => pool::'a? => timeout::float? => proxy::'a? => strictSSL::bool? => gzip::bool? => preambleCRLF::bool? => postambleCRLF::bool? => key::Buffer.t? => cert::Buffer.t? => passphrase::string? => ca::'a? => har::HttpArchiveRequest.t? => useQuerystring::bool? => unit => t = "" [@@bs.obj];
+    external make : baseUrl::string? => callback::('Any => RequestResponse.t => 'Any => unit)? => jar::'Any? => formData::'Any? => form::'Any? => auth::AuthOptions.t? => oauth::OAuthOptions.t? => aws::AWSOptions.t? => hawk::HawkOptions.t? => qs::'Any? => qsStringifyOptions::'Any? => qsParseOptions::'Any? => json::'Any? => jsonReviver::(string => 'Any => 'Any)? => jsonReplacer::(string => 'Any => 'Any)? => multipart::'TypeUnion? => agent::'TypeUnion? => agentOptions::'Any? => agentClass::'Any? => forever::'Any? => host::string? => port::float? => method::string? => headers::Headers.t? => body::'Any? => followRedirect::'TypeUnion? => followAllRedirects::bool? => maxRedirects::float? => encoding::'TypeUnion? => pool::'Any? => timeout::float? => proxy::'Any? => strictSSL::bool? => gzip::bool? => preambleCRLF::bool? => postambleCRLF::bool? => key::Buffer.t? => cert::Buffer.t? => passphrase::string? => ca::'TypeUnion? => har::HttpArchiveRequest.t? => useQuerystring::bool? => unit => t = "" [@@bs.obj];
     external setBaseUrl : t => option string => unit = "baseUrl" [@@bs.set];
     external getBaseUrl : t => option string = "baseUrl" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setCallback : t => option ('a => RequestResponse.t => 'a => unit) => unit = "callback" [@@bs.set];
-    external getCallback : t => option ('a => RequestResponse.t => 'a => unit) = "callback" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setCallback : t => option ('Any => RequestResponse.t => 'Any => unit) => unit = "callback" [@@bs.set];
+    external getCallback : t => option ('Any => RequestResponse.t => 'Any => unit) = "callback" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setJar : t => option 'a => unit = "jar" [@@bs.set];
-    external getJar : t => option 'a = "jar" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setJar : t => option 'Any => unit = "jar" [@@bs.set];
+    external getJar : t => option 'Any = "jar" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setFormData : t => option 'a => unit = "formData" [@@bs.set];
-    external getFormData : t => option 'a = "formData" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setFormData : t => option 'Any => unit = "formData" [@@bs.set];
+    external getFormData : t => option 'Any = "formData" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setForm : t => option 'a => unit = "form" [@@bs.set];
-    external getForm : t => option 'a = "form" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setForm : t => option 'Any => unit = "form" [@@bs.set];
+    external getForm : t => option 'Any = "form" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setAuth : t => option AuthOptions.t => unit = "auth" [@@bs.set];
     external getAuth : t => option AuthOptions.t = "auth" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -86,38 +86,38 @@ let module Request = {
     external setHawk : t => option HawkOptions.t => unit = "hawk" [@@bs.set];
     external getHawk : t => option HawkOptions.t = "hawk" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setQs : t => option 'a => unit = "qs" [@@bs.set];
-    external getQs : t => option 'a = "qs" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setQs : t => option 'Any => unit = "qs" [@@bs.set];
+    external getQs : t => option 'Any = "qs" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setQsStringifyOptions : t => option 'a => unit = "qsStringifyOptions" [@@bs.set];
-    external getQsStringifyOptions : t => option 'a = "qsStringifyOptions" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setQsStringifyOptions : t => option 'Any => unit = "qsStringifyOptions" [@@bs.set];
+    external getQsStringifyOptions : t => option 'Any = "qsStringifyOptions" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setQsParseOptions : t => option 'a => unit = "qsParseOptions" [@@bs.set];
-    external getQsParseOptions : t => option 'a = "qsParseOptions" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setQsParseOptions : t => option 'Any => unit = "qsParseOptions" [@@bs.set];
+    external getQsParseOptions : t => option 'Any = "qsParseOptions" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setJson : t => option 'a => unit = "json" [@@bs.set];
-    external getJson : t => option 'a = "json" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setJson : t => option 'Any => unit = "json" [@@bs.set];
+    external getJson : t => option 'Any = "json" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setJsonReviver : t => option (string => 'a => 'a) => unit = "jsonReviver" [@@bs.set];
-    external getJsonReviver : t => option (string => 'a => 'a) = "jsonReviver" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setJsonReviver : t => option (string => 'Any => 'Any) => unit = "jsonReviver" [@@bs.set];
+    external getJsonReviver : t => option (string => 'Any => 'Any) = "jsonReviver" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setJsonReplacer : t => option (string => 'a => 'a) => unit = "jsonReplacer" [@@bs.set];
-    external getJsonReplacer : t => option (string => 'a => 'a) = "jsonReplacer" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setJsonReplacer : t => option (string => 'Any => 'Any) => unit = "jsonReplacer" [@@bs.set];
+    external getJsonReplacer : t => option (string => 'Any => 'Any) = "jsonReplacer" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setMultipart : t => option 'a => unit = "multipart" [@@bs.set];
-    external getMultipart : t => option 'a = "multipart" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setMultipart : t => option 'TypeUnion => unit = "multipart" [@@bs.set];
+    external getMultipart : t => option 'TypeUnion = "multipart" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setAgent : t => option 'a => unit = "agent" [@@bs.set];
-    external getAgent : t => option 'a = "agent" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setAgent : t => option 'TypeUnion => unit = "agent" [@@bs.set];
+    external getAgent : t => option 'TypeUnion = "agent" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setAgentOptions : t => option 'a => unit = "agentOptions" [@@bs.set];
-    external getAgentOptions : t => option 'a = "agentOptions" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setAgentOptions : t => option 'Any => unit = "agentOptions" [@@bs.set];
+    external getAgentOptions : t => option 'Any = "agentOptions" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setAgentClass : t => option 'a => unit = "agentClass" [@@bs.set];
-    external getAgentClass : t => option 'a = "agentClass" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setAgentClass : t => option 'Any => unit = "agentClass" [@@bs.set];
+    external getAgentClass : t => option 'Any = "agentClass" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setForever : t => option 'a => unit = "forever" [@@bs.set];
-    external getForever : t => option 'a = "forever" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setForever : t => option 'Any => unit = "forever" [@@bs.set];
+    external getForever : t => option 'Any = "forever" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setHost : t => option string => unit = "host" [@@bs.set];
     external getHost : t => option string = "host" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -131,11 +131,11 @@ let module Request = {
     external setHeaders : t => option Headers.t => unit = "headers" [@@bs.set];
     external getHeaders : t => option Headers.t = "headers" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setBody : t => option 'a => unit = "body" [@@bs.set];
-    external getBody : t => option 'a = "body" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setBody : t => option 'Any => unit = "body" [@@bs.set];
+    external getBody : t => option 'Any = "body" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setFollowRedirect : t => option 'a => unit = "followRedirect" [@@bs.set];
-    external getFollowRedirect : t => option 'a = "followRedirect" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setFollowRedirect : t => option 'TypeUnion => unit = "followRedirect" [@@bs.set];
+    external getFollowRedirect : t => option 'TypeUnion = "followRedirect" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setFollowAllRedirects : t => option bool => unit = "followAllRedirects" [@@bs.set];
     external getFollowAllRedirects : t => option bool = "followAllRedirects" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -143,17 +143,17 @@ let module Request = {
     external setMaxRedirects : t => option float => unit = "maxRedirects" [@@bs.set];
     external getMaxRedirects : t => option float = "maxRedirects" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setEncoding : t => option 'a => unit = "encoding" [@@bs.set];
-    external getEncoding : t => option 'a = "encoding" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setEncoding : t => option 'TypeUnion => unit = "encoding" [@@bs.set];
+    external getEncoding : t => option 'TypeUnion = "encoding" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setPool : t => option 'a => unit = "pool" [@@bs.set];
-    external getPool : t => option 'a = "pool" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setPool : t => option 'Any => unit = "pool" [@@bs.set];
+    external getPool : t => option 'Any = "pool" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setTimeout : t => option float => unit = "timeout" [@@bs.set];
     external getTimeout : t => option float = "timeout" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setProxy : t => option 'a => unit = "proxy" [@@bs.set];
-    external getProxy : t => option 'a = "proxy" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setProxy : t => option 'Any => unit = "proxy" [@@bs.set];
+    external getProxy : t => option 'Any = "proxy" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setStrictSSL : t => option bool => unit = "strictSSL" [@@bs.set];
     external getStrictSSL : t => option bool = "strictSSL" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -176,8 +176,8 @@ let module Request = {
     external setPassphrase : t => option string => unit = "passphrase" [@@bs.set];
     external getPassphrase : t => option string = "passphrase" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setCa : t => option 'a => unit = "ca" [@@bs.set];
-    external getCa : t => option 'a = "ca" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setCa : t => option 'TypeUnion => unit = "ca" [@@bs.set];
+    external getCa : t => option 'TypeUnion = "ca" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setHar : t => option HttpArchiveRequest.t => unit = "har" [@@bs.set];
     external getHar : t => option HttpArchiveRequest.t = "har" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -190,18 +190,18 @@ let module Request = {
   let module UriOptions = {
     type t;
 
-    external make : uri::'a => t = "" [@@bs.obj];
-    external setUri : t => 'a => unit = "uri" [@@bs.set];
-    external getUri : t => 'a = "uri" [@@bs.get];
+    external make : uri::'TypeUnion => t = "" [@@bs.obj];
+    external setUri : t => 'TypeUnion => unit = "uri" [@@bs.set];
+    external getUri : t => 'TypeUnion = "uri" [@@bs.get];
 
   };
 
   let module UrlOptions = {
     type t;
 
-    external make : url::'a => t = "" [@@bs.obj];
-    external setUrl : t => 'a => unit = "url" [@@bs.set];
-    external getUrl : t => 'a = "url" [@@bs.get];
+    external make : url::'TypeUnion => t = "" [@@bs.obj];
+    external setUrl : t => 'TypeUnion => unit = "url" [@@bs.set];
+    external getUrl : t => 'TypeUnion = "url" [@@bs.get];
 
   };
 
@@ -244,19 +244,19 @@ let module Request = {
   let module RequestCallback = {
     type t;
 
-    external invoke : t => 'a => RequestResponse.t => 'a => unit = "" [@@bs.send];
+    external invoke : t => 'Any => RequestResponse.t => 'Any => unit = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
   let module RequestResponse = {
     type t;
 
-    external make : request::Options.t => body::'a => t = "" [@@bs.obj];
+    external make : request::Options.t => body::'Any => t = "" [@@bs.obj];
     external setRequest : t => Options.t => unit = "request" [@@bs.set];
     external getRequest : t => Options.t = "request" [@@bs.get];
 
-    external setBody : t => 'a => unit = "body" [@@bs.set];
-    external getBody : t => 'a = "body" [@@bs.get];
+    external setBody : t => 'Any => unit = "body" [@@bs.set];
+    external getBody : t => 'Any = "body" [@@bs.get];
 
   };
 
@@ -329,12 +329,12 @@ let module Request = {
   let module RequestPart = {
     type t;
 
-    external make : headers::Headers.t? => body::'a => unit => t = "" [@@bs.obj];
+    external make : headers::Headers.t? => body::'Any => unit => t = "" [@@bs.obj];
     external setHeaders : t => option Headers.t => unit = "headers" [@@bs.set];
     external getHeaders : t => option Headers.t = "headers" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setBody : t => 'a => unit = "body" [@@bs.set];
-    external getBody : t => 'a = "body" [@@bs.get];
+    external setBody : t => 'Any => unit = "body" [@@bs.set];
+    external getBody : t => 'Any = "body" [@@bs.get];
 
   };
 
@@ -342,14 +342,14 @@ let module Request = {
     type t;
 
     external getAgent : t => http.Agent.t = "" [@@bs.send];
-    external pipeDest : t => 'a => unit = "" [@@bs.send];
+    external pipeDest : t => 'Any => unit = "" [@@bs.send];
     external setHeader : t => string => string => bool? => unit => Request.t = "" [@@bs.send];
     external setHeaders : t => Headers.t => Request.t = "" [@@bs.send];
     external qs : t => Object.t => bool? => unit => Request.t = "" [@@bs.send];
     external form0 : t => FormData.t = "form" [@@bs.send];
-    external form1 : t => 'a => Request.t = "form" [@@bs.send];
+    external form1 : t => 'Any => Request.t = "form" [@@bs.send];
     external multipart : t => (array RequestPart.t) => Request.t = "" [@@bs.send];
-    external json : t => 'a => Request.t = "" [@@bs.send];
+    external json : t => 'Any => Request.t = "" [@@bs.send];
     external aws : t => AWSOptions.t => bool? => unit => Request.t = "" [@@bs.send];
     external auth : t => string => string => bool? => string? => unit => Request.t = "" [@@bs.send];
     external oauth : t => OAuthOptions.t => Request.t = "" [@@bs.send];
@@ -357,9 +357,9 @@ let module Request = {
     external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external onRequest : t => (_ [@bs.as "request"]) => (http.ClientRequest.t => unit) => t = "on" [@@bs.send];
     external onResponse : t => (_ [@bs.as "response"]) => (http.IncomingMessage.t => unit) => t = "on" [@@bs.send];
-    external onData : t => (_ [@bs.as "data"]) => ('a => unit) => t = "on" [@@bs.send];
+    external onData : t => (_ [@bs.as "data"]) => ('TypeUnion => unit) => t = "on" [@@bs.send];
     external onError : t => (_ [@bs.as "error"]) => (Error.t => unit) => t = "on" [@@bs.send];
-    external onComplete : t => (_ [@bs.as "complete"]) => (http.IncomingMessage.t => 'a => unit) => t = "on" [@@bs.send];
+    external onComplete : t => (_ [@bs.as "complete"]) => (http.IncomingMessage.t => 'TypeUnion => unit) => t = "on" [@@bs.send];
     external write0 : t => Buffer.t => ('x => 'y)? => unit => bool = "write" [@@bs.send];
     external write1 : t => string => ('x => 'y)? => unit => bool = "write" [@@bs.send];
     external write2 : t => string => string => ('x => 'y)? => unit => bool = "write" [@@bs.send];
@@ -385,14 +385,14 @@ let module Request = {
   let module Headers = {
     type t;
 
-    external value : t => string => 'a = "" [@@bs.send];
+    external value : t => string => 'Any = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
   let module AuthOptions = {
     type t;
 
-    external make : user::string? => username::string? => pass::string? => password::string? => sendImmediately::bool? => bearer::'a? => unit => t = "" [@@bs.obj];
+    external make : user::string? => username::string? => pass::string? => password::string? => sendImmediately::bool? => bearer::'TypeUnion? => unit => t = "" [@@bs.obj];
     external setUser : t => option string => unit = "user" [@@bs.set];
     external getUser : t => option string = "user" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -408,15 +408,15 @@ let module Request = {
     external setSendImmediately : t => option bool => unit = "sendImmediately" [@@bs.set];
     external getSendImmediately : t => option bool = "sendImmediately" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setBearer : t => option 'a => unit = "bearer" [@@bs.set];
-    external getBearer : t => option 'a = "bearer" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setBearer : t => option 'TypeUnion => unit = "bearer" [@@bs.set];
+    external getBearer : t => option 'TypeUnion = "bearer" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
   };
 
   let module OAuthOptions = {
     type t;
 
-    external make : callback::string? => consumer_key::string? => consumer_secret::string? => token::string? => token_secret::string? => transport_method::'a? => verifier::string? => unit => t = "" [@@bs.obj];
+    external make : callback::string? => consumer_key::string? => consumer_secret::string? => token::string? => token_secret::string? => transport_method::'TypeUnion? => verifier::string? => unit => t = "" [@@bs.obj];
     external setCallback : t => option string => unit = "callback" [@@bs.set];
     external getCallback : t => option string = "callback" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -432,8 +432,8 @@ let module Request = {
     external setToken_secret : t => option string => unit = "token_secret" [@@bs.set];
     external getToken_secret : t => option string = "token_secret" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setTransport_method : t => option 'a => unit = "transport_method" [@@bs.set];
-    external getTransport_method : t => option 'a = "transport_method" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setTransport_method : t => option 'TypeUnion => unit = "transport_method" [@@bs.set];
+    external getTransport_method : t => option 'TypeUnion = "transport_method" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setVerifier : t => option string => unit = "verifier" [@@bs.set];
     external getVerifier : t => option string = "verifier" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -443,9 +443,9 @@ let module Request = {
   let module HawkOptions = {
     type t;
 
-    external make : credentials::'a => t = "" [@@bs.obj];
-    external setCredentials : t => 'a => unit = "credentials" [@@bs.set];
-    external getCredentials : t => 'a = "credentials" [@@bs.get];
+    external make : credentials::'Any => t = "" [@@bs.obj];
+    external setCredentials : t => 'Any => unit = "credentials" [@@bs.set];
+    external getCredentials : t => 'Any = "credentials" [@@bs.get];
 
   };
 
@@ -464,21 +464,21 @@ let module Request = {
   let module CookieJar = {
     type t;
 
-    external setCookie : t => Cookie.t => 'a => 'a? => unit => unit = "" [@@bs.send];
-    external getCookieString : t => 'a => string = "" [@@bs.send];
-    external getCookies : t => 'a => (array Cookie.t) = "" [@@bs.send];
+    external setCookie : t => Cookie.t => 'TypeUnion => 'Any? => unit => unit = "" [@@bs.send];
+    external getCookieString : t => 'TypeUnion => string = "" [@@bs.send];
+    external getCookies : t => 'TypeUnion => (array Cookie.t) = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
   let module CookieValue = {
     type t;
 
-    external make : name::string => value::'a => httpOnly::bool => t = "" [@@bs.obj];
+    external make : name::string => value::'Any => httpOnly::bool => t = "" [@@bs.obj];
     external setName : t => string => unit = "name" [@@bs.set];
     external getName : t => string = "name" [@@bs.get];
 
-    external setValue : t => 'a => unit = "value" [@@bs.set];
-    external getValue : t => 'a = "value" [@@bs.get];
+    external setValue : t => 'Any => unit = "value" [@@bs.set];
+    external getValue : t => 'Any = "value" [@@bs.get];
 
     external setHttpOnly : t => bool => unit = "httpOnly" [@@bs.set];
     external getHttpOnly : t => bool = "httpOnly" [@@bs.get];

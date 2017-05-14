@@ -105,15 +105,8 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
       }).join(" => ");
       return { name: "(" + (cbParams || "unit") + " => " + getType(type.type, opts).name + ")" }
     case TS.SyntaxKind.UnionType:
-      // TODO:
-      if (type.types && type.types[0].kind == TS.SyntaxKind.StringLiteral)
-        return { name: "(* TODO StringEnum " + type.types.map(x=>x.text).join(" | ") + " *) string" }
-      else if (type.types.length <= 4)
-        // TODO:
-        return { name: "'a" }
-      else
-        // TODO:
-        return { name: "'a" }
+      // TODO
+      return { name: "'TypeUnion" }
     case TS.SyntaxKind.TupleType:
       return { name: type.elementTypes.map(t => getType(t, opts)).map(t => t.name).join(" * ") }
     case TS.SyntaxKind.ParenthesizedType:
@@ -135,7 +128,7 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
 
       // TODO:
       if (!name) {
-        return { name: "'a" }
+        return { name: "'Unknown" }
       }
 
       const t = MappedTypes[name]
@@ -148,28 +141,31 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
       return { name: (typeParameters.indexOf(result) > -1 ? "'" : "") + result }
     }
     case TS.SyntaxKind.AnyKeyword: {
-      return { name: "'a" }
+      return { name: "'Any" }
     }
     case TS.SyntaxKind.IntersectionType: {
       // TODO
-      return { name: "'a" }
+      return { name: "'TypeIntersection" }
     }
     case TS.SyntaxKind.ExpressionWithTypeArguments: {
       // TODO
-      return { name: "'a" }
+      return { name: "'ExpressionWithTypeArguments" }
     }
     case TS.SyntaxKind.LiteralType: {
       switch (type.literal.kind) {
         case TS.SyntaxKind.StringLiteral:
-          // TODO
           return { name: 'string', stringLiteralValue: type.literal.text }
         case TS.SyntaxKind.NumericLiteral:
           return { name: 'float' }
       }
     }
+    case TS.SyntaxKind.TypeQuery: {
+      // TODO
+      return { name: "'TypeQuery" }
+    }
     default: {
-      console.log(`Unknown type! We'll emit it as "'a". Kind: ${type.kind}`)
-      return { name: "'a" }
+      console.log(`Unknown type! We'll emit it as "'UnknownType". Kind: ${type.kind}`)
+      return { name: "'UnknownType" }
     }
   }
 }
