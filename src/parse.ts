@@ -150,6 +150,15 @@ function getType(type: any, opts: TypeParseOptions = {}): { name: string, anonym
       // TODO
       return { name: "'a" }
     }
+    case TS.SyntaxKind.LiteralType: {
+      switch (type.literal.kind) {
+        case TS.SyntaxKind.StringLiteral:
+          // TODO
+          return { name: 'string' }
+        case TS.SyntaxKind.NumericLiteral:
+          return { name: 'float' }
+      }
+    }
     default: {
       console.log(`Unknown type! We'll emit it as "'a". Kind: ${type.kind}`)
       return { name: "'a" }
