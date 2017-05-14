@@ -331,24 +331,30 @@ function visitInterface(node, opts) {
 }
 
 function deduplicateMethods(methods: ReadonlyArray<Method>): Array<Method> {
-  return methods.map(method => {
+  const dedupedByStringLiterals = methods.map(method => {
     // TODO: This is super inefficient
     const existingMethods = methods.filter(m => m.name === method.name)
     if (existingMethods.length > 1) {
-      let newName = method.name
       if (method.parameters.length && method.parameters[0].stringLiteralValue) {
         const literal = method.parameters[0].stringLiteralValue
         const sanitized = capitalized(literal.replace(/-/g, ''))
-        // TODO: Emit the original name for the binding
-        // TODO: Make the string literal value fixed
-        newName = `${method.name}${sanitized}`
+        const newName = `${method.name}${sanitized}`
+        return { ...method, name: newName }
       } else {
-        const i = existingMethods.findIndex(m => m === method)
-        const uniqueSuffix = i.toString()
-        newName = `${method.name}${uniqueSuffix}`
+        return method
       }
+    } else {
+      return method
+    }
+  })
+
+  return dedupedByStringLiterals.map(method => {
+    // TODO: This is super inefficient
+    const existingMethods = dedupedByStringLiterals.filter(m => m.name === method.name)
+    if (existingMethods.length > 1) {
       const i = existingMethods.findIndex(m => m === method)
       const uniqueSuffix = i.toString()
+      const newName = `${method.name}${uniqueSuffix}`
       return { ...method, name: newName }
     } else {
       return method
