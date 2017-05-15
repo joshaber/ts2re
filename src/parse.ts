@@ -107,8 +107,10 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
     case TS.SyntaxKind.UnionType:
       // TODO
       return { name: "'TypeUnion" }
-    case TS.SyntaxKind.TupleType:
-      return { name: type.elementTypes.map(t => getType(t, opts)).map(t => t.name).join(" * ") }
+    case TS.SyntaxKind.TupleType: {
+      const innerTypes = type.elementTypes.map(t => getType(t, opts))
+      return { name: `(${innerTypes.map(t => t.name).join(", ")})` }
+    }
     case TS.SyntaxKind.ParenthesizedType:
       return getType(type.type, opts)
     case TS.SyntaxKind.ThisType:
