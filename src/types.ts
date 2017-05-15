@@ -18,6 +18,7 @@ export interface Parameter {
   readonly optional: boolean
   readonly rest: boolean
   readonly stringLiteralValue?: string
+  readonly phantom: boolean
 }
 
 export interface Interface {
@@ -27,7 +28,7 @@ export interface Interface {
   readonly properties: Array<Property>
   readonly methods: Array<Method>
   readonly typeParameters: Array<string>
-  readonly anonymousTypes: Array<Interface>
+  readonly anonymousTypes: Array<AnonymousType>
 }
 
 export interface Method {
@@ -54,6 +55,22 @@ export interface Module {
   readonly variables: Array<Variable>
   readonly interfaces: Array<Interface>
   readonly methods: Array<Method>
+  readonly anonymousTypes: Array<AnonymousType>
 }
+
+export interface NewType {
+  readonly name: string
+  readonly typeParameters: ReadonlyArray<string>
+  readonly cases: ReadonlyArray<Case>
+}
+
+export interface Case {
+  readonly name: string
+  readonly type: string
+}
+
+export type AnonymousType =
+  | { kind: 'interface', interface: Interface }
+  | { kind: 'newtype', newType: NewType }
 
 export const ModuleTypeName = "t";

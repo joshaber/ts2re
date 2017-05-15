@@ -8,6 +8,7 @@ import {
   Module,
   Property,
   Interface,
+  NewType,
 } from './types'
 import { capitalized } from './common'
 
@@ -94,6 +95,17 @@ function printProperty(p: Property, depth: number): string {
   return str
 }
 
+function printNewType(t: NewType, depth: number): string {
+  let str = ''
+
+  str += pp(`type ${t.name} ${t.typeParameters.join(' ')} =`, depth)
+  for (const c of t.cases) {
+    str += pp(`| ${c.name} : ${t.name} ${c.type}`, depth + 1)
+  }
+
+  return str
+}
+
 function printInterface(i: Interface, rootModule: Module, depth: number): string {
   let str = ''
   str += pp(`let module ${capitalized(i.name)} = {`, depth)
@@ -103,7 +115,11 @@ function printInterface(i: Interface, rootModule: Module, depth: number): string
   str += '\n'
 
   for (const anon of i.anonymousTypes) {
-    str += printInterface(anon, rootModule, depth + 1)
+    if (anon.kind === 'interface') {
+      str += printInterface(anon.interface, rootModule, depth + 1)
+    } else if (anon.kind === 'newtype') {
+      str += printNewType(anon.newType, depth + 1)
+    }
     str += '\n'
   }
 

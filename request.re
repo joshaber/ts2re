@@ -58,7 +58,29 @@ let module Request = {
   let module CoreOptions = {
     type t;
 
-    external make : baseUrl::string? => callback::('Any => RequestResponse.t => 'Any => unit)? => jar::'Any? => formData::'Any? => form::'Any? => auth::AuthOptions.t? => oauth::OAuthOptions.t? => aws::AWSOptions.t? => hawk::HawkOptions.t? => qs::'Any? => qsStringifyOptions::'Any? => qsParseOptions::'Any? => json::'Any? => jsonReviver::(string => 'Any => 'Any)? => jsonReplacer::(string => 'Any => 'Any)? => multipart::'TypeUnion? => agent::'TypeUnion? => agentOptions::'Any? => agentClass::'Any? => forever::'Any? => host::string? => port::float? => method::string? => headers::Headers.t? => body::'Any? => followRedirect::'TypeUnion? => followAllRedirects::bool? => maxRedirects::float? => encoding::'TypeUnion? => pool::'Any? => timeout::float? => proxy::'Any? => strictSSL::bool? => gzip::bool? => preambleCRLF::bool? => postambleCRLF::bool? => key::Buffer.t? => cert::Buffer.t? => passphrase::string? => ca::'TypeUnion? => har::HttpArchiveRequest.t? => useQuerystring::bool? => unit => t = "" [@@bs.obj];
+    type MultipartType 'a =
+      | ArrayRequestPartT : MultipartType (array RequestPart.t)
+      | MultipartT : MultipartType Multipart.t
+
+    type AgentType 'a =
+      | HttpAgentT : AgentType http.Agent.t
+      | HttpsAgentT : AgentType https.Agent.t
+
+    type FollowRedirectType 'a =
+      | Bool : FollowRedirectType bool
+      | HttpIncomingMessageT =>Bool : FollowRedirectType (http.IncomingMessage.t => bool)
+
+    type EncodingType 'a =
+      | String : EncodingType string
+      | 'UnknownType : EncodingType 'UnknownType
+
+    type CaType 'a =
+      | String : CaType string
+      | BufferT : CaType Buffer.t
+      | ArrayString : CaType (array string)
+      | ArrayBufferT : CaType (array Buffer.t)
+
+    external make : baseUrl::string? => callback::('Any => RequestResponse.t => 'Any => unit)? => jar::'Any? => formData::'Any? => form::'Any? => auth::AuthOptions.t? => oauth::OAuthOptions.t? => aws::AWSOptions.t? => hawk::HawkOptions.t? => qs::'Any? => qsStringifyOptions::'Any? => qsParseOptions::'Any? => json::'Any? => jsonReviver::(string => 'Any => 'Any)? => jsonReplacer::(string => 'Any => 'Any)? => multipart::MultipartType? => agent::AgentType? => agentOptions::'Any? => agentClass::'Any? => forever::'Any? => host::string? => port::float? => method::string? => headers::Headers.t? => body::'Any? => followRedirect::FollowRedirectType? => followAllRedirects::bool? => maxRedirects::float? => encoding::EncodingType? => pool::'Any? => timeout::float? => proxy::'Any? => strictSSL::bool? => gzip::bool? => preambleCRLF::bool? => postambleCRLF::bool? => key::Buffer.t? => cert::Buffer.t? => passphrase::string? => ca::CaType? => har::HttpArchiveRequest.t? => useQuerystring::bool? => unit => t = "" [@@bs.obj];
     external setBaseUrl : t => option string => unit = "baseUrl" [@@bs.set];
     external getBaseUrl : t => option string = "baseUrl" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -104,11 +126,11 @@ let module Request = {
     external setJsonReplacer : t => option (string => 'Any => 'Any) => unit = "jsonReplacer" [@@bs.set];
     external getJsonReplacer : t => option (string => 'Any => 'Any) = "jsonReplacer" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setMultipart : t => option 'TypeUnion => unit = "multipart" [@@bs.set];
-    external getMultipart : t => option 'TypeUnion = "multipart" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setMultipart : t => option MultipartType => unit = "multipart" [@@bs.set];
+    external getMultipart : t => option MultipartType = "multipart" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setAgent : t => option 'TypeUnion => unit = "agent" [@@bs.set];
-    external getAgent : t => option 'TypeUnion = "agent" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setAgent : t => option AgentType => unit = "agent" [@@bs.set];
+    external getAgent : t => option AgentType = "agent" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setAgentOptions : t => option 'Any => unit = "agentOptions" [@@bs.set];
     external getAgentOptions : t => option 'Any = "agentOptions" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -134,8 +156,8 @@ let module Request = {
     external setBody : t => option 'Any => unit = "body" [@@bs.set];
     external getBody : t => option 'Any = "body" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setFollowRedirect : t => option 'TypeUnion => unit = "followRedirect" [@@bs.set];
-    external getFollowRedirect : t => option 'TypeUnion = "followRedirect" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setFollowRedirect : t => option FollowRedirectType => unit = "followRedirect" [@@bs.set];
+    external getFollowRedirect : t => option FollowRedirectType = "followRedirect" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setFollowAllRedirects : t => option bool => unit = "followAllRedirects" [@@bs.set];
     external getFollowAllRedirects : t => option bool = "followAllRedirects" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -143,8 +165,8 @@ let module Request = {
     external setMaxRedirects : t => option float => unit = "maxRedirects" [@@bs.set];
     external getMaxRedirects : t => option float = "maxRedirects" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setEncoding : t => option 'TypeUnion => unit = "encoding" [@@bs.set];
-    external getEncoding : t => option 'TypeUnion = "encoding" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setEncoding : t => option EncodingType => unit = "encoding" [@@bs.set];
+    external getEncoding : t => option EncodingType = "encoding" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setPool : t => option 'Any => unit = "pool" [@@bs.set];
     external getPool : t => option 'Any = "pool" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -176,8 +198,8 @@ let module Request = {
     external setPassphrase : t => option string => unit = "passphrase" [@@bs.set];
     external getPassphrase : t => option string = "passphrase" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setCa : t => option 'TypeUnion => unit = "ca" [@@bs.set];
-    external getCa : t => option 'TypeUnion = "ca" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setCa : t => option CaType => unit = "ca" [@@bs.set];
+    external getCa : t => option CaType = "ca" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setHar : t => option HttpArchiveRequest.t => unit = "har" [@@bs.set];
     external getHar : t => option HttpArchiveRequest.t = "har" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -190,18 +212,26 @@ let module Request = {
   let module UriOptions = {
     type t;
 
-    external make : uri::'TypeUnion => t = "" [@@bs.obj];
-    external setUri : t => 'TypeUnion => unit = "uri" [@@bs.set];
-    external getUri : t => 'TypeUnion = "uri" [@@bs.get];
+    type UriType 'a =
+      | String : UriType string
+      | UrlT : UriType Url.t
+
+    external make : uri::UriType => t = "" [@@bs.obj];
+    external setUri : t => UriType => unit = "uri" [@@bs.set];
+    external getUri : t => UriType = "uri" [@@bs.get];
 
   };
 
   let module UrlOptions = {
     type t;
 
-    external make : url::'TypeUnion => t = "" [@@bs.obj];
-    external setUrl : t => 'TypeUnion => unit = "url" [@@bs.set];
-    external getUrl : t => 'TypeUnion = "url" [@@bs.get];
+    type UrlType 'a =
+      | String : UrlType string
+      | UrlT : UrlType Url.t
+
+    external make : url::UrlType => t = "" [@@bs.obj];
+    external setUrl : t => UrlType => unit = "url" [@@bs.set];
+    external getUrl : t => UrlType = "url" [@@bs.get];
 
   };
 
@@ -357,9 +387,9 @@ let module Request = {
     external on : t => string => ('x => 'y) => t = "" [@@bs.send];
     external onRequest : t => (_ [@bs.as "request"]) => (http.ClientRequest.t => unit) => t = "on" [@@bs.send];
     external onResponse : t => (_ [@bs.as "response"]) => (http.IncomingMessage.t => unit) => t = "on" [@@bs.send];
-    external onData : t => (_ [@bs.as "data"]) => ('TypeUnion => unit) => t = "on" [@@bs.send];
+    external onData : t => (_ [@bs.as "data"]) => (ListenerType => unit) => t = "on" [@@bs.send];
     external onError : t => (_ [@bs.as "error"]) => (Error.t => unit) => t = "on" [@@bs.send];
-    external onComplete : t => (_ [@bs.as "complete"]) => (http.IncomingMessage.t => 'TypeUnion => unit) => t = "on" [@@bs.send];
+    external onComplete : t => (_ [@bs.as "complete"]) => (http.IncomingMessage.t => ListenerType => unit) => t = "on" [@@bs.send];
     external write0 : t => Buffer.t => ('x => 'y)? => unit => bool = "write" [@@bs.send];
     external write1 : t => string => ('x => 'y)? => unit => bool = "write" [@@bs.send];
     external write2 : t => string => string => ('x => 'y)? => unit => bool = "write" [@@bs.send];
@@ -392,7 +422,11 @@ let module Request = {
   let module AuthOptions = {
     type t;
 
-    external make : user::string? => username::string? => pass::string? => password::string? => sendImmediately::bool? => bearer::'TypeUnion? => unit => t = "" [@@bs.obj];
+    type BearerType 'a =
+      | String : BearerType string
+      | Unit =>String : BearerType (unit => string)
+
+    external make : user::string? => username::string? => pass::string? => password::string? => sendImmediately::bool? => bearer::BearerType? => unit => t = "" [@@bs.obj];
     external setUser : t => option string => unit = "user" [@@bs.set];
     external getUser : t => option string = "user" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -408,15 +442,20 @@ let module Request = {
     external setSendImmediately : t => option bool => unit = "sendImmediately" [@@bs.set];
     external getSendImmediately : t => option bool = "sendImmediately" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setBearer : t => option 'TypeUnion => unit = "bearer" [@@bs.set];
-    external getBearer : t => option 'TypeUnion = "bearer" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setBearer : t => option BearerType => unit = "bearer" [@@bs.set];
+    external getBearer : t => option BearerType = "bearer" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
   };
 
   let module OAuthOptions = {
     type t;
 
-    external make : callback::string? => consumer_key::string? => consumer_secret::string? => token::string? => token_secret::string? => transport_method::'TypeUnion? => verifier::string? => unit => t = "" [@@bs.obj];
+    type Transport_methodType 'a =
+      | String : Transport_methodType string
+      | String : Transport_methodType string
+      | String : Transport_methodType string
+
+    external make : callback::string? => consumer_key::string? => consumer_secret::string? => token::string? => token_secret::string? => transport_method::Transport_methodType? => verifier::string? => unit => t = "" [@@bs.obj];
     external setCallback : t => option string => unit = "callback" [@@bs.set];
     external getCallback : t => option string = "callback" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -432,8 +471,8 @@ let module Request = {
     external setToken_secret : t => option string => unit = "token_secret" [@@bs.set];
     external getToken_secret : t => option string = "token_secret" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setTransport_method : t => option 'TypeUnion => unit = "transport_method" [@@bs.set];
-    external getTransport_method : t => option 'TypeUnion = "transport_method" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setTransport_method : t => option Transport_methodType => unit = "transport_method" [@@bs.set];
+    external getTransport_method : t => option Transport_methodType = "transport_method" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setVerifier : t => option string => unit = "verifier" [@@bs.set];
     external getVerifier : t => option string = "verifier" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -464,9 +503,21 @@ let module Request = {
   let module CookieJar = {
     type t;
 
-    external setCookie : t => Cookie.t => 'TypeUnion => 'Any? => unit => unit = "" [@@bs.send];
-    external getCookieString : t => 'TypeUnion => string = "" [@@bs.send];
-    external getCookies : t => 'TypeUnion => (array Cookie.t) = "" [@@bs.send];
+    type UriType 'a =
+      | String : UriType string
+      | UrlUrlT : UriType url.Url.t
+
+    type UriType 'a =
+      | String : UriType string
+      | UrlUrlT : UriType url.Url.t
+
+    type UriType 'a =
+      | String : UriType string
+      | UrlUrlT : UriType url.Url.t
+
+    external setCookie : t => Cookie.t => UriType => 'Any? => unit => unit = "" [@@bs.send];
+    external getCookieString : t => UriType => string = "" [@@bs.send];
+    external getCookies : t => UriType => (array Cookie.t) = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 

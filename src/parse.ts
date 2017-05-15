@@ -9,6 +9,8 @@ import {
   Method,
   Property,
   Interface,
+  NewType,
+  AnonymousType,
 } from './types'
 import { capitalized } from './common'
 
@@ -49,7 +51,7 @@ interface TypeParseOptions {
 interface Type {
   readonly name: string
   readonly stringLiteralValue?: string
-  readonly anonymousType?: Interface
+  readonly anonymousType?: AnonymousType
 }
 
 export function parseFile(file: TS.SourceFile): Module {
@@ -60,6 +62,7 @@ export function parseFile(file: TS.SourceFile): Module {
     interfaces: [],
     methods: [],
     typeAliases: [],
+    anonymousTypes: [],
   }
 
   TS.forEachChild(file, visitNode(rootModule))
@@ -75,6 +78,25 @@ function findTypeParameters(node, acc = []) {
     node.typeParameters.forEach(x => acc.push(x.name.text));
   }
   return findTypeParameters(node.parent, acc);
+}
+
+function createUnion(types: ReadonlyArray<Type>, name: string): NewType {
+  // TODO: Ignore the args on the external
+  const t: NewType = {
+    name,
+    typeParameters: [ "'a" ],
+    cases: types.map(t => ({
+      name: getCaseName(t.name),
+      type: t.name,
+    })),
+  }
+
+  return t
+}
+
+function getCaseName(type: string): string {
+  // TODO: This totally falls apart for functions
+  return capitalized(camelCase(type.replace('(', '').replace(')', '')))
 }
 
 function getType(type: any, opts: TypeParseOptions = {}): Type {
@@ -104,9 +126,12 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
         return x.dotDotDotToken ? "'a" : getType(x.type, opts).name;
       }).join(" => ");
       return { name: "(" + (cbParams || "unit") + " => " + getType(type.type, opts).name + ")" }
-    case TS.SyntaxKind.UnionType:
-      // TODO
-      return { name: "'TypeUnion" }
+    case TS.SyntaxKind.UnionType: {
+      const innerTypes = type.types.map(t => getType(t, opts))
+      // TODO: If it's all strings, then it's an enum :|
+      const newType = createUnion(innerTypes, `${capitalized(opts.declarationName)}Type`)
+      return { name: newType.name, anonymousType: { kind: 'newtype', newType } }
+    }
     case TS.SyntaxKind.TupleType: {
       const innerTypes = type.elementTypes.map(t => getType(t, opts))
       return { name: `(${innerTypes.map(t => t.name).join(", ")})` }
@@ -117,7 +142,7 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
       return { name: ModuleTypeName }
     case TS.SyntaxKind.TypeLiteral: {
       const i = visitInterface(type, { name: `${capitalized(opts.declarationName)}Type`, anonymous: true });
-      return { name: `${i.name}.${ModuleTypeName}`, anonymousType: i }
+      return { name: `${i.name}.${ModuleTypeName}`, anonymousType: { kind: 'interface', interface: i } }
     }
     case TS.SyntaxKind.TypeReference: {
       let name = type.typeName ? `${type.typeName.text}.${ModuleTypeName}` : (type.expression ? type.expression.text : null)
@@ -203,7 +228,7 @@ function getVariables(node: any): ReadonlyArray<Variable> {
   return variables
 }
 
-function getProperty(node, opts: PropertyParseOptions = {}): { property: Property, anonymousType?: Interface } {
+function getProperty(node, opts: PropertyParseOptions = {}): { property: Property, anonymousType?: AnonymousType } {
   const name = opts.name || getName(node)
   const type = getType(node.type, { declarationName: name })
   const prop: Property = {
@@ -293,6 +318,7 @@ function visitInterface(node, opts) {
       optional: p.optional,
       type: p.type,
       rest: false,
+      phantom: false,
     }))
 
     if (params.find(p => p.optional)) {
@@ -301,6 +327,7 @@ function visitInterface(node, opts) {
         type: 'unit',
         optional: false,
         rest: false,
+        phantom: true,
       }
       params.push(sentinelParam)
     }
@@ -396,7 +423,7 @@ function hasFlag(flags, flag) {
   return flags != null && (flags & flag) == flag;
 }
 
-function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anonymousTypes: ReadonlyArray<Interface> } {
+function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anonymousTypes: ReadonlyArray<AnonymousType> } {
   const params = node.parameters.map(n => getParameter(n))
   const name = opts.name || getName(node)
   const type = getType(node.type, { declarationName: name })
@@ -421,6 +448,7 @@ function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anony
       type: 'unit',
       optional: false,
       rest: false,
+      phantom: true,
     }
     meth.parameters.push(sentinelParam)
   }
@@ -432,7 +460,7 @@ function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anony
   return { method: meth, anonymousTypes: anonTypes }
 }
 
-function getParameter(node): { parameter: Parameter, anonymousType?: Interface } {
+function getParameter(node): { parameter: Parameter, anonymousType?: AnonymousType } {
   const name = node.name.text
   const type = getType(node.type, { declarationName: name })
   const param: Parameter = {
@@ -441,6 +469,7 @@ function getParameter(node): { parameter: Parameter, anonymousType?: Interface }
     optional: node.questionToken != null,
     rest: node.dotDotDotToken != null,
     stringLiteralValue: type.stringLiteralValue,
+    phantom: type.anonymousType && type.anonymousType.kind === 'newtype',
   }
 
   return {
@@ -480,7 +509,7 @@ function visitNode(m: Module) {
       case TS.SyntaxKind.FunctionDeclaration:
         const member = getMethod(node, { static: true, moduleName: m.name })
         m.methods.push(member.method)
-        m.interfaces.push(...member.anonymousTypes)
+        m.anonymousTypes.push(...member.anonymousTypes)
         break;
 
       case TS.SyntaxKind.ModuleDeclaration:
@@ -502,6 +531,7 @@ function visitModule(node: TS.Node): Module {
   const interfaces = []
   const variables = []
   const methods = []
+  const anonymousTypes = []
 
   const body = (node as any).body
   switch (body.kind) {
@@ -516,12 +546,14 @@ function visitModule(node: TS.Node): Module {
         variables: [],
         interfaces: [],
         methods: [],
+        anonymousTypes: [],
       }
       body.statements.forEach(visitNode(m));
       modules.push(...m.modules)
       interfaces.push(...m.interfaces)
       variables.push(...m.variables)
       methods.push(...m.methods)
+      anonymousTypes.push(...m.anonymousTypes)
       break;
   }
 
@@ -531,6 +563,7 @@ function visitModule(node: TS.Node): Module {
     variables,
     interfaces,
     methods,
+    anonymousTypes,
   }
 }
 
