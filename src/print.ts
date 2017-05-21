@@ -67,6 +67,11 @@ function printMethod(m: Method, interface_: Interface | null, rootModule: Module
       ? m.moduleName
       : ''
     return `external ${printName(m.name)} : ${params} => ${ModuleTypeName} = "${ffiName}" [@@bs.${bsAttribute}]${suffix};`
+  } else if (m.callSignature) {
+    const params = m.parameters.length
+      ? m.parameters.map(p => printParameter(p, m.maker)).join(" => ")
+      : "unit"
+    return `external ${printName(m.name)} : ${params} => ${ModuleTypeName} = "${rootModule.name}" [@@bs.module];`
   } else if (!m.static) {
     let typeParams = ''
     if (interface_) {

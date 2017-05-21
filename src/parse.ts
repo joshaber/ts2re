@@ -32,6 +32,7 @@ interface MethodParseOptions {
   readonly ctor?: boolean
   readonly moduleName?: string
   readonly static?: boolean
+  readonly callSignature?: boolean
 }
 
 interface InterfaceParseOptions {
@@ -241,7 +242,7 @@ function getProperty(node, opts: PropertyParseOptions = {}): { property: Propert
   return { property: prop, anonymousType: type.anonymousType }
 }
 
-function visitInterface(node, opts) {
+function visitInterface(node, opts: InterfaceParseOptions) {
   let ifc = getInterface(node, opts);
   const members = opts.kind === 'type-alias' ? node.type.members : node.members;
   (members || []).forEach(function(node) {
@@ -266,11 +267,8 @@ function visitInterface(node, opts) {
           }
         }
       } break;
-      // TODO: If interface only contains one `Invoke` method
-      // make it an alias of Func
       case TS.SyntaxKind.CallSignature: {
-        const member = getMethod(node, { name: "invoke", moduleName: ifc.name })
-        // member.emit = "$0($1...)";
+        const member = getMethod(node, { name: "invoke", moduleName: ifc.name, callSignature: true })
         ifc.methods.push(member.method)
         ifc.anonymousTypes.push(...member.anonymousTypes)
       } break;
@@ -342,6 +340,7 @@ function visitInterface(node, opts) {
       ctor: false,
       maker: true,
       moduleName: ifc.name,
+      callSignature: false,
     }
 
     ifc.methods.push(makeMeth);
@@ -441,6 +440,7 @@ function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anony
     ctor: opts.ctor || false,
     maker: false,
     moduleName: opts.moduleName || '',
+    callSignature: opts.callSignature,
   };
 
   const containsOptionalParam = !!meth.parameters.find(p => p.optional)

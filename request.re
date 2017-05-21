@@ -5,9 +5,9 @@ let module Request = {
 
     external defaults0 : t 'TRequest 'TOptions 'TUriUrlOptions => TOptions.t => RequestAPI.t (TRequest.t, TOptions.t, RequiredUriUrl.t) = "defaults" [@@bs.send];
     external defaults1 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => DefaultUriUrlRequestApi.t (TRequest.t, TOptions.t, OptionalUriUrl.t) = "defaults" [@@bs.send];
-    external invoke0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "invoke" [@@bs.send];
-    external invoke1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "invoke" [@@bs.send];
-    external invoke2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "invoke" [@@bs.send];
+    external invoke0 : string => TOptions.t? => RequestCallback.t? => unit => t = "request" [@@bs.module];
+    external invoke1 : string => RequestCallback.t? => unit => t = "request" [@@bs.module];
+    external invoke2 : 'TypeIntersection => RequestCallback.t? => unit => t = "request" [@@bs.module];
     external get0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "get" [@@bs.send];
     external get1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "get" [@@bs.send];
     external get2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "get" [@@bs.send];
@@ -45,7 +45,7 @@ let module Request = {
     type t 'TRequest 'TOptions 'TUriUrlOptions;
 
     external defaults : t 'TRequest 'TOptions 'TUriUrlOptions => TOptions.t => DefaultUriUrlRequestApi.t (TRequest.t, TOptions.t, OptionalUriUrl.t) = "" [@@bs.send];
-    external invoke : t 'TRequest 'TOptions 'TUriUrlOptions => TRequest.t = "" [@@bs.send];
+    external invoke : unit => t = "request" [@@bs.module];
     external get : t 'TRequest 'TOptions 'TUriUrlOptions => TRequest.t = "" [@@bs.send];
     external post : t 'TRequest 'TOptions 'TUriUrlOptions => TRequest.t = "" [@@bs.send];
     external put : t 'TRequest 'TOptions 'TUriUrlOptions => TRequest.t = "" [@@bs.send];
@@ -274,7 +274,7 @@ let module Request = {
   let module RequestCallback = {
     type t;
 
-    external invoke : t => 'Any => RequestResponse.t => 'Any => unit = "" [@@bs.send];
+    external invoke : 'Any => RequestResponse.t => 'Any => t = "request" [@@bs.module];
     external make : unit => t = "" [@@bs.obj];
   };
 
@@ -554,3 +554,4 @@ let module Request = {
   };
 
 };
+

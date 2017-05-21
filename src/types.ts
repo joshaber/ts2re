@@ -47,6 +47,9 @@ export interface Method {
 
   /** Maker for an interface/object. */
   readonly maker: boolean
+
+  /** Is the method a call signature for an interface? */
+  readonly callSignature: boolean
 }
 
 export interface Module {
