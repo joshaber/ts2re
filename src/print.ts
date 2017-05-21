@@ -99,8 +99,9 @@ function printNewType(t: NewType, depth: number): string {
   let str = ''
 
   str += pp(`type ${t.name} ${t.typeParameters.join(' ')} =`, depth)
-  for (const c of t.cases) {
-    str += pp(`| ${c.name} : ${t.name} ${c.type}`, depth + 1)
+  for (const [ i, c ] of t.cases.entries()) {
+    const last = i === t.cases.length - 1
+    str += pp(`| ${c.name} : ${t.name} ${c.type}${last ? ';' : ''}`, depth + 1)
   }
 
   return str

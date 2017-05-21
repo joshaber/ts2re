@@ -12,7 +12,7 @@ import {
   NewType,
   AnonymousType,
 } from './types'
-import { capitalized } from './common'
+import { capitalized, decapitalized } from './common'
 
 const camelCase: (str: string) => string = require('camelcase')
 
@@ -129,7 +129,7 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
     case TS.SyntaxKind.UnionType: {
       const innerTypes = type.types.map(t => getType(t, opts))
       // TODO: If it's all strings, then it's an enum :|
-      const newType = createUnion(innerTypes, `${capitalized(opts.declarationName)}Type`)
+      const newType = createUnion(innerTypes, `${decapitalized(opts.declarationName)}Type`)
       return { name: newType.name, anonymousType: { kind: 'newtype', newType } }
     }
     case TS.SyntaxKind.TupleType: {
@@ -425,6 +425,8 @@ function hasFlag(flags, flag) {
 
 function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anonymousTypes: ReadonlyArray<AnonymousType> } {
   const params = node.parameters.map(n => getParameter(n))
+  // TODO: If a param has a union type then include phantom args for the GADT.
+
   const name = opts.name || getName(node)
   const type = getType(node.type, { declarationName: name })
   const meth: Method = {
