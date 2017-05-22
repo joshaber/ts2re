@@ -41,6 +41,8 @@ function printVariable(variable: Variable): string {
 function printParameter(p: Parameter, includeName: boolean): string {
   if (p.stringLiteralValue) {
     return `(_ [@bs.as "${p.stringLiteralValue}"])`
+  } else if (p.phantom) {
+    return `(${p.type} [@bs.ignore])`
   } else {
     const prefix = includeName && p.name.length
       ? `${printName(p.name)}::`

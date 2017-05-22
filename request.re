@@ -5,32 +5,32 @@ let module Request = {
 
     external defaults0 : t 'TRequest 'TOptions 'TUriUrlOptions => TOptions.t => RequestAPI.t (TRequest.t, TOptions.t, RequiredUriUrl.t) = "defaults" [@@bs.send];
     external defaults1 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => DefaultUriUrlRequestApi.t (TRequest.t, TOptions.t, OptionalUriUrl.t) = "defaults" [@@bs.send];
-    external invoke0 : string => TOptions.t? => RequestCallback.t? => unit => t = "request" [@@bs.module];
-    external invoke1 : string => RequestCallback.t? => unit => t = "request" [@@bs.module];
-    external invoke2 : 'TypeIntersection => RequestCallback.t? => unit => t = "request" [@@bs.module];
-    external get0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "get" [@@bs.send];
-    external get1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "get" [@@bs.send];
-    external get2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "get" [@@bs.send];
-    external post0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "post" [@@bs.send];
-    external post1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "post" [@@bs.send];
-    external post2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "post" [@@bs.send];
-    external put0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "put" [@@bs.send];
-    external put1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "put" [@@bs.send];
-    external put2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "put" [@@bs.send];
-    external head0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "head" [@@bs.send];
-    external head1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "head" [@@bs.send];
-    external head2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "head" [@@bs.send];
-    external patch0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "patch" [@@bs.send];
-    external patch1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "patch" [@@bs.send];
-    external patch2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "patch" [@@bs.send];
-    external del0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "del" [@@bs.send];
-    external del1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "del" [@@bs.send];
-    external del2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "del" [@@bs.send];
-    external delete0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => unit => TRequest.t = "delete" [@@bs.send];
-    external delete1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => unit => TRequest.t = "delete" [@@bs.send];
-    external delete2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => unit => TRequest.t = "delete" [@@bs.send];
+    external invoke0 : string => TOptions.t? => RequestCallback.t? => (unit [@bs.ignore]) => t = "request" [@@bs.module];
+    external invoke1 : string => RequestCallback.t? => (unit [@bs.ignore]) => t = "request" [@@bs.module];
+    external invoke2 : 'TypeIntersection => RequestCallback.t? => (unit [@bs.ignore]) => t = "request" [@@bs.module];
+    external get0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "get" [@@bs.send];
+    external get1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "get" [@@bs.send];
+    external get2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "get" [@@bs.send];
+    external post0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "post" [@@bs.send];
+    external post1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "post" [@@bs.send];
+    external post2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "post" [@@bs.send];
+    external put0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "put" [@@bs.send];
+    external put1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "put" [@@bs.send];
+    external put2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "put" [@@bs.send];
+    external head0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "head" [@@bs.send];
+    external head1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "head" [@@bs.send];
+    external head2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "head" [@@bs.send];
+    external patch0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "patch" [@@bs.send];
+    external patch1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "patch" [@@bs.send];
+    external patch2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "patch" [@@bs.send];
+    external del0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "del" [@@bs.send];
+    external del1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "del" [@@bs.send];
+    external del2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "del" [@@bs.send];
+    external delete0 : t 'TRequest 'TOptions 'TUriUrlOptions => string => TOptions.t? => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "delete" [@@bs.send];
+    external delete1 : t 'TRequest 'TOptions 'TUriUrlOptions => string => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "delete" [@@bs.send];
+    external delete2 : t 'TRequest 'TOptions 'TUriUrlOptions => 'TypeIntersection => RequestCallback.t? => (unit [@bs.ignore]) => TRequest.t = "delete" [@@bs.send];
     external forever : t 'TRequest 'TOptions 'TUriUrlOptions => 'Any => 'Any => TRequest.t = "" [@@bs.send];
-    external jar : t 'TRequest 'TOptions 'TUriUrlOptions => 'Any? => unit => CookieJar.t = "" [@@bs.send];
+    external jar : t 'TRequest 'TOptions 'TUriUrlOptions => 'Any? => (unit [@bs.ignore]) => CookieJar.t = "" [@@bs.send];
     external cookie : t 'TRequest 'TOptions 'TUriUrlOptions => string => Cookie.t = "" [@@bs.send];
     external make : initParams::'Any => debug::bool => t = "" [@@bs.obj];
     external setInitParams : t => 'Any => unit = "initParams" [@@bs.set];
@@ -80,7 +80,7 @@ let module Request = {
       | ArrayString : caType (array string)
       | ArrayBufferT : caType (array Buffer.t);
 
-    external make : baseUrl::string? => callback::('Any => RequestResponse.t => 'Any => unit)? => jar::'Any? => formData::'Any? => form::'Any? => auth::AuthOptions.t? => oauth::OAuthOptions.t? => aws::AWSOptions.t? => hawk::HawkOptions.t? => qs::'Any? => qsStringifyOptions::'Any? => qsParseOptions::'Any? => json::'Any? => jsonReviver::(string => 'Any => 'Any)? => jsonReplacer::(string => 'Any => 'Any)? => multipart::multipartType? => agent::agentType? => agentOptions::'Any? => agentClass::'Any? => forever::'Any? => host::string? => port::float? => method::string? => headers::Headers.t? => body::'Any? => followRedirect::followRedirectType? => followAllRedirects::bool? => maxRedirects::float? => encoding::encodingType? => pool::'Any? => timeout::float? => proxy::'Any? => strictSSL::bool? => gzip::bool? => preambleCRLF::bool? => postambleCRLF::bool? => key::Buffer.t? => cert::Buffer.t? => passphrase::string? => ca::caType? => har::HttpArchiveRequest.t? => useQuerystring::bool? => unit => t = "" [@@bs.obj];
+    external make : baseUrl::string? => callback::('Any => RequestResponse.t => 'Any => unit)? => jar::'Any? => formData::'Any? => form::'Any? => auth::AuthOptions.t? => oauth::OAuthOptions.t? => aws::AWSOptions.t? => hawk::HawkOptions.t? => qs::'Any? => qsStringifyOptions::'Any? => qsParseOptions::'Any? => json::'Any? => jsonReviver::(string => 'Any => 'Any)? => jsonReplacer::(string => 'Any => 'Any)? => multipart::multipartType? => agent::agentType? => agentOptions::'Any? => agentClass::'Any? => forever::'Any? => host::string? => port::float? => method::string? => headers::Headers.t? => body::'Any? => followRedirect::followRedirectType? => followAllRedirects::bool? => maxRedirects::float? => encoding::encodingType? => pool::'Any? => timeout::float? => proxy::'Any? => strictSSL::bool? => gzip::bool? => preambleCRLF::bool? => postambleCRLF::bool? => key::Buffer.t? => cert::Buffer.t? => passphrase::string? => ca::caType? => har::HttpArchiveRequest.t? => useQuerystring::bool? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setBaseUrl : t => option string => unit = "baseUrl" [@@bs.set];
     external getBaseUrl : t => option string = "baseUrl" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -244,7 +244,7 @@ let module Request = {
   let module OptionalUriUrl = {
     type t;
 
-    external make : uri::string? => url::string? => unit => t = "" [@@bs.obj];
+    external make : uri::string? => url::string? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setUri : t => option string => unit = "uri" [@@bs.set];
     external getUri : t => option string = "uri" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -296,7 +296,7 @@ let module Request = {
     let module PostDataType = {
       type t;
 
-      external make : mimeType::string? => params::(array NameValuePair.t)? => unit => t = "" [@@bs.obj];
+      external make : mimeType::string? => params::(array NameValuePair.t)? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
       external setMimeType : t => option string => unit = "mimeType" [@@bs.set];
       external getMimeType : t => option string = "mimeType" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -305,7 +305,7 @@ let module Request = {
 
     };
 
-    external make : url::string? => method::string? => headers::(array NameValuePair.t)? => postData::PostDataType.t? => unit => t = "" [@@bs.obj];
+    external make : url::string? => method::string? => headers::(array NameValuePair.t)? => postData::PostDataType.t? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setUrl : t => option string => unit = "url" [@@bs.set];
     external getUrl : t => option string = "url" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -338,7 +338,7 @@ let module Request = {
     let module DataType = {
       type t;
 
-      external make : content-type::string? => body::string => unit => t = "" [@@bs.obj];
+      external make : content-type::string? => body::string => (unit [@bs.ignore]) => t = "" [@@bs.obj];
       external setContent-type : t => option string => unit = "content-type" [@@bs.set];
       external getContent-type : t => option string = "content-type" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -347,7 +347,7 @@ let module Request = {
 
     };
 
-    external make : chunked::bool? => data::(array DataType.t)? => unit => t = "" [@@bs.obj];
+    external make : chunked::bool? => data::(array DataType.t)? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setChunked : t => option bool => unit = "chunked" [@@bs.set];
     external getChunked : t => option bool = "chunked" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -359,7 +359,7 @@ let module Request = {
   let module RequestPart = {
     type t;
 
-    external make : headers::Headers.t? => body::'Any => unit => t = "" [@@bs.obj];
+    external make : headers::Headers.t? => body::'Any => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setHeaders : t => option Headers.t => unit = "headers" [@@bs.set];
     external getHeaders : t => option Headers.t = "headers" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -373,15 +373,15 @@ let module Request = {
 
     external getAgent : t => http.Agent.t = "" [@@bs.send];
     external pipeDest : t => 'Any => unit = "" [@@bs.send];
-    external setHeader : t => string => string => bool? => unit => Request.t = "" [@@bs.send];
+    external setHeader : t => string => string => bool? => (unit [@bs.ignore]) => Request.t = "" [@@bs.send];
     external setHeaders : t => Headers.t => Request.t = "" [@@bs.send];
-    external qs : t => Object.t => bool? => unit => Request.t = "" [@@bs.send];
+    external qs : t => Object.t => bool? => (unit [@bs.ignore]) => Request.t = "" [@@bs.send];
     external form0 : t => FormData.t = "form" [@@bs.send];
     external form1 : t => 'Any => Request.t = "form" [@@bs.send];
     external multipart : t => (array RequestPart.t) => Request.t = "" [@@bs.send];
     external json : t => 'Any => Request.t = "" [@@bs.send];
-    external aws : t => AWSOptions.t => bool? => unit => Request.t = "" [@@bs.send];
-    external auth : t => string => string => bool? => string? => unit => Request.t = "" [@@bs.send];
+    external aws : t => AWSOptions.t => bool? => (unit [@bs.ignore]) => Request.t = "" [@@bs.send];
+    external auth : t => string => string => bool? => string? => (unit [@bs.ignore]) => Request.t = "" [@@bs.send];
     external oauth : t => OAuthOptions.t => Request.t = "" [@@bs.send];
     external jar : t => CookieJar.t => Request.t = "" [@@bs.send];
     external on : t => string => ('x => 'y) => t = "" [@@bs.send];
@@ -390,14 +390,14 @@ let module Request = {
     external onData : t => (_ [@bs.as "data"]) => (listenerType => unit) => t = "on" [@@bs.send];
     external onError : t => (_ [@bs.as "error"]) => (Error.t => unit) => t = "on" [@@bs.send];
     external onComplete : t => (_ [@bs.as "complete"]) => (http.IncomingMessage.t => listenerType => unit) => t = "on" [@@bs.send];
-    external write0 : t => Buffer.t => ('x => 'y)? => unit => bool = "write" [@@bs.send];
-    external write1 : t => string => ('x => 'y)? => unit => bool = "write" [@@bs.send];
-    external write2 : t => string => string => ('x => 'y)? => unit => bool = "write" [@@bs.send];
-    external write3 : t => string => string? => string? => unit => bool = "write" [@@bs.send];
+    external write0 : t => Buffer.t => ('x => 'y)? => (unit [@bs.ignore]) => bool = "write" [@@bs.send];
+    external write1 : t => string => ('x => 'y)? => (unit [@bs.ignore]) => bool = "write" [@@bs.send];
+    external write2 : t => string => string => ('x => 'y)? => (unit [@bs.ignore]) => bool = "write" [@@bs.send];
+    external write3 : t => string => string? => string? => (unit [@bs.ignore]) => bool = "write" [@@bs.send];
     external end0 : t => unit = "end" [@@bs.send];
-    external end1 : t => Buffer.t => ('x => 'y)? => unit => unit = "end" [@@bs.send];
-    external end2 : t => string => ('x => 'y)? => unit => unit = "end" [@@bs.send];
-    external end3 : t => string => string => ('x => 'y)? => unit => unit = "end" [@@bs.send];
+    external end1 : t => Buffer.t => ('x => 'y)? => (unit [@bs.ignore]) => unit = "end" [@@bs.send];
+    external end2 : t => string => ('x => 'y)? => (unit [@bs.ignore]) => unit = "end" [@@bs.send];
+    external end3 : t => string => string => ('x => 'y)? => (unit [@bs.ignore]) => unit = "end" [@@bs.send];
     external pause : t => unit = "" [@@bs.send];
     external resume : t => unit = "" [@@bs.send];
     external abort : t => unit = "" [@@bs.send];
@@ -426,7 +426,7 @@ let module Request = {
       | String : bearerType string
       | Unit =>String : bearerType (unit => string);
 
-    external make : user::string? => username::string? => pass::string? => password::string? => sendImmediately::bool? => bearer::bearerType? => unit => t = "" [@@bs.obj];
+    external make : user::string? => username::string? => pass::string? => password::string? => sendImmediately::bool? => bearer::bearerType? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setUser : t => option string => unit = "user" [@@bs.set];
     external getUser : t => option string = "user" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -455,7 +455,7 @@ let module Request = {
       | String : transport_methodType string
       | String : transport_methodType string;
 
-    external make : callback::string? => consumer_key::string? => consumer_secret::string? => token::string? => token_secret::string? => transport_method::transport_methodType? => verifier::string? => unit => t = "" [@@bs.obj];
+    external make : callback::string? => consumer_key::string? => consumer_secret::string? => token::string? => token_secret::string? => transport_method::transport_methodType? => verifier::string? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setCallback : t => option string => unit = "callback" [@@bs.set];
     external getCallback : t => option string = "callback" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -491,7 +491,7 @@ let module Request = {
   let module AWSOptions = {
     type t;
 
-    external make : secret::string => bucket::string? => unit => t = "" [@@bs.obj];
+    external make : secret::string => bucket::string? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setSecret : t => string => unit = "secret" [@@bs.set];
     external getSecret : t => string = "secret" [@@bs.get];
 
@@ -515,9 +515,9 @@ let module Request = {
       | String : uriType string
       | UrlUrlT : uriType url.Url.t;
 
-    external setCookie : t => Cookie.t => uriType => 'Any? => unit => unit = "" [@@bs.send];
-    external getCookieString : t => uriType => string = "" [@@bs.send];
-    external getCookies : t => uriType => (array Cookie.t) = "" [@@bs.send];
+    external setCookie : t => Cookie.t => (uriType [@bs.ignore]) => 'Any? => (unit [@bs.ignore]) => unit = "" [@@bs.send];
+    external getCookieString : t => (uriType [@bs.ignore]) => string = "" [@@bs.send];
+    external getCookies : t => (uriType [@bs.ignore]) => (array Cookie.t) = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
