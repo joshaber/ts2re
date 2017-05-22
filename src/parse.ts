@@ -424,6 +424,25 @@ function hasFlag(flags, flag) {
 
 function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anonymousTypes: ReadonlyArray<AnonymousType> } {
   const params = node.parameters.map(n => getParameter(n))
+  const mappedParams: Array<Parameter> = []
+  for (const param of params) {
+    if (param.anonymousType && param.anonymousType.kind === 'newtype') {
+      mappedParams.push({
+        name: `${param.parameter.name}Union`,
+        type: `${param.anonymousType.newType.name} ${param.anonymousType.newType.typeParameters}`,
+        optional: false,
+        phantom: true,
+        rest: false,
+      })
+
+      mappedParams.push({
+        ...param.parameter,
+        type: param.anonymousType.newType.typeParameters,
+      })
+    } else {
+      mappedParams.push(param.parameter)
+    }
+  }
   // TODO: If a param has a union type then include phantom args for the GADT.
 
   const name = opts.name || getName(node)
@@ -436,7 +455,7 @@ function getMethod(node, opts: MethodParseOptions = {}): { method: Method, anony
     static: opts.static
           || (node.name && hasFlag(node.name.parserContextFlags, TS.ModifierFlags.Static))
           || (node.modifiers && hasFlag(node.modifiers.flags, TS.ModifierFlags.Static)),
-    parameters: params.map(p => p.parameter),
+    parameters: mappedParams,
     ctor: opts.ctor || false,
     maker: false,
     moduleName: opts.moduleName || '',
@@ -471,7 +490,7 @@ function getParameter(node): { parameter: Parameter, anonymousType?: AnonymousTy
     optional: node.questionToken != null,
     rest: node.dotDotDotToken != null,
     stringLiteralValue: type.stringLiteralValue,
-    phantom: type.anonymousType && type.anonymousType.kind === 'newtype',
+    phantom: false,
   }
 
   return {
@@ -503,9 +522,6 @@ function visitNode(m: Module) {
       case TS.SyntaxKind.VariableStatement:
         const variables = getVariables(node);
         m.variables.push(...variables)
-        // TODO:
-        // varsAndTypes.variables.forEach(x => mod.properties.push(x));
-        // varsAndTypes.anonymousTypes.forEach(x => mod.interfaces.push(x));
         break;
 
       case TS.SyntaxKind.FunctionDeclaration:

@@ -515,9 +515,9 @@ let module Request = {
       | String : uriType string
       | UrlUrlT : uriType url.Url.t;
 
-    external setCookie : t => Cookie.t => (uriType [@bs.ignore]) => 'Any? => (unit [@bs.ignore]) => unit = "" [@@bs.send];
-    external getCookieString : t => (uriType [@bs.ignore]) => string = "" [@@bs.send];
-    external getCookies : t => (uriType [@bs.ignore]) => (array Cookie.t) = "" [@@bs.send];
+    external setCookie : t => Cookie.t => (uriType 'a [@bs.ignore]) => 'a => 'Any? => (unit [@bs.ignore]) => unit = "" [@@bs.send];
+    external getCookieString : t => (uriType 'a [@bs.ignore]) => 'a => string = "" [@@bs.send];
+    external getCookies : t => (uriType 'a [@bs.ignore]) => 'a => (array Cookie.t) = "" [@@bs.send];
     external make : unit => t = "" [@@bs.obj];
   };
 
