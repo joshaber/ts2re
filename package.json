@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "go": "npm run build && node out/main.js"
+    "fixtures": "npm run build && node out/main.js -- fixtures/request.d.ts && node out/main.js -- fixtures/electron.d.ts"
   },
   "author": "",
   "license": "MIT",

@@ -9,8 +9,7 @@
   "exclude": [
     "node_modules",
     "out",
-    "electron.d.ts",
-    "request.d.ts"
+    "fixtures"
   ],
   "compileOnSave": false
 }
