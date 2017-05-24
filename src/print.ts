@@ -74,7 +74,11 @@ function printMethod(m: Method, interface_: Interface | null, rootModule: Module
       ? m.parameters.map(p => printParameter(p, m.maker)).join(" => ")
       : "unit"
     // TODO: This is pretty wrong
-    return `external ${printName(m.name)} : ${params} => ${ModuleTypeName} = "${rootModule.name}" [@@bs.module];`
+    if (rootModule) {
+      return `external ${printName(m.name)} : ${params} => ${ModuleTypeName} = "${rootModule.name}" [@@bs.module];`
+    } else {
+      return ''
+    }
   } else if (!m.static) {
     let typeParams = ''
     if (interface_) {
