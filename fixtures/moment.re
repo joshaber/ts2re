@@ -6,9 +6,9 @@ let module Moment = {
   external utc :  => MomentInput.t? => MomentFormatSpecification.t? => string? => bool? => (unit [@bs.ignore]) => Moment.t = "";
   external unix :  => float => Moment.t = "";
   external invalid :  => MomentParsingFlagsOpt.t? => (unit [@bs.ignore]) => Moment.t = "";
-  external isMoment :  => 'Any => 'UnknownType = "";
-  external isDate :  => 'Any => 'UnknownType = "";
-  external isDuration :  => 'Any => 'UnknownType = "";
+  external isMoment :  => 'Any => bool = "";
+  external isDate :  => 'Any => bool = "";
+  external isDuration :  => 'Any => bool = "";
   external lang :  => string? => (unit [@bs.ignore]) => string = "";
   external lang :  => string? => Locale.t? => (unit [@bs.ignore]) => string = "";
   external locale :  => string? => (unit [@bs.ignore]) => string = "";
