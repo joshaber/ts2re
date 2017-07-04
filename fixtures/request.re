@@ -68,7 +68,7 @@ let module Request = {
 
     type followRedirectType 'a =
       | Bool : followRedirectType bool
-      | HttpIncomingMessageT =>Bool : followRedirectType (http.IncomingMessage.t => bool);
+      | HttpIncomingMessageT =>Bool [-@bsUncurry] : followRedirectType (http.IncomingMessage.t => bool [@bs.uncurry]);
 
     type encodingType 'a =
       | String : encodingType string
@@ -80,12 +80,12 @@ let module Request = {
       | ArrayString : caType (array string)
       | ArrayBufferT : caType (array Buffer.t);
 
-    external make : baseUrl::string? => callback::('Any => RequestResponse.t => 'Any => unit)? => jar::'Any? => formData::'Any? => form::'Any? => auth::AuthOptions.t? => oauth::OAuthOptions.t? => aws::AWSOptions.t? => hawk::HawkOptions.t? => qs::'Any? => qsStringifyOptions::'Any? => qsParseOptions::'Any? => json::'Any? => jsonReviver::(string => 'Any => 'Any)? => jsonReplacer::(string => 'Any => 'Any)? => multipart::multipartType? => agent::agentType? => agentOptions::'Any? => agentClass::'Any? => forever::'Any? => host::string? => port::float? => method::string? => headers::Headers.t? => body::'Any? => followRedirect::followRedirectType? => followAllRedirects::bool? => maxRedirects::float? => encoding::encodingType? => pool::'Any? => timeout::float? => proxy::'Any? => strictSSL::bool? => gzip::bool? => preambleCRLF::bool? => postambleCRLF::bool? => key::Buffer.t? => cert::Buffer.t? => passphrase::string? => ca::caType? => har::HttpArchiveRequest.t? => useQuerystring::bool? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
+    external make : baseUrl::string? => callback::('Any => RequestResponse.t => 'Any => unit [@bs.uncurry])? => jar::'Any? => formData::'Any? => form::'Any? => auth::AuthOptions.t? => oauth::OAuthOptions.t? => aws::AWSOptions.t? => hawk::HawkOptions.t? => qs::'Any? => qsStringifyOptions::'Any? => qsParseOptions::'Any? => json::'Any? => jsonReviver::(string => 'Any => 'Any [@bs.uncurry])? => jsonReplacer::(string => 'Any => 'Any [@bs.uncurry])? => multipart::multipartType? => agent::agentType? => agentOptions::'Any? => agentClass::'Any? => forever::'Any? => host::string? => port::float? => method::string? => headers::Headers.t? => body::'Any? => followRedirect::followRedirectType? => followAllRedirects::bool? => maxRedirects::float? => encoding::encodingType? => pool::'Any? => timeout::float? => proxy::'Any? => strictSSL::bool? => gzip::bool? => preambleCRLF::bool? => postambleCRLF::bool? => key::Buffer.t? => cert::Buffer.t? => passphrase::string? => ca::caType? => har::HttpArchiveRequest.t? => useQuerystring::bool? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setBaseUrl : t => option string => unit = "baseUrl" [@@bs.set];
     external getBaseUrl : t => option string = "baseUrl" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setCallback : t => option ('Any => RequestResponse.t => 'Any => unit) => unit = "callback" [@@bs.set];
-    external getCallback : t => option ('Any => RequestResponse.t => 'Any => unit) = "callback" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setCallback : t => option ('Any => RequestResponse.t => 'Any => unit [@bs.uncurry]) => unit = "callback" [@@bs.set];
+    external getCallback : t => option ('Any => RequestResponse.t => 'Any => unit [@bs.uncurry]) = "callback" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setJar : t => option 'Any => unit = "jar" [@@bs.set];
     external getJar : t => option 'Any = "jar" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -120,11 +120,11 @@ let module Request = {
     external setJson : t => option 'Any => unit = "json" [@@bs.set];
     external getJson : t => option 'Any = "json" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setJsonReviver : t => option (string => 'Any => 'Any) => unit = "jsonReviver" [@@bs.set];
-    external getJsonReviver : t => option (string => 'Any => 'Any) = "jsonReviver" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setJsonReviver : t => option (string => 'Any => 'Any [@bs.uncurry]) => unit = "jsonReviver" [@@bs.set];
+    external getJsonReviver : t => option (string => 'Any => 'Any [@bs.uncurry]) = "jsonReviver" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setJsonReplacer : t => option (string => 'Any => 'Any) => unit = "jsonReplacer" [@@bs.set];
-    external getJsonReplacer : t => option (string => 'Any => 'Any) = "jsonReplacer" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setJsonReplacer : t => option (string => 'Any => 'Any [@bs.uncurry]) => unit = "jsonReplacer" [@@bs.set];
+    external getJsonReplacer : t => option (string => 'Any => 'Any [@bs.uncurry]) = "jsonReplacer" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setMultipart : t => option multipartType => unit = "multipart" [@@bs.set];
     external getMultipart : t => option multipartType = "multipart" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -385,11 +385,11 @@ let module Request = {
     external oauth : t => OAuthOptions.t => Request.t = "" [@@bs.send];
     external jar : t => CookieJar.t => Request.t = "" [@@bs.send];
     external on : t => string => ('x => 'y) => t = "" [@@bs.send];
-    external onRequest : t => (_ [@bs.as "request"]) => (http.ClientRequest.t => unit) => t = "on" [@@bs.send];
-    external onResponse : t => (_ [@bs.as "response"]) => (http.IncomingMessage.t => unit) => t = "on" [@@bs.send];
-    external onData : t => (_ [@bs.as "data"]) => (listenerType => unit) => t = "on" [@@bs.send];
-    external onError : t => (_ [@bs.as "error"]) => (Error.t => unit) => t = "on" [@@bs.send];
-    external onComplete : t => (_ [@bs.as "complete"]) => (http.IncomingMessage.t => listenerType => unit) => t = "on" [@@bs.send];
+    external onRequest : t => (_ [@bs.as "request"]) => (http.ClientRequest.t => unit [@bs.uncurry]) => t = "on" [@@bs.send];
+    external onResponse : t => (_ [@bs.as "response"]) => (http.IncomingMessage.t => unit [@bs.uncurry]) => t = "on" [@@bs.send];
+    external onData : t => (_ [@bs.as "data"]) => (listenerType => unit [@bs.uncurry]) => t = "on" [@@bs.send];
+    external onError : t => (_ [@bs.as "error"]) => (Error.t => unit [@bs.uncurry]) => t = "on" [@@bs.send];
+    external onComplete : t => (_ [@bs.as "complete"]) => (http.IncomingMessage.t => listenerType => unit [@bs.uncurry]) => t = "on" [@@bs.send];
     external write0 : t => Buffer.t => ('x => 'y)? => (unit [@bs.ignore]) => bool = "write" [@@bs.send];
     external write1 : t => string => ('x => 'y)? => (unit [@bs.ignore]) => bool = "write" [@@bs.send];
     external write2 : t => string => string => ('x => 'y)? => (unit [@bs.ignore]) => bool = "write" [@@bs.send];
@@ -424,7 +424,7 @@ let module Request = {
 
     type bearerType 'a =
       | String : bearerType string
-      | Unit =>String : bearerType (unit => string);
+      | Unit =>String [@bsUncurry] : bearerType (unit => string [@bs.uncurry]);
 
     external make : user::string? => username::string? => pass::string? => password::string? => sendImmediately::bool? => bearer::bearerType? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setUser : t => option string => unit = "user" [@@bs.set];

@@ -137,7 +137,7 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
           (cbParams || "unit") +
           " => " +
           getType(type.type, opts).name +
-          ")"
+          " [@bs.uncurry])"
       };
     case TS.SyntaxKind.UnionType: {
       const innerTypes = type.types.map(t => getType(t, opts));

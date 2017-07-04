@@ -59,8 +59,8 @@ let module Moment = {
   external normalizeUnits : unitOfTime.All.t => string = "";
   external relativeTimeThreshold : string => relativeTimeThresholdType = "";
   external relativeTimeThreshold : string => float => bool = "";
-  external relativeTimeRounding : (float => float) => bool = "";
-  external relativeTimeRounding : unit => (float => float) = "";
+  external relativeTimeRounding : (float => float [@bs.uncurry]) => bool = "";
+  external relativeTimeRounding : unit => (float => float [@bs.uncurry]) = "";
   external calendarFormat : Moment.t => Moment.t => string = "";
   let module RelativeTimeKey = {
     type t;
@@ -319,7 +319,7 @@ let module Moment = {
       | WeekdaySimpleFnT : weekdaysMinType WeekdaySimpleFn.t;
 
     external value : t => string => 'Any = "" [@@bs.send];
-    external make : months::monthsType? => monthsShort::monthsShortType? => weekdays::weekdaysType? => weekdaysShort::weekdaysShortType? => weekdaysMin::weekdaysMinType? => meridiemParse::RegExp.t? => meridiem::(float => float => bool => string)? => isPM::(string => bool)? => longDateFormat::LongDateFormatSpec.t? => calendar::CalendarSpec.t? => relativeTime::RelativeTimeSpec.t? => invalidDate::string? => ordinal::(float => string)? => ordinalParse::RegExp.t? => week::WeekSpec.t? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
+    external make : months::monthsType? => monthsShort::monthsShortType? => weekdays::weekdaysType? => weekdaysShort::weekdaysShortType? => weekdaysMin::weekdaysMinType? => meridiemParse::RegExp.t? => meridiem::(float => float => bool => string [@bs.uncurry])? => isPM::(string => bool [@bs.uncurry])? => longDateFormat::LongDateFormatSpec.t? => calendar::CalendarSpec.t? => relativeTime::RelativeTimeSpec.t? => invalidDate::string? => ordinal::(float => string [@bs.uncurry])? => ordinalParse::RegExp.t? => week::WeekSpec.t? => (unit [@bs.ignore]) => t = "" [@@bs.obj];
     external setMonths : t => option monthsType => unit = "months" [@@bs.set];
     external getMonths : t => option monthsType = "months" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
@@ -338,11 +338,11 @@ let module Moment = {
     external setMeridiemParse : t => option RegExp.t => unit = "meridiemParse" [@@bs.set];
     external getMeridiemParse : t => option RegExp.t = "meridiemParse" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setMeridiem : t => option (float => float => bool => string) => unit = "meridiem" [@@bs.set];
-    external getMeridiem : t => option (float => float => bool => string) = "meridiem" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setMeridiem : t => option (float => float => bool => string [@bs.uncurry]) => unit = "meridiem" [@@bs.set];
+    external getMeridiem : t => option (float => float => bool => string [@bs.uncurry]) = "meridiem" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setIsPM : t => option (string => bool) => unit = "isPM" [@@bs.set];
-    external getIsPM : t => option (string => bool) = "isPM" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setIsPM : t => option (string => bool [@bs.uncurry]) => unit = "isPM" [@@bs.set];
+    external getIsPM : t => option (string => bool [@bs.uncurry]) = "isPM" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setLongDateFormat : t => option LongDateFormatSpec.t => unit = "longDateFormat" [@@bs.set];
     external getLongDateFormat : t => option LongDateFormatSpec.t = "longDateFormat" [@@bs.get] [@@bs.return null_undefined_to_opt];
@@ -356,8 +356,8 @@ let module Moment = {
     external setInvalidDate : t => option string => unit = "invalidDate" [@@bs.set];
     external getInvalidDate : t => option string = "invalidDate" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
-    external setOrdinal : t => option (float => string) => unit = "ordinal" [@@bs.set];
-    external getOrdinal : t => option (float => string) = "ordinal" [@@bs.get] [@@bs.return null_undefined_to_opt];
+    external setOrdinal : t => option (float => string [@bs.uncurry]) => unit = "ordinal" [@@bs.set];
+    external getOrdinal : t => option (float => string [@bs.uncurry]) = "ordinal" [@@bs.get] [@@bs.return null_undefined_to_opt];
 
     external setOrdinalParse : t => option RegExp.t => unit = "ordinalParse" [@@bs.set];
     external getOrdinalParse : t => option RegExp.t = "ordinalParse" [@@bs.get] [@@bs.return null_undefined_to_opt];
