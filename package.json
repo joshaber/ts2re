@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "convert": "node out/main.js",
-    "fixtures": "npm run build && npm run convert -- fixtures/request.d.ts && npm run convert -- fixtures/electron.d.ts && npm run convert -- fixtures/moment.d.ts"
+    "fixtures": "npm run build && npm run convert -- fixtures/request.d.ts && npm run convert -- fixtures/electron.d.ts && npm run convert -- fixtures/moment.d.ts",
+    "pretty": "prettier --write \"src/*.ts\""
   },
   "author": "",
   "license": "MIT",
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@types/node": "^7.0.14",
+    "prettier": "^1.5.2",
     "typescript": "^2.4.1"
   }
 }

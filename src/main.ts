@@ -2,16 +2,16 @@ import * as Path from "path";
 import * as TS from "typescript";
 import * as FS from "fs";
 
-import { printModule } from './print'
-import { parseFile } from './parse'
+import { printModule } from "./print";
+import { parseFile } from "./parse";
 
-const args = process.argv.slice(1)
-const inputFile = args[args.length - 1]
+const args = process.argv.slice(1);
+const inputFile = args[args.length - 1];
 
-const root = Path.join(process.cwd(), Path.dirname(inputFile))
+const root = Path.join(process.cwd(), Path.dirname(inputFile));
 
-const filePath = Path.join(root, Path.basename(inputFile))
-const prog = TS.createProgram([ filePath ], TS.getDefaultCompilerOptions());
+const filePath = Path.join(root, Path.basename(inputFile));
+const prog = TS.createProgram([filePath], TS.getDefaultCompilerOptions());
 
 const file = prog.getSourceFile(filePath);
 const out = parseFile(file);
