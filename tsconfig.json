@@ -6,10 +6,6 @@
     "sourceMap": false,
     "outDir": "out"
   },
-  "exclude": [
-    "node_modules",
-    "out",
-    "fixtures"
-  ],
+  "exclude": ["node_modules", "out", "fixtures"],
   "compileOnSave": false
 }
