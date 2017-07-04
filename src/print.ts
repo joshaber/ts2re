@@ -95,7 +95,7 @@ function printMethod(
   } else {
     const bindingName = m.name === m.bindingName ? "" : m.bindingName;
     const params = m.parameters.length
-      ? " => " + m.parameters.map(p => printParameter(p, false)).join(" => ")
+      ? m.parameters.map(p => printParameter(p, false)).join(" => ")
       : "unit";
     return `external ${printName(
       m.name
