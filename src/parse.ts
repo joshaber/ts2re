@@ -222,6 +222,13 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
           return { name: "float" };
       }
     }
+    case TS.SyntaxKind.TypePredicate: {
+      // TODO: The semantics of predicate types don't translate all that well to
+      // Reason... we kinda want to return both the boolean and a casted object
+      // but that'd require generating a lot more code. So for now we'll just
+      // treat it as returning a boolean.
+      return { name: "bool" };
+    }
     case TS.SyntaxKind.TypeQuery: {
       // TODO
       return { name: "'TypeQuery" };
