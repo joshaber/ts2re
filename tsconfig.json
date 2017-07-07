@@ -4,7 +4,8 @@
     "target": "es6",
     "noImplicitAny": false,
     "sourceMap": false,
-    "outDir": "out"
+    "outDir": "out",
+    "strict": true
   },
   "exclude": ["node_modules", "out", "fixtures"],
   "compileOnSave": false

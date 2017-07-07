@@ -55,14 +55,14 @@ function printParameter(p: Parameter, includeName: boolean): string {
 function printMethod(
   m: Method,
   interface_: Interface | null,
-  rootModule: Module
+  rootModule: Module | null
 ): string {
   if (m.ctor || m.maker) {
     const bsAttribute = m.ctor ? "new" : "obj";
     const params = m.parameters.length
       ? m.parameters.map(p => printParameter(p, m.maker)).join(" => ")
       : "unit";
-    const suffix = m.ctor ? ` [@@bs.module "${rootModule.name}"]` : "";
+    const suffix = m.ctor ? ` [@@bs.module "${rootModule!.name}"]` : "";
     const ffiName = m.ctor ? m.moduleName : "";
     return `external ${printName(
       m.name
@@ -137,7 +137,7 @@ function printNewType(t: NewType, depth: number): string {
 
 function printInterface(
   i: Interface,
-  rootModule: Module,
+  rootModule: Module | null,
   depth: number
 ): string {
   let str = "";

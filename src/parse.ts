@@ -71,13 +71,15 @@ export function parseFile(file: TS.SourceFile): Module {
   return rootModule;
 }
 
-function findTypeParameters(node, acc = []) {
+function findTypeParameters(node, acc: any[] = []) {
   if (!node) {
     return acc;
   }
+
   if (Array.isArray(node.typeParameters)) {
     node.typeParameters.forEach(x => acc.push(x.name.text));
   }
+
   return findTypeParameters(node.parent, acc);
 }
 
@@ -144,7 +146,7 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
       // TODO: If it's all strings, then it's an enum :|
       const newType = createUnion(
         innerTypes,
-        `${decapitalized(opts.declarationName)}Type`
+        `${decapitalized(opts.declarationName!)}Type`
       );
       return {
         name: newType.name,
@@ -161,7 +163,7 @@ function getType(type: any, opts: TypeParseOptions = {}): Type {
       return { name: ModuleTypeName };
     case TS.SyntaxKind.TypeLiteral: {
       const i = visitInterface(type, {
-        name: `${capitalized(opts.declarationName)}Type`,
+        name: `${capitalized(opts.declarationName!)}Type`,
         anonymous: true
       });
       return {
@@ -442,9 +444,11 @@ function deduplicateMethods(methods: ReadonlyArray<Method>): Array<Method> {
     // TODO: This is super inefficient
     const existingMethods = methods.filter(m => m.name === method.name);
     if (existingMethods.length > 1) {
-      if (method.parameters.length && method.parameters[0].stringLiteralValue) {
-        const literal = method.parameters[0].stringLiteralValue;
-        const sanitized = capitalized(camelCase(literal));
+      const literalValue = method.parameters.length
+        ? method.parameters[0].stringLiteralValue
+        : null;
+      if (literalValue) {
+        const sanitized = capitalized(camelCase(literalValue));
         const newName = `${method.name}${sanitized}`;
         return { ...method, name: newName };
       } else {
@@ -550,7 +554,7 @@ function getMethod(
     ctor: opts.ctor || false,
     maker: false,
     moduleName: opts.moduleName || "",
-    callSignature: opts.callSignature
+    callSignature: opts.callSignature || false
   };
 
   const containsOptionalParam = !!meth.parameters.find(p => p.optional);
@@ -637,17 +641,24 @@ function visitNode(m: Module) {
         // TODO:
         // mod.interfaces.push(getEnum(node));
         break;
+
+      case TS.SyntaxKind.ExportAssignment:
+        console.log(node);
+        break;
+
+      default:
+        console.log(`Unknown kind: ${node.kind}`);
     }
   };
 }
 
 function visitModule(node: TS.Node): Module {
   const name = getName(node);
-  const modules = [];
-  const interfaces = [];
-  const variables = [];
-  const methods = [];
-  const anonymousTypes = [];
+  const modules: Module[] = [];
+  const interfaces: Interface[] = [];
+  const variables: Variable[] = [];
+  const methods: Method[] = [];
+  const anonymousTypes: AnonymousType[] = [];
 
   const body = (node as any).body;
   switch (body.kind) {
