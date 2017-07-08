@@ -187,11 +187,11 @@ export function printModule(
   }
 
   for (const method of m.methods) {
-    str += pp(printMethod(method, null, rootModule), childDepth);
+    str += pp(printMethod(method, null, rootModule || m), childDepth);
   }
 
   for (const i of m.interfaces) {
-    str += printInterface(i, rootModule, childDepth);
+    str += printInterface(i, rootModule || m, childDepth);
     str += "\n";
   }
 
