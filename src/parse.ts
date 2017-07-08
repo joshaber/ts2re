@@ -646,6 +646,9 @@ function visitNode(m: Module) {
         console.log(node);
         break;
 
+      case TS.SyntaxKind.EndOfFileToken:
+        break;
+
       default:
         console.log(`Unknown kind: ${node.kind}`);
     }
