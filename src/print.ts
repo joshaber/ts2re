@@ -97,9 +97,9 @@ function printMethod(
     const params = m.parameters.length
       ? m.parameters.map(p => printParameter(p, false)).join(" => ")
       : "unit";
-    return `external ${printName(
-      m.name
-    )} : ${params} => ${m.type} = "${bindingName}";`;
+    const name = printName(m.name);
+    return `external ${name} : ${params} => ${m.type} = "${bindingName}" [@@bs.module "${rootModule!
+      .name}"];`;
   }
 }
 
