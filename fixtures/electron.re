@@ -24,7 +24,7 @@ let module File = {
 let module NodeRequireFunction = {
   type t;
 
-  
+  external invoke : (_ [@bs.as "electron"]) => t = "electron" [@@bs.module];
   external make : unit => t = "" [@@bs.obj];
 };
 
